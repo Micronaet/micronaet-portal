@@ -9,7 +9,7 @@
                 <tree string="Portal sale order" >        
                     <field name="name" readonly="1"/>
                     <field name="date" readonly="1"/>
-                    <field name="dateline" readonly="1"/>
+                    <field name="deadline" readonly="1"/>
                     <field name="partner_id" readonly="1"/>
                     <field name="user_id" invisible="1" />
                     <field name="total" readonly="1"/>
@@ -66,7 +66,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_portal_sale_order_tree"/>
             <field name="context">{}</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
         </record>
         
         <menuitem 
