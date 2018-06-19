@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <menuitem 
+            id="menu_portal_order" 
+            name="Portal"            
+            sequence="1"            
+            />
+
+    </data>
+</openerp>
+

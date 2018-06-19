@@ -18,22 +18,24 @@
 ###############################################################################
 
 {
-    'name': '',
+    'name': 'Portal Sale Order CSV',
     'version': '0.1',
-    'category': '',
-    'description': '''        
+    'category': 'Portal',
+    'description': ''' 
+        Porta sale order status imported via CSV files       
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
-        'base',
+        'base',        
+        'portal_csv',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
-        #'security/ir.model.access.csv',    
-        #'_view.xml',
+        'security/ir.model.access.csv',    
+        'order_view.xml',
         ],
     'active': False,
     'installable': True,
