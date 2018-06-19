@@ -6,6 +6,7 @@ __pycache__/
 # Micronaet:
 *.~*
 ~*
+*~
 
 # C extensions
 *.so
