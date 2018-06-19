@@ -1,49 +1,15 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <!--INHERIT View-->
-    <record model="ir.ui.view" id="view_res_partner_deadline_form">
-        <field name="name">res.partner.deadline.form</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="arch" type="xml">
-            <xpath expr="/form/sheet/notebook/page[@string='History']" position="before">
-                <page string="Payment deadline"> 
-                    <field name="deadline_ids">
-                        <tree string="Payments">
-                            <field name="deadline"/>
-                            <field name="total" sum="Total" />
-                            <field name="type"/>
-                        </tree>
-                    </field>                    
-                </page>
-            </xpath>
-        </field>
-    </record>
-
-
-    <!--Statistic Deadline: etl.accounting.deadline ***************************** -->
-        <record model="ir.ui.view" id="view_etl_accounting_deadline_search">
-        <field name="name">etl.accounting.deadline.search</field>
-        <field name="model">etl.accounting.deadline</field>
+    <!--Statistic Deadline: portal.deadline ***************************** -->
+        <record model="ir.ui.view" id="view_portal_deadline_search">
+        <field name="name">portal.deadline.search</field>
+        <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
             <search string="Statistic deadline">
-                    <field name="partner_id" string="Partner" filter_domain="[('partner_id','=',self)]"/>
                     <field name="type" string="Type" filter_domain="[('type','=',self)]"/>
-
-                    <filter icon="terp-go-home" name="Customer" string="Customer" domain="[('c_o_s','=','c')]" />
-                    <filter icon="terp-go-home" name="Supplier" string="Supplier" domain="[('c_o_s','=','s')]" />
-
-                    <filter icon="terp-go-home" name="Dare" string="Dare" domain="[('total','&lt;',0)]" />
-                    <filter icon="terp-go-home" name="Avere" string="Avere" domain="[('total','&gt;',0)]" />
-
                     <filter icon="terp-go-home" name="DeadlinedToday" string="Scaduti" domain="[('deadline','&lt;',context_today().strftime('%%Y-%%m-%%d'))]" />
-                    <filter icon="terp-go-home" name="Next10" string="Scaduti 10 gg. da oggi" domain="[('deadline','&gt;',context_today().strftime('%%Y-%%m-%%d')),('deadline','&lt;',(context_today()+relativedelta(days=10)).strftime('%%Y-%%m-%%d'))]" />
-                    <filter icon="terp-go-home" name="Next20" string="Scaduti 20 gg. da oggi" domain="[('deadline','&gt;',context_today().strftime('%%Y-%%m-%%d')),('deadline','&lt;',(context_today()+relativedelta(days=20)).strftime('%%Y-%%m-%%d'))]" />
-                    <filter icon="terp-go-home" name="Next30" string="Scaduti 30 gg. da oggi" domain="[('deadline','&gt;',context_today().strftime('%%Y-%%m-%%d')),('deadline','&lt;',(context_today()+relativedelta(days=30)).strftime('%%Y-%%m-%%d'))]" />
-
                     <group expand="1" string="Group By...">
-                        <filter name="group_partner" string="Partner" icon="terp-partner" context="{'group_by':'partner_id'}"/>
                         <filter name="group_type" string="Type" icon="terp-partner" context="{'group_by':'type'}"/>
                         <filter name="group_deadline" string="Deadline" icon="terp-partner" context="{'group_by':'deadline'}"/>
                     </group>                    
@@ -51,137 +17,78 @@
         </field>
     </record>
 
-       <!-- Form -->
-    <record model="ir.ui.view" id="view_etl_accounting_deadline_form">
-        <field name="name">etl.accounting.deadline.form</field>
-        <field name="model">etl.accounting.deadline</field>
+    <record model="ir.ui.view" id="view_portal_deadline_form">
+        <field name="name">portal.deadline.form</field>
+        <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
             <form string="Statistic deadline Form">
                 <separator string="Accounting write" colspan="4" />
-                <field name="partner_id"/>
+                <field name="partner_id" readonly="1"/>
                 <newline />
                 <group colspan="4" col="6">
-                   <field name="deadline"/>
-                   <field name="in" string="Importo" />
-                   <field name="type"/>
+                   <field name="deadline" readonly="1"/>
+                   <field name="total" readonly="1" />
+                   <field name="type" readonly="1"/>
                 </group>
             </form>
         </field>
     </record>
-
-       <!-- Tree -->
-    <record model="ir.ui.view" id="view_etl_accounting_deadline_tree">
-        <field name="name">etl.accounting.deadline.tree</field>
-        <field name="model">etl.accounting.deadline</field>
+    <record model="ir.ui.view" id="view_portal_deadline_tree">
+        <field name="name">portal.deadline.tree</field>
+        <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
             <tree string="Deadline terms of payments" colors="green:total&gt;0;red:total&lt;0">
                 <!--<field name="name" />-->
-                <field name="partner_id"/>
-                <field name="c_o_s"   />
-                <field name="deadline" string="Scadenza" />
-                <field name="out" sum="Dare" string="Dare"  />
-                <field name="in" sum="Avere" string="Avere"  />
-                <field name="total" sum="Totale" string="Saldo"  />
-                <field name="type"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="deadline"  readonly="1" />
+                <!--<field name="out" sum="Dare"  readonly="1"  />
+                <field name="in" sum="Avere"  readonly="1"  />-->
+                <field name="total" sum="Totale" readonly="1" />
+                <field name="type" readonly="1"/>
             </tree>
         </field>
     </record>
-    
-       <!-- Calendar -->
-    <record model="ir.ui.view" id="view_etl_accounting_deadline_calendar">
-        <field name="name">Deadline</field>
-        <field name="model">etl.accounting.deadline</field>
+    <record model="ir.ui.view" id="view_portal_deadline_calendar">
+        <field name="name">portal.deadline.calendar</field>
+        <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
             <calendar color="partner_id" date_start="deadline" string="Deadline">
-                <field name="name" />
-                <field name="deadline" />
-                <field name="type" />
+                <field name="name"  readonly="1"/>
+                <field name="deadline"  readonly="1"/>
+                <field name="type"  readonly="1"/>
             </calendar>
         </field>
     </record>
-    
-       <!-- Graph -->
-    <record model="ir.ui.view" id="view_etl_accounting_deadline_graph">
-        <field name="name">Statistic deadline Graph</field>
-        <field name="model">etl.accounting.deadline</field>
+    <record model="ir.ui.view" id="view_portal_deadline_graph">
+        <field name="name">portal.deadline.graph</field>
+        <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
-                <field name="deadline"/>
-                <field name="in" operator="+" />
+            <graph string="Deadline">
+                <field name="deadline" readonly="1"/>
+                <field name="total" operator="+" readonly="1"/>
             </graph>
         </field>
     </record>
-
-    <!-- Graph diviso per partner-->
-    <record model="ir.ui.view" id="view_etl_accounting_deadline_graph">
-        <field name="name">Statistic deadline in Graph</field>
-        <field name="model">etl.accounting.deadline</field>
-        <field name="priority" eval="20" />
-        <field name="arch" type="xml">
-            <graph string="Deadline for partner" type="bar">
-                <field name="partner_id"/>
-                <field name="in" operator="+" />
-            </graph>
-        </field>
-    </record>
-    
-       <!-- Action -->
-    <record model="ir.actions.act_window" id="action_etl_accounting_deadline">
-        <field name="name">Deadline list</field>
-        <field name="res_model">etl.accounting.deadline</field>
+    <record model="ir.actions.act_window" id="action_portal_deadline">
+        <field name="name">Open payment</field>
+        <field name="res_model">portal.deadline</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,graph,form</field>
-        <field name="search_view_id" ref="view_etl_accounting_deadline_search"/>
+        <field name="search_view_id" ref="view_portal_deadline_search"/>
+        <field name="domain">[('user_id', '=', uid)]</field>
         <!--<field name="context">{'search_default_deadline': time.strftime('%Y-%m-01')}</field>-->
     </record>
-        <record model="ir.actions.act_window" id="action_etl_accounting_deadline_customer">
-            <field name="name">Deadline list</field>
-            <field name="res_model">etl.accounting.deadline</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,calendar,graph,form</field>
-            <field name="search_view_id" ref="view_etl_accounting_deadline_search"/>
-            <field name="context">{'search_default_Customer': True}</field>
-        </record>
-        <record model="ir.actions.act_window" id="action_etl_accounting_deadline_supplier">
-            <field name="name">Deadline list</field>
-            <field name="res_model">etl.accounting.deadline</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,calendar,graph,form</field>
-            <field name="search_view_id" ref="view_etl_accounting_deadline_search"/>
-            <field name="context">{'search_default_Supplier': True}</field>
-        </record>
-
-    <!-- DASHBOARD: -->
-    <!--<record id="board_accounting_analysis_order_default" model="ir.ui.view">
-        <field name="name">board.accounting.analysis.order</field>
-        <field name="model">board.board</field>
-        <field name="arch" type="xml">
-            <form string="Accounting analysis order" version="7.0">
-                <board style="1-1">
-                    <column>
-                        <action name="%(action_view_sale_order_line_partner_board)d" string="Partner situation"/>
-                        <action name="%(action_view_sale_order_line_partner_tree_board)d" string="Partner group situation"/>
-                    </column>
-                    <column>
-                        <action name="%(action_view_sale_order_line_product_board)d" string="Product situation"/>
-                        <action name="%(action_view_sale_order_line_product_tree_board)d" string="Product group situation"/>
-                    </column>
-                </board>
-            </form>
-        </field>
-    </record>
-    <record id="action_board_accounting_analysis_order_default" model="ir.actions.act_window">
-        <field name="name">Accounting analysis order</field>
-        <field name="res_model">board.board</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="board_accounting_analysis_order_default"/>
-    </record>-->
-
-    <!-- Create production order from customer order lines           action="action_board_accounting_analysis_order_default" -->
-    <menuitem name="Deadline" parent="accounting_analysis.menu_accounting_analysis_root" id="menu_analysis_deadline_root" sequence="60" />
-       <menuitem name="Deadlines" parent="menu_analysis_deadline_root" id="menu_analysis_deadline_tree" action="action_etl_accounting_deadline" sequence="10" />
-            <menuitem name="Customer" parent="menu_analysis_deadline_tree" id="menu_analysis_deadline_tree_customer" action="action_etl_accounting_deadline_customer" sequence="10" />
-            <menuitem name="Supplier" parent="menu_analysis_deadline_tree" id="menu_analysis_deadline_tree_supplier" action="action_etl_accounting_deadline_supplier" sequence="20" />
-
+    <menuitem 
+        parent="portal_csv.menu_portal_order" 
+        id="menu_portal_deadline" 
+        name="Deadline"
+        sequence="30"
+        />
+        <menuitem 
+            parent="menu_portal_deadline" 
+            id="menu_portal_deadline_deadline" 
+            sequence="10"
+            action="action_portal_deadline"
+            />
   </data>
 </openerp>

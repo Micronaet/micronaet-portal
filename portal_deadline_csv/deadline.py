@@ -51,7 +51,7 @@ class PortalDeadline(osv.osv):
     # Utility function:
     # -----------------------------------------------------------------------------
     # Conversion function:
-    def prepare(self, value):  
+    def clean(self, value):  
         ''' ASCII Problem conversion
         '''
         value = value.decode('cp1252')
@@ -97,7 +97,8 @@ class PortalDeadline(osv.osv):
         # Remove all previous
         deadline_ids = self.search(cr, uid, [], context=context) 
         self.unlink(cr, uid, deadline_ids, context=context) 
-
+        # TODO;:
+        user_id = 1
         for row in rows:
             try:
                 line=row.split(';')
@@ -109,20 +110,18 @@ class PortalDeadline(osv.osv):
                 if not (len(line) and (tot_col==len(line))):
                     _logger.error(
                         'Empty line or cols [Org: %s - This %s]' % (
-                            counter['tot'],tot_col,len(line)))
+                            tot_col, len(line)))
                     continue
 
                 try: # master error:
-                    partner_ref = prepare(line[0])
-                    deadline = prepare_date(line[1])
-                    total = prepare_float(line[2]) 
-                    type_id = prepare(line[3]).lower()
+                    partner_ref = self.clean(line[0])
+                    deadline = self.format_date(line[1])
+                    total = self.format_float(line[2]) 
+                    type_id = self.clean(line[3]).lower()
                     if partner_ref[:1] == '4':
                         continue # XXX no supplier data
-                        #c_o_s = "s"
-                        #total =- total
-                    elif partner_ref[:1]=="3": # Customer
-                        c_o_s = 'c'
+                    elif partner_ref[:1] == "3": # Customer
+                        pass
                     else:    
                         _logger.error(
                             'Cannot find c/s from code: %s' % (
@@ -153,14 +152,13 @@ class PortalDeadline(osv.osv):
                             partner_ref, 
                             deadline, total),
                         'partner_id': partner_id,
+                        'user_id': user_id,
                         'deadline': deadline,
                         'total': total,
                         'in': total_in,
                         'out': total_out, # XXX needed?
                         'type': type_id,
-                        #'c_o_s': c_o_s, 
-                        }
-                          
+                        }                          
                     try:
                         self.create(cr, uid, data, context=context)
                         if verbose: 
@@ -169,35 +167,29 @@ class PortalDeadline(osv.osv):
                        _logger.error('Error creating deadline: %s' % name)
                 except:
                     _logger.error('Generic error import this line')
-                           
             except:
-                _logger.error("Line: %s - Generic error!"%(counter['tot'],))
-
-        _logger.info("End importation deadline [%s]"%(counter,))
+                _logger.error('Generic error!')
+        _logger.info('End importation deadline')
         return
     
     _columns = {
-        'name': fields.char('Deadline', size=70),
+        'name': fields.char('Deadline', size=80),
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'user_id': fields.many2one('res.users', 'User'),
-        #'c_o_s': fields.selection([
-        #    ('c','Customer'),
-        #    ('s','Supplier'),
-        #    ], 'Customer or supplier', select=True),
         'deadline': fields.date('Deadline'),
         'total': fields.float('Amount', digits=(16, 2)),
         'in': fields.float('IN', digits=(16, 2)),
         'out': fields.float('OUT', digits=(16, 2)),
         'type': fields.selection([
-            ('b','Bonifico'),            
-            ('c','Contanti'),            
-            ('r','RIBA'),            
-            ('t','Tratta'),            
-            ('m','Rimessa diretta'),            
-            ('x','Rimessa diretta X'),
-            ('y','Rimessa diretta Y'),            
-            ('z','Rimessa diretta Z'),            
-            ('v','MAV'),            
-        ], 'Type', select=True),
+            ('b', 'Bonifico'),            
+            ('c', 'Contanti'),            
+            ('r', 'RIBA'),            
+            ('t', 'Tratta'),            
+            ('m', 'Rimessa diretta'),            
+            ('x', 'Rimessa diretta X'),
+            ('y', 'Rimessa diretta Y'),            
+            ('z', 'Rimessa diretta Z'),            
+            ('v', 'MAV'),            
+            ], 'Type', select=True),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

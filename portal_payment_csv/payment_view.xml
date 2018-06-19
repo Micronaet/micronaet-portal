@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_res_partner_kanban_payment_kanban">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <kanban string="Partner payment" >                                    
+                    <field name="name" readonly="1"/>
+                    <field name="title" readonly="1"/>
+                    <field name="email" readonly="1"/>
+                    <field name="is_company" readonly="1" />
+                    <field name="phone" readonly="1" />
+                    <field name="street" readonly="1" />
+                    <field name="street2" readonly="1" />
+                    <field name="zip" readonly="1" />
+                    <field name="city" readonly="1" />
+                    <field name="country_id" readonly="1" />
+                    <field name="mobile" readonly="1" />
+                    <field name="state_id" readonly="1" />
+                    <field name="has_image" readonly="1"/>
+                    <field name="type" readonly="1" />
+                    <field name="portal_payment" readonly="1"/>
+                    <field name="portal_user_id" readonly="1"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override">
+                                <a data-type="open" href="#" class=" oe_kanban_action oe_kanban_action_a">
+                                    <t t-if="record.has_image.raw_value === true">
+                                        <img t-att-src="kanban_image('res.partner', 'image_small', record.id.value)" class="oe_kanban_image"/>
+                                    </t>
+                                </a>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading">
+                                        <t name="name" />
+                                    </h4>
+                                    <ul>
+                                        <li t-if="record.city.raw_value and !record.country_id.raw_value">
+                                            <t name="city" t-esc="record.city.value"/>
+                                        </li>
+                                        <li t-if="!record.city.raw_value and record.country_id.raw_value">
+                                            <t name="country_id" t-esc="record.country_id.value"/>
+                                        </li>
+                                        <li t-if="record.city.raw_value and record.country_id.raw_value">
+                                            <t name="city" t-esc="record.city.value"/>
+                                            , 
+                                            <t name="country_id" t-esc="record.country_id.value"/>
+                                        </li>
+                                        <li t-if="record.email.raw_value">
+                                            <a t-attf-href="mailto:#{record.email.raw_value}">
+                                                <t name="email" t-esc="record.email.value"/>
+                                            </a>
+                                        </li>                                        
+                                        <li t-if="record.portal_user_id.raw_value">
+                                           <t name="portal_user_id" t-esc="record.portal_user_id.value"/>
+                                        </li>
+                                        Payment reference:
+                                        <li t-if="record.portal_payment.raw_value">
+                                           <t name="portal_payment" t-esc="record.portal_payment.value"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>        
+        <record model="ir.actions.act_window" id="action_res_partner_kanban">
+            <field name="name">Payment partner</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_res_partner_kanban_payment_kanban"/>
+            <field name="context">{}</field>
+            <field name="domain">[('portal_user_id', '=', uid)]</field>
+        </record>
+        <menuitem 
+            parent="portal_csv.menu_portal_order" 
+            id="menu_portal_partner_payment" 
+            name="Payment"
+            sequence="1"
+            />
+            <menuitem 
+                parent="menu_portal_partner_payment" 
+                id="menu_portal_partner_payment_kanban" 
+                sequence="10"
+                action="action_res_partner_kanban"
+                />
+
+
+    </data>
+</openerp>
+

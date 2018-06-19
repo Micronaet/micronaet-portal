@@ -21,24 +21,23 @@
 ##############################################################################
 
 {
-    'name' : 'Accounting Analysis Deadline',
-    'version' : '0.0.1',
-    'category' : 'Generic Modules/Customization',
-    'description' : """Importatione scadenze cliente
-                    """,
-    'author' : 'Micronaet s.r.l.',
-    'website' : 'http://www.micronaet.it',
-    'depends' : ['base',
-                 'sale',
-                 'crm',
-                 'accounting_analysis',
-                ],
-    'init_xml' : [], 
-    'update_xml' : [
-                    'deadline_view.xml',
-                    'scheduler.xml',
-                   ],
-    'demo_xml' : [],
-    'active' : False, 
-    'installable' : True, 
-}
+    'name': 'Portal Deadline',
+    'version': '0.0.1',
+    'category': 'Portal',
+    'description': """
+        Portal deadline status
+        """,
+    'author': 'Micronaet s.r.l.',
+    'website': 'http://www.micronaet.it',
+    'depends': [
+        'base',
+        'portal_csv',
+        ],
+    'init_xml': [], 
+    'data': [
+        'deadline_view.xml',
+        ],
+    'demo_xml': [],
+    'active': False, 
+    'installable': True, 
+    }
