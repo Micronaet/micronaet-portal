@@ -94,7 +94,7 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
         cr,
         )
     if verbose:
-        print message
+        print message.strip()
     f_log.write(message)
     return True
 
