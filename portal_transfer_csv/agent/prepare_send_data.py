@@ -62,6 +62,17 @@ def mssql_connect(mysql):
     except:
         return False
 
+def clean_ascii(value):
+    ''' Clean not ascii char
+    '''
+    value = (value or '').strip()
+    res = ''
+    for c in value:
+        if ord(c) < 127:
+            res += c
+        else:    
+            res += '*'
+    return res
 
 if mysql['capital']:
     table = table.upper()
@@ -92,8 +103,8 @@ for record in cursor:
             ref,             
             record['CDS_CNT'], # name
             record['CDS_INDIR'], # street
-            )    
-        f_csv.write(line)
+            )
+        f_csv.write(clean_ascii(line))
     except: 
         print 'Jump line error'
         continue    
