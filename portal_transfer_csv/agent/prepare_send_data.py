@@ -126,23 +126,18 @@ log_data('Extract partner: %s (last delivery from %s)' % (
 # Load active partner (date of delivery)
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
 query = '''
-    SELECT CKY_CNT 
-    FROM %s
-    WHERE 
-        DTT_ULT_CONSG >= %s AND 
-        CKY_CNT >= '2' AND CKY_CNT < '3';
+    SELECT CKY_CNT FROM %s WHERE 
+        DTT_ULT_CONSG >= %s AND CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
 log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor]
-
+import pdb; pdb.set_trace()
 # -----------------------------------------------------------------------------
 # Load partner list
 query = '''
-    SELECT * 
-    FROM %s
-    WHERE 
+    SELECT * FROM %s WHERE 
         CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_rubrica
 log_data('Run SQL %s' % query, f_log)
