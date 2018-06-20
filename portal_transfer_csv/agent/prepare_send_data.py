@@ -65,7 +65,7 @@ def mssql_connect(mysql):
 def clean_ascii(value):
     ''' Clean not ascii char
     '''
-    value = (value or '').strip()
+    value = value or ''
     res = ''
     for c in value:
         if ord(c) < 127:
