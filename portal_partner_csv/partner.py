@@ -50,7 +50,6 @@ class ResPartner(orm.Model):
     def create_portal_user(self, cr, uid, ids, context=None):
         ''' Create porta user for partner passed:
         '''
-        import pdb; pdb.set_trace()
         user_pool = self.pool.get('res.users')
         update_list = [] # (partner_id, user_id)
         
