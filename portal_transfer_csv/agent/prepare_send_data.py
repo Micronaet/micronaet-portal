@@ -70,6 +70,8 @@ if mysql['capital']:
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
 connection = mssql_connect(mysql)
+cursor = connection.cursor()
+
 import pdb; pdb.set_trace()
 query = '''
     SELECT * 
