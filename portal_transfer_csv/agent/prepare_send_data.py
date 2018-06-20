@@ -74,7 +74,8 @@ cursor = mssql_connect(mysql)
 query = '''
     SELECT * 
     FROM %s
-    WHERE CKY_CNT > '2' AND CKY_CNT < '3';
+    WHERE 
+        CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table
 cursor.execute(query)
 
