@@ -75,8 +75,8 @@ class ResPartner(orm.Model):
                     'active': True,
                     'login': ref,
                     'password': ref,
-                    #'partner_id': 
-                    'name': partner.name,
+                    'partner_id': partner.id,
+                    #'name': 'User: %s' % partner.name,
                     'signature': partner.name,                
                     }, context=context)
             update_list.append((partner.id, user_id))    
