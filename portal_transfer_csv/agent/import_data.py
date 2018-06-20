@@ -19,8 +19,7 @@
 ###############################################################################
 import os
 import sys
-import MySQLdb
-import MySQLdb.cursors
+import erppeek
 import ConfigParser
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
