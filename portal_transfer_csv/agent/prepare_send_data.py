@@ -26,7 +26,6 @@ import ConfigParser
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 cfg_file = os.path.expanduser('./odoo.cfg')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
@@ -70,7 +69,8 @@ if mysql['capital']:
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
-cursor = mssql_connect(mysql)
+connection = mssql_connect(mysql)
+import pdb; pdb.set_trace()
 query = '''
     SELECT * 
     FROM %s
