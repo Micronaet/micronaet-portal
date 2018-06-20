@@ -117,7 +117,7 @@ table_rubrica = 'pa_rubr_pdc_clfr'
 file_csv = os.path.join(folder, 'partner.csv')
 if mysql['capital']:
     table_rubrica = table_rubrica.upper()
-    table_extra = table_progressivi.upper()
+    table_extra = table_extra.upper()
 
 log_data('Extract partner: %s (last delivery from %s)' % (
     table_rubrica, table_extra), f_log)
