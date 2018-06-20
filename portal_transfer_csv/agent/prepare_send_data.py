@@ -129,7 +129,7 @@ query = '''
     SELECT CKY_CNT 
     FROM %s
     WHERE 
-        DTT_ULT_CONSG >= %s
+        DTT_ULT_CONSG >= %s AND 
         CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
 cursor.execute(query)
