@@ -22,7 +22,8 @@ import sys
 import MySQLdb
 import MySQLdb.cursors
 import ConfigParser
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
@@ -50,6 +51,7 @@ mysql = {
 folder = os.path.expanduser(config.get('transfer', 'folder'))
 compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
+days = 365 # create user only for active partner
 
 file_log = 'activity.log'
 f_log = open(file_log, 'a')
@@ -109,20 +111,38 @@ log_data('Connect with MySQL database: %s' % connection, f_log)
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
-table = 'pa_rubr_pdc_clfr'
+table_extra = 'pc_progressivi'
+table_rubrica = 'pa_rubr_pdc_clfr'
+
 file_csv = os.path.join(folder, 'partner.csv')
 if mysql['capital']:
-    table = table.upper()
+    table_rubrica = table_rubrica.upper()
+    table_extra = table_progressivi.upper()
 
+log_data('Extract partner: %s (last delivery from %s)' % (
+    table_rubrica, table_extra), f_log)
 
-log_data('Extract partner: %s' % table, f_log)
+# -----------------------------------------------------------------------------
+# Load active partner (date of delivery)
+from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
+query = '''
+    SELECT CKY_CNT 
+    FROM %s
+    WHERE 
+        DTT_ULT_CONSG >= %s
+        CKY_CNT >= '2' AND CKY_CNT < '3';
+    ''' % (table_extra, from_date)
+cursor.execute(query)
+user_db = [record['CKY_CNT'] for record in cursor]
 
+# -----------------------------------------------------------------------------
+# Load partner list
 query = '''
     SELECT * 
     FROM %s
     WHERE 
         CKY_CNT >= '2' AND CKY_CNT < '3';
-    ''' % table
+    ''' % table_rubrica
 cursor.execute(query)
 
 i = 0
@@ -132,10 +152,11 @@ for record in cursor:
         i += 1
         ref = record['CKY_CNT']        
         
-        line = u'%s|%s|%s\n' % (
+        line = u'%s|%s|%s|%s\n' % (
             ref,             
             record['CDS_CNT'], # name
             record['CDS_INDIR'], # street
+            'X' if ref in user_db else '',
             )
         f_csv.write(clean_ascii(line))
     except: 
