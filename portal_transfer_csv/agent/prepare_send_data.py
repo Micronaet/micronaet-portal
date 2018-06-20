@@ -31,8 +31,9 @@ config = ConfigParser.ConfigParser()
 config.read([cfg_file])
 
 # -----------------------------------------------------------------------------
-# Access database:
+# Parameters:
 # -----------------------------------------------------------------------------
+# MySQL Access
 mysql = {
     'hostname': config.get('mysql', 'hostname'),
     'username': config.get('mysql', 'username'),
@@ -44,6 +45,7 @@ mysql = {
     'capital': eval(config.get('mysql', 'capital')),
     }
 
+# Transafer data:
 folder = os.path.expanduser(config.get('transfer', 'folder'))
 compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
@@ -78,14 +80,14 @@ def clean_ascii(value):
             res += '*'
     return res
 
-if mysql['capital']:
-    table = table.upper()
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
 table = 'pa_rubr_pdc_clfr'
 file_csv = os.path.join(folder, 'partner.csv')
+if mysql['capital']:
+    table = table.upper()
 
 
 connection = mssql_connect(mysql)
