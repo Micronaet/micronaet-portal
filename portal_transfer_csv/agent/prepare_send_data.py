@@ -118,8 +118,10 @@ for record in cursor:
         print 'Jump line error'
         continue    
         
+# Publish command:        
+os.system(publish)        
 # -----------------------------------------------------------------------------
-#                                     PARTNER: 
+#                                     TRANSFER: 
 # -----------------------------------------------------------------------------   
 sys.exit()
 import hashlib
