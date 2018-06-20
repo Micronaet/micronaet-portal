@@ -133,7 +133,7 @@ log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor]
-import pdb; pdb.set_trace()
+
 # -----------------------------------------------------------------------------
 # Load partner list
 query = '''
