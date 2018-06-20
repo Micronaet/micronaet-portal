@@ -22,6 +22,7 @@ import sys
 import MySQLdb
 import MySQLdb.cursors
 import ConfigParser
+from datetime import datetime
 
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
@@ -49,6 +50,9 @@ mysql = {
 folder = os.path.expanduser(config.get('transfer', 'folder'))
 compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
+
+file_log = 'activity.log'
+f_log = open(file_log, 'a')
 
 # -----------------------------------------------------------------------------
 #                                UTILITY FUNCTION:
@@ -80,6 +84,27 @@ def clean_ascii(value):
             res += '*'
     return res
 
+def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
+    ''' Log data:
+    '''
+    message = '%s. [%s] %s%s' % (
+        datetime.datatime.now(),
+        mode,
+        message,
+        cr,
+        )
+    if verbose:
+        print message
+    f_log.write(message)
+    return True
+
+# -----------------------------------------------------------------------------
+#                                      START: 
+# -----------------------------------------------------------------------------   
+log_data('Start publish procedure', f_log)
+connection = mssql_connect(mysql)
+cursor = connection.cursor()
+log_data('Connect with MySQL database: %s' % connection, f_log)
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
@@ -90,8 +115,7 @@ if mysql['capital']:
     table = table.upper()
 
 
-connection = mssql_connect(mysql)
-cursor = connection.cursor()
+log_data('Extract partner: %s' % table, f_log)
 
 query = '''
     SELECT * 
@@ -119,7 +143,19 @@ for record in cursor:
         continue    
         
 # Publish command:        
-os.system(publish)        
+log_data('Publish operation: %s' % publish, f_log)
+os.system(publish)
+  
+  
+# -----------------------------------------------------------------------------
+#                                  END OPERATION:
+# -----------------------------------------------------------------------------   
+f_log.close()  
+
+
+
+
+
 # -----------------------------------------------------------------------------
 #                                     TRANSFER: 
 # -----------------------------------------------------------------------------   
