@@ -132,6 +132,8 @@ query = '''
         DTT_ULT_CONSG >= %s AND 
         CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
+log_data('Run SQL %s' % query, f_log)
+
 cursor.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor]
 
@@ -143,6 +145,7 @@ query = '''
     WHERE 
         CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_rubrica
+log_data('Run SQL %s' % query, f_log)
 cursor.execute(query)
 
 i = 0
