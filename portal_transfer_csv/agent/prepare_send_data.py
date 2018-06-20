@@ -91,6 +91,9 @@ for record in cursor:
             record['CDS_INDIR'], # street
             )    
         f_csv.write(line)
+    except: 
+        print 'Jump line error'
+        continue    
         
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
