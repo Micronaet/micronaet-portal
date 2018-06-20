@@ -55,6 +55,11 @@ class ResPartner(orm.Model):
         
         # Create user for partner who doesn't have:
         for partner in self.browse(cr, uid, ids, context=context):
+            ref = partner.ref
+            if not ref:
+                # No ref no user creation:
+                _logger.warning('No user without ref: %s' % partner.id)
+                continue
             if partner.portal_user_id:
                 continue # yet present
             
@@ -67,8 +72,8 @@ class ResPartner(orm.Model):
             else:
                 user_id = user_pool.create(cr, uid, {
                     'active': True,
-                    'login': partner.ref,
-                    'password': partner.ref,
+                    'login': ref,
+                    'password': ref,
                     #'partner_id': 
                     'name': partner.name,
                     'signature': partner.name,                
