@@ -50,6 +50,7 @@ class ResPartner(orm.Model):
     def create_portal_user(self, cr, uid, ids, context=None):
         ''' Create porta user for partner passed:
         '''
+        import pdb; pdb.set_trace()
         user_pool = self.pool.get('res.users')
         update_list = [] # (partner_id, user_id)
         
@@ -94,7 +95,6 @@ class ResPartner(orm.Model):
             context=None):
         ''' Import filename for partner creation (and users too)
         '''
-        import pdb; pdb.set_trace()
         partner_user_ids = []
         for line in open(filename):
             row = (line.strip()).split('|')
@@ -112,8 +112,9 @@ class ResPartner(orm.Model):
                 # TODO update?
             else:
                 partner_id = self.create(cr, uid, {
+                    'ref': ref,
                     'active': True,
-                    'company': True,
+                    'is_company': True,
                     'name': name,
                     'street': street,
                     # portal_user_id:                    
