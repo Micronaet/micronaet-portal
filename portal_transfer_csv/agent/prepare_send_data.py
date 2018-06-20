@@ -44,9 +44,13 @@ mysql = {
     'capital': eval(config.get('mysql', 'capital')),
     }
 
-table = 'pa_rubr_pdc_clfr'
-file_csv = 'partner.csv'
+folder = os.path.expanduser(config.get('transfer', 'folder'))
+compress = os.path.expanduser(config.get('transfer', 'compress'))
+publish = config.get('transfer', 'publish')
 
+# -----------------------------------------------------------------------------
+#                                UTILITY FUNCTION:
+# -----------------------------------------------------------------------------   
 def mssql_connect(mysql):
     ''' Connect to partner MySQL table
     '''
@@ -80,10 +84,13 @@ if mysql['capital']:
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
+table = 'pa_rubr_pdc_clfr'
+file_csv = os.path.join(folder, 'partner.csv')
+
+
 connection = mssql_connect(mysql)
 cursor = connection.cursor()
 
-import pdb; pdb.set_trace()
 query = '''
     SELECT * 
     FROM %s
