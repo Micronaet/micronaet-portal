@@ -127,7 +127,7 @@ log_data('Extract partner: %s (last delivery from %s)' % (
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
 query = '''
     SELECT CKY_CNT FROM %s WHERE 
-        DTT_ULT_CONSG >= %s AND CKY_CNT >= '2' AND CKY_CNT < '3';
+        DTT_ULT_CONSG >= '%s' AND CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
 log_data('Run SQL %s' % query, f_log)
 
