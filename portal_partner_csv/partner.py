@@ -89,6 +89,7 @@ class ResPartner(orm.Model):
             context=None):
         ''' Import filename for partner creation (and users too)
         '''
+        import pdb; pdb.set_trace()
         partner_user_ids = []
         for line in open(filename):
             row = (line.strip()).split('|')
