@@ -88,7 +88,7 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
     ''' Log data:
     '''
     message = '%s. [%s] %s%s' % (
-        datetime.datatime.now(),
+        datetime.now(),
         mode,
         message,
         cr,
