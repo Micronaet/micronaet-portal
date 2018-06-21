@@ -82,12 +82,48 @@ log_data('Start import procedure', f_log)
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
 partner_pool = odoo.model('res.partner') 
+user_pool = odoo.model('res.users') 
+
 file_csv = os.path.join(folder, 'partner.csv')
+
 log_data('Start import partner from %s' % file_csv, f_log)
-import pdb; pdb.set_trace()
 # Create partner:
 update_user_ids = partner_pool.import_csv_partner_data(
     file_csv)
+    
+# Create user procedure:
+import pdb; pdb.set_trace()
+update_list = [] # (partner_id, user_id)
+for partner in partner_pool.browse(update_user_ids):
+    ref = partner.ref
+    if not ref:
+        continue
+    if partner.portal_user_id:
+        continue # yet present
+    
+    user_ids = user_pool.search([
+        ('login', '=', partner.ref),
+        ])
+    if user_ids:
+        # TODO manage multiple
+        user_id = user_ids[0]    
+    else:
+        user_id = user_pool.create({
+            'active': True,
+            'login': ref,
+            'password': ref,
+            'partner_id': partner.id,
+            #'name': 'User: %s' % partner.name,
+            'signature': partner.name,                
+            })
+    update_list.append((partner.id, user_id))    
+
+# Update portal user for partner:
+for partner_id, user_id in update_list:
+    partner_pool.write(partner_id, {
+        'portal_user_id': user_id,
+        })
+    
 # Link user to partner updated
 partner_pool.create_portal_user(update_user_ids)
 log_data('End import partner from %s' % file_csv, f_log)
