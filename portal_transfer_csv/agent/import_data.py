@@ -125,7 +125,7 @@ for partner_id, user_id in update_list:
         })
     
 # Link user to partner updated
-partner_pool.create_portal_user(update_user_ids)
+#partner_pool.create_portal_user(update_user_ids)
 log_data('End import partner from %s' % file_csv, f_log)
 
 
