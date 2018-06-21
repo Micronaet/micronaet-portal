@@ -37,7 +37,7 @@
         <field name="name">portal.deadline.tree</field>
         <field name="model">portal.deadline</field>
         <field name="arch" type="xml">
-            <tree string="Deadline terms of payments" colors="green:total&gt;0;red:total&lt;0">
+            <tree string="Deadline terms of payments" colors="green:total&gt;0;red:total&lt;0" create="0" edit="0" delete="0">
                 <!--<field name="name" />-->
                 <field name="partner_id" readonly="1"/>
                 <field name="deadline"  readonly="1" />

@@ -96,7 +96,7 @@ update_user_ids = partner_pool.import_csv_partner_data(
 # Create user procedure:
 # Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
-for partner in []:#TODO removepartner_pool.browse(update_user_ids):
+for partner in partner_pool.browse(update_user_ids):
     ref = partner.ref
     if not ref:
         continue
