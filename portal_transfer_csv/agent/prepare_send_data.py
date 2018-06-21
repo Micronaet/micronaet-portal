@@ -147,7 +147,7 @@ cursor.execute(query)
 bank_db = {}
 import pdb; pdb.set_trace()
 for record in cursor:
-    bank_db[record['CKY_CNT']] = u'Bank: %s\nABI: %s - CAB: %s' % (
+    bank_db[record['CKY_CNT']] = u'Bank: %sABI: %s - CAB: %s' % (
         record['CDS_BANCA'],
         record['NGL_ABI'],
         record['NGL_CAB'],
