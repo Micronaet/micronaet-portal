@@ -90,7 +90,7 @@ class ResPartner(orm.Model):
     # -------------------------------------------------------------------------
     # Scheduled import operation:
     # -------------------------------------------------------------------------
-    def import_csv_partner_data(self, cr, uid, filename, user_creation=True,
+    def import_csv_partner_data(self, cr, uid, filename, user_creation=False,
             context=None):
         ''' Import filename for partner creation (and users too)
         '''
@@ -108,7 +108,6 @@ class ResPartner(orm.Model):
                 max_col = len(row)
             if len(row) != max_col:
                 _logger.error('Different col: %s' % line)
-                import pdb; pdb.set_trace()
                 continue
                     
             ref = row[0]
@@ -139,6 +138,7 @@ class ResPartner(orm.Model):
                 partner_user_ids.append(partner_id)
                 
         if user_creation:
+            _logger.info('Update user')
             self.create_portal_user(
                 cr, uid, partner_user_ids, context=context)
         return partner_user_ids            
