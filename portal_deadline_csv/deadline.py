@@ -137,20 +137,21 @@ class PortalDeadline(osv.osv):
                        total_out = -total # DARE
 
  
-                    partner_id = partner_pool.search(cr, uid, [
+                    partner_ids = partner_pool.search(cr, uid, [
                         ('ref', '=', partner_ref),
                         ], context=context)
                      
-                    if not partner_id:
+                    if not partner_ids:
                        _logger.error('Not found: %s' % partner_ref)
                        continue
-                    
+                    partner_proxy = partner_pool.browse(
+                        cr, uid, partner_ids, context=context)[0]
                     data = {
                         'name': '%s [%s]: %s (%s EUR)' % (
                             partner_proxy.name, 
                             partner_ref, 
                             deadline, total),
-                        'partner_id': partner_id,
+                        'partner_id': partner_proxy.id,
                         'user_id': user_id,
                         'deadline': deadline,
                         'total': total,
