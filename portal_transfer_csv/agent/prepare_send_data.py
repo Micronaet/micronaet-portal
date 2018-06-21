@@ -19,6 +19,7 @@
 ###############################################################################
 import os
 import sys
+import shutil
 import MySQLdb
 import MySQLdb.cursors
 import ConfigParser
