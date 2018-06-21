@@ -86,7 +86,6 @@ class PortalDeadline(osv.osv):
         partner_pool = self.pool.get('res.partner')
         tot_col = 0
         old_order_ref = ''
-        import pdb; pdb.set_trace()
         try: 
             file_input=os.path.join(os.path.expanduser(fullname))
             rows = open(file_input, 'rb') 
@@ -118,9 +117,9 @@ class PortalDeadline(osv.osv):
                     deadline = self.format_date(line[1])
                     total = self.format_float(line[2]) 
                     type_id = self.clean(line[3]).lower()
-                    if partner_ref[:1] == '4':
+                    if partner_ref[:1] == '3':
                         continue # XXX no supplier data
-                    elif partner_ref[:1] == "3": # Customer
+                    elif partner_ref[:1] == "2": # Customer
                         pass
                     else:    
                         _logger.error(

@@ -80,6 +80,14 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
 # -----------------------------------------------------------------------------   
 log_data('Start import procedure', f_log)
 
+# TODO REMOVE
+deadline_pool = odoo.model('portal.deadline')
+log_data('Start import deadline from %s' % deadline_fullname, f_log)
+deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
+log_data('End import deadline from %s' % deadline_fullname, f_log)
+sys.exit()
+# TODO REMOVE
+
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
