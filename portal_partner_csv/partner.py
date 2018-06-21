@@ -139,6 +139,6 @@ class ResPartner(orm.Model):
         if user_creation:
             self.create_portal_user(
                 cr, uid, partner_user_ids, context=context)
-        return True            
+        return partner_user_ids            
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

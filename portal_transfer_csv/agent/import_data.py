@@ -84,7 +84,10 @@ log_data('Start import procedure', f_log)
 partner_pool = odoo.model('res.partner') 
 file_csv = os.path.join(folder, 'partner.csv')
 log_data('Start import partner from %s' % file_csv, f_log)
-partner_pool.import_csv_partner_data(file_csv)#, user_creation=True)
+import pdb; pdb.set_trace()
+update_user_ids = partner_pool.import_csv_partner_data(
+    file_csv, user_creation=False)
+partner_pool.create_portal_user(update_user_ids)
 log_data('End import partner from %s' % file_csv, f_log)
 
 
