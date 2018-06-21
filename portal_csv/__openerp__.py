@@ -35,7 +35,7 @@
     'data': [
         'security/portal_group.xml',
         #'security/ir.model.access.csv',    
-        
+        'web_disable_export',
         'portal_view.xml',
         ],
     'active': False,
