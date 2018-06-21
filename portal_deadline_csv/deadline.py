@@ -162,9 +162,9 @@ class PortalDeadline(osv.osv):
                     try:
                         self.create(cr, uid, data, context=context)
                         if verbose: 
-                            _logger.info('Deadline insert: %s' % name)
+                            _logger.info('Deadline insert')
                     except:
-                       _logger.error('Error creating deadline: %s' % name)
+                       _logger.error('Error creating deadline')
                 except:
                     _logger.error('Generic error import this line')
             except:
