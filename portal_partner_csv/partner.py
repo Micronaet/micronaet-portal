@@ -100,7 +100,7 @@ class ResPartner(orm.Model):
         for line in open(filename):
             i += 1
             if i % 100 == 0:
-                _logger.error('Reading row: %s ' % i)
+                _logger.info('Reading row: %s ' % i)
                 
             row = (line.strip()).split('|')
             if max_col == False:
