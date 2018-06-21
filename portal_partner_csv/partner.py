@@ -106,20 +106,22 @@ class ResPartner(orm.Model):
             partner_ids = self.search(cr, uid, [
                 ('ref', '=', ref),
                 ], context=context)
+            data = {
+                'ref': ref,
+                'active': True,
+                'is_company': True,
+                'name': name,
+                'street': street,
+                'portal_payment': portal_payment,
+                # portal_user_id:                    
+                }    
             if partner_ids: 
                 # TODO multiple management
                 partner_user_ids.append(partner_ids[0])
-                # TODO update?
+                partner_id = self.write(
+                    cr, uid, partner_ids, data, context=context)
             else:
-                partner_id = self.create(cr, uid, {
-                    'ref': ref,
-                    'active': True,
-                    'is_company': True,
-                    'name': name,
-                    'street': street,
-                    'portal_payment': portal_payment,
-                    # portal_user_id:                    
-                    }, context=context)
+                partner_id = self.create(cr, uid, data, context=context)
                 partner_user_ids.append(partner_id)
                 
         if user_creation:
