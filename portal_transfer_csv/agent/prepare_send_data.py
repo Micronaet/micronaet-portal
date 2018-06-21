@@ -125,7 +125,7 @@ log_data('Extract partner: %s, last delivery %s, condition: %s)' % (
     table_rubrica, table_extra, table_condition), f_log)
 
 # -----------------------------------------------------------------------------
-# Load active partner (date of delivery)
+# A. Load active partner (date of delivery)
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
 query = '''
     SELECT CKY_CNT FROM %s WHERE 
@@ -137,7 +137,7 @@ cursor.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor]
 
 # -----------------------------------------------------------------------------
-# Load bank
+# B. Load bank
 query = '''
     SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_condition
@@ -145,16 +145,15 @@ log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
 bank_db = {}
-import pdb; pdb.set_trace()
 for record in cursor:
     bank_db[record['CKY_CNT']] = u'Bank: %sABI: %s - CAB: %s' % (
         record['CDS_BANCA'],
         record['NGL_ABI'],
         record['NGL_CAB'],
         )
-import pdb; pdb.set_trace()
+
 # -----------------------------------------------------------------------------
-# Load partner list
+# C. Load partner list
 query = '''
     SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_rubrica
