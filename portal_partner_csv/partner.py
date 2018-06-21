@@ -95,8 +95,20 @@ class ResPartner(orm.Model):
         ''' Import filename for partner creation (and users too)
         '''
         partner_user_ids = []
+        max_col = False
+        i = 0
         for line in open(filename):
+            i += 1
+            if i % 100 == 0:
+                _logger.error('Reading row: %s ' % i)
+                
             row = (line.strip()).split('|')
+            if max_col == False:
+                max_col = len(row)
+            if len(row) != max_col:
+                _logger.error('Different col: %s' % line)
+                continue
+                    
             ref = row[0]
             name = row[1]
             street = row[2]
