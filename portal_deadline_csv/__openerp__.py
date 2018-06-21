@@ -32,6 +32,7 @@
     'depends': [
         'base',
         'portal_csv',
+        'portal_partner_csv',
         ],
     'init_xml': [], 
     'data': [

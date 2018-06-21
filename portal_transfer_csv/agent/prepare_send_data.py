@@ -113,14 +113,16 @@ log_data('Connect with MySQL database: %s' % connection, f_log)
 # -----------------------------------------------------------------------------   
 table_extra = 'pc_progressivi'
 table_rubrica = 'pa_rubr_pdc_clfr'
+table_condition = 'pc_condizioni_comm'
 
 file_csv = os.path.join(folder, 'partner.csv')
 if mysql['capital']:
     table_rubrica = table_rubrica.upper()
     table_extra = table_extra.upper()
+    table_condition = table_condition.upper()
 
-log_data('Extract partner: %s (last delivery from %s)' % (
-    table_rubrica, table_extra), f_log)
+log_data('Extract partner: %s, last delivery %s, condition: %s)' % (
+    table_rubrica, table_extra, table_condition), f_log)
 
 # -----------------------------------------------------------------------------
 # Load active partner (date of delivery)
@@ -135,10 +137,26 @@ cursor.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor]
 
 # -----------------------------------------------------------------------------
+# Load bank
+query = '''
+    SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
+    ''' % table_extra
+log_data('Run SQL %s' % query, f_log)
+
+cursor.execute(query)
+bank_db = {}
+for record in cursor:
+    bank_db[record['CKY_CNT']] = _(u'Bank: %s\nABI: %s - CAB: %s') % (
+        record['CDS_BANCA'],
+        record['NGL_ABI'],
+        record['NGL_CAB'],
+        )
+bank_db = [record['CKY_CNT'] for record in cursor]
+
+# -----------------------------------------------------------------------------
 # Load partner list
 query = '''
-    SELECT * FROM %s WHERE 
-        CKY_CNT >= '2' AND CKY_CNT < '3';
+    SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_rubrica
 log_data('Run SQL %s' % query, f_log)
 cursor.execute(query)
@@ -155,6 +173,7 @@ for record in cursor:
             record['CDS_CNT'], # name
             record['CDS_INDIR'], # street
             'X' if ref in user_db else '',
+            bank_db.get(ref, _('Not present')),
             )
         f_csv.write(clean_ascii(line))
     except: 

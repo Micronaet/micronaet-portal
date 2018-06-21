@@ -101,6 +101,7 @@ class ResPartner(orm.Model):
             name = row[1]
             street = row[2]
             create_user = row[3] == 'X'
+            portal_payment = row[4]
             
             partner_ids = self.search(cr, uid, [
                 ('ref', '=', ref),
@@ -116,6 +117,7 @@ class ResPartner(orm.Model):
                     'is_company': True,
                     'name': name,
                     'street': street,
+                    'portal_payment': portal_payment,
                     # portal_user_id:                    
                     }, context=context)
                 partner_user_ids.append(partner_id)
