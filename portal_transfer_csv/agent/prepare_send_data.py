@@ -53,6 +53,10 @@ compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
 days = 365 # create user only for active partner
 
+# File to copy in destination folder:
+copy_files = eval(config.get('copy', 'origin'))
+
+
 file_log = 'activity.log'
 f_log = open(file_log, 'a')
 
@@ -107,6 +111,18 @@ log_data('Start publish procedure', f_log)
 connection = mssql_connect(mysql)
 cursor = connection.cursor()
 log_data('Connect with MySQL database: %s' % connection, f_log)
+
+# -----------------------------------------------------------------------------
+#                                 DEADLINE PAYMENT:
+# -----------------------------------------------------------------------------   
+import pdb; pdb.set_trace()
+for origin in copy_files:
+    shutil.copy(origin, folder)
+
+# TODO remove here:Publish command:        
+log_data('Publish operation: %s' % publish, f_log)
+os.system(publish)
+sys.exit() # TODO remove
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
@@ -182,7 +198,6 @@ for record in cursor:
 # Publish command:        
 log_data('Publish operation: %s' % publish, f_log)
 os.system(publish)
-  
   
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:

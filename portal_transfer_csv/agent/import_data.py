@@ -92,7 +92,7 @@ update_user_ids = partner_pool.import_csv_partner_data(
     file_csv)
     
 # Create user procedure:
-import pdb; pdb.set_trace()
+# Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
 for partner in partner_pool.browse(update_user_ids):
     ref = partner.ref
