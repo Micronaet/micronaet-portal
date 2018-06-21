@@ -127,7 +127,4 @@ class ResPartner(orm.Model):
                 cr, uid, partner_user_ids, context=context)
         return True            
     
-    _columns = {
-        'portal_user_id': fields.many2one('res.users', 'Portal user'),
-        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
