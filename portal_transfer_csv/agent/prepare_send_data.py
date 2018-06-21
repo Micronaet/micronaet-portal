@@ -140,7 +140,7 @@ user_db = [record['CKY_CNT'] for record in cursor]
 # Load bank
 query = '''
     SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
-    ''' % table_extra
+    ''' % table_condition
 log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
@@ -151,7 +151,6 @@ for record in cursor:
         record['NGL_ABI'],
         record['NGL_CAB'],
         )
-bank_db = [record['CKY_CNT'] for record in cursor]
 
 # -----------------------------------------------------------------------------
 # Load partner list
