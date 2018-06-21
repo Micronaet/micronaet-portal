@@ -45,6 +45,8 @@ port = eval(config.get('portal', 'port'))
 folder = os.path.expanduser(config.get('folder', 'input'))
 file_log = 'activity.log'
 
+deadline_fullname = os.path.expanduser(config.get('fullname', 'deadline'))
+
 # -----------------------------------------------------------------------------
 # Connect to ODOO:
 # -----------------------------------------------------------------------------
@@ -94,7 +96,7 @@ update_user_ids = partner_pool.import_csv_partner_data(
 # Create user procedure:
 # Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
-for partner in partner_pool.browse(update_user_ids):
+for partner in []:#TODO removepartner_pool.browse(update_user_ids):
     ref = partner.ref
     if not ref:
         continue
@@ -131,8 +133,10 @@ log_data('End import partner from %s' % file_csv, f_log)
 # -----------------------------------------------------------------------------
 #                                     DEADLINE:
 # -----------------------------------------------------------------------------   
-deadline_pool.schedule_etl_accounting_deadline(path, file_name)
-
+deadline_pool = odoo.model('portal.deadline')
+log_data('Start import deadline from %s' % deadline_fullname, f_log)
+deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
+log_data('End import deadline from %s' % deadline_fullname, f_log)
 
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
