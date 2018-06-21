@@ -117,7 +117,7 @@ class PortalDeadline(osv.osv):
                     deadline = self.format_date(line[1])
                     total = self.format_float(line[2]) 
                     type_id = self.clean(line[3]).lower()
-                    if partner_ref[:1] == '3':
+                    if partner_ref[:1] == '4':
                         continue # XXX no supplier data
                     elif partner_ref[:1] == "2": # Customer
                         pass
