@@ -80,15 +80,15 @@ class PortalDeadline(osv.osv):
     # Scheduled action: 
     # -------------------------------------------------------------------------
     def schedule_etl_accounting_deadline(
-            self, cr, uid, path, file_name, verbose=False, context=None):
+            self, cr, uid, fullname, verbose=True, context=None):
         ''' Import deadline from accounting
         '''
         partner_pool = self.pool.get('res.partner')
         tot_col = 0
         old_order_ref = ''
-
+        import pdb; pdb.set_trace()
         try: 
-            file_input=os.path.join(os.path.expanduser(path),file_name)
+            file_input=os.path.join(os.path.expanduser(fullname))
             rows = open(file_input, 'rb') 
         except:
             _logger.error('Problem open file: [%s, %s]' % (path, file_name))
@@ -144,7 +144,6 @@ class PortalDeadline(osv.osv):
                     if not partner_id:
                        _logger.error('Not found: %s' % partner_ref)
                        continue
- 
                     
                     data = {
                         'name': '%s [%s]: %s (%s EUR)' % (

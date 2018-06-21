@@ -128,7 +128,10 @@ for partner_id, user_id in update_list:
 #partner_pool.create_portal_user(update_user_ids)
 log_data('End import partner from %s' % file_csv, f_log)
 
-
+# -----------------------------------------------------------------------------
+#                                     DEADLINE:
+# -----------------------------------------------------------------------------   
+deadline_pool.schedule_etl_accounting_deadline(path, file_name)
 
 
 # -----------------------------------------------------------------------------
