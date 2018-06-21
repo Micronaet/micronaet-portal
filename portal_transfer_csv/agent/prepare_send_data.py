@@ -145,13 +145,14 @@ log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
 bank_db = {}
+import pdb; pdb.set_trace()
 for record in cursor:
     bank_db[record['CKY_CNT']] = u'Bank: %s\nABI: %s - CAB: %s' % (
         record['CDS_BANCA'],
         record['NGL_ABI'],
         record['NGL_CAB'],
         )
-
+import pdb; pdb.set_trace()
 # -----------------------------------------------------------------------------
 # Load partner list
 query = '''
@@ -167,7 +168,7 @@ for record in cursor:
         i += 1
         ref = record['CKY_CNT']        
         
-        line = u'%s|%s|%s|%s\n' % (
+        line = u'%s|%s|%s|%s|%s\n' % (
             ref,             
             record['CDS_CNT'], # name
             record['CDS_INDIR'], # street
