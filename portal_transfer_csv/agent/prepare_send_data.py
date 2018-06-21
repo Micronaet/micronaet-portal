@@ -116,14 +116,9 @@ log_data('Connect with MySQL database: %s' % connection, f_log)
 # -----------------------------------------------------------------------------
 #                                 DEADLINE PAYMENT:
 # -----------------------------------------------------------------------------   
-import pdb; pdb.set_trace()
+log_data('Copy as is files: %s' % (copy_files, ), f_log)
 for origin in copy_files:
     shutil.copy(origin, folder)
-
-# TODO remove here:Publish command:        
-log_data('Publish operation: %s' % publish, f_log)
-os.system(publish)
-sys.exit() # TODO remove
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
