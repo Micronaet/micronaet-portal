@@ -146,7 +146,7 @@ log_data('Run SQL %s' % query, f_log)
 cursor.execute(query)
 bank_db = {}
 for record in cursor:
-    bank_db[record['CKY_CNT']] = _(u'Bank: %s\nABI: %s - CAB: %s') % (
+    bank_db[record['CKY_CNT']] = u'Bank: %s\nABI: %s - CAB: %s' % (
         record['CDS_BANCA'],
         record['NGL_ABI'],
         record['NGL_CAB'],
@@ -173,7 +173,7 @@ for record in cursor:
             record['CDS_CNT'], # name
             record['CDS_INDIR'], # street
             'X' if ref in user_db else '',
-            bank_db.get(ref, _('Not present')),
+            bank_db.get(ref, 'Not present'),
             )
         f_csv.write(clean_ascii(line))
     except: 
