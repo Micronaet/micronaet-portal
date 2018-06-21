@@ -98,7 +98,6 @@ class PortalDeadline(osv.osv):
         self.unlink(cr, uid, deadline_ids, context=context) 
         # TODO;:
         user_id = 1
-        import pdb; pdb.set_trace()
         for row in rows:
             try:
                 line=row.split(';')
