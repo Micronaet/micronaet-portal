@@ -170,7 +170,7 @@ class PortalDeadline(osv.osv):
             except:
                 _logger.error('Generic error!')
         _logger.info('End importation deadline')
-        return
+        return True
     
     _columns = {
         'name': fields.char('Deadline', size=80),
