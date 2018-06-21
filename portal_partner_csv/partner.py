@@ -94,6 +94,7 @@ class ResPartner(orm.Model):
             context=None):
         ''' Import filename for partner creation (and users too)
         '''
+        _logger.info('Update partner user, creation = %s' % user_creation)
         partner_user_ids = []
         max_col = False
         i = 0
@@ -107,6 +108,7 @@ class ResPartner(orm.Model):
                 max_col = len(row)
             if len(row) != max_col:
                 _logger.error('Different col: %s' % line)
+                import pdb; pdb.set_trace()
                 continue
                     
             ref = row[0]
