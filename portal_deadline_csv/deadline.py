@@ -96,8 +96,6 @@ class PortalDeadline(osv.osv):
         # Remove all previous
         deadline_ids = self.search(cr, uid, [], context=context) 
         self.unlink(cr, uid, deadline_ids, context=context) 
-        # TODO;:
-        user_id = 1
         for row in rows:
             try:
                 line=row.split(';')
@@ -151,7 +149,7 @@ class PortalDeadline(osv.osv):
                             partner_ref, 
                             deadline, total),
                         'partner_id': partner_proxy.id,
-                        'user_id': user_id,
+                        'user_id': partner_proxy.portal_user_id.id,
                         'deadline': deadline,
                         'total': total,
                         'in': total_in,
