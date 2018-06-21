@@ -146,7 +146,7 @@ log_data('Run SQL %s' % query, f_log)
 cursor.execute(query)
 bank_db = {}
 for record in cursor:
-    bank_db[record['CKY_CNT']] = u'Bank: %sABI: %s - CAB: %s' % (
+    bank_db[record['CKY_CNT']] = u'Bank: %s [ABI: %s] [CAB: %s]' % (
         record['CDS_BANCA'],
         record['NGL_ABI'],
         record['NGL_CAB'],
