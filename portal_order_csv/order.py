@@ -54,6 +54,7 @@ class PortalSaleOrder(orm.Model):
         # Pool used:
         line_pool = self.pool.get('portal.sale.order.line')
         partner_pool = self.pool.get('res.partner')
+        user_pool = self.pool.get('res.users')
 
         # Database used:
         order_db = {}
@@ -98,11 +99,20 @@ class PortalSaleOrder(orm.Model):
                 _logger.error('Partner ref. not found, no import: %s' % \
                     partner_ref)
                 continue
+
+            user_ids = user_pool.search(cr, uid, [
+                ('login', '=', partner_ref),
+                ], context=context)
+            if not user_ids:
+                _logger.error('User login ref. not found, no import: %s' % \
+                    partner_ref)
+                continue
                 
             header = {
                 'name': key,
                 'date': row[1],
                 'partner_id': partner_ids[0],
+                'user_id': user_ids[0],
                 'note': row[6],                
                 }
             if key not in order_db:
