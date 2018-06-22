@@ -46,8 +46,85 @@ class PortalSaleOrder(orm.Model):
     _description = 'Portal sale order'
     _rec_name = 'name'
     _order = 'name'
-    
+
+    # Schedule function:
+    def schedule_etl_accounting_order(cr, uid, fullname, context=None):
+        ''' Import procedure
+        '''
+        import pdb; pdb.set_trace()
+        # Pool used:
+        line_pool = self.pool.get('portal.sale.order.line')
+        partner_pool = self.pool.get('res.partner')
+
+        # Database used:
+        order_db = {}
+        
+        # ---------------------------------------------------------------------
+        # Unlink all order and line:
+        # ---------------------------------------------------------------------
+        line_ids = line_pool.search(cr, uid, [], context=context)
+        line_pool.unlink(cr, uid, line_ids, context=context)
+
+        order_ids = self.search(cr, uid, [], context=context)
+        self.unlink(cr, uid, order_ids, context=context)
+        
+        # ---------------------------------------------------------------------
+        # Import order and line:
+        # ---------------------------------------------------------------------
+        tot_col = False
+        i = 0        
+        for line in open(fullname, 'r'):
+            i += 1
+            row = line.strip().split('|')
+            if tot_col == False:
+                tot_col = len(row)
+            if len(row) != tot_col:
+                _log.error('%s. Different col, jump' % i)
+                continue
+            
+            # -----------------------------------------------------------------
+            # Header creation:
+            # -----------------------------------------------------------------
+            key = row[0]
+            partner_ref = row[2]
+            address_ref = row[3] # TODO
+            
+            partner_ids = partner_pool.search(cr, uid, [
+                ('ref', '=', partner_ref),
+                ], context=context)
+            if not partner_ids:
+                _logger.error('Partner ref. not found, no import: %s' % \
+                    partner_ref)
+                continue
+                
+            header = {
+                'name': key,
+                'date': row[1],
+                'partner_id': partner_ids[0],
+                'note': row[6],                
+                }
+            if key not in order_db:
+                order_db[key] = self.create(cr, uid, header, context=context)
+            order_id = order_db[key]    
+            
+            # -----------------------------------------------------------------
+            # Line creation:
+            # -----------------------------------------------------------------
+            data = {
+                'order_id': order_id,
+
+                'sequence': row[7],  
+                'deadline': row[8],
+                'name': row[10],
+                'quantity': row[13],
+                'unit_price': row[11],
+                'subtotal': 0.0
+                }
+            line_pool.create(cr, uid, data, context=context)            
+        return True
+        
     _columns = {
+        'sequence': fields.char('Seq.', size=4), 
         'name': fields.char('Number', size=64, required=True), 
         'date': fields.date('Date'),
         'deadline': fields.date('Dateline'),
@@ -69,9 +146,9 @@ class PortalSaleOrderLine(orm.Model):
     _columns = {
         'name': fields.char('Number', size=64, required=True),
         'deadline': fields.date('Deadline'),
-        'quantity': fields.float('Q.', digits=(16, 3), required=True),
-        'unit_price': fields.float('Price', digits=(16, 3), required=True),
-        'subtotal': fields.float('Subtotal', digits=(16, 3), required=True),
+        'quantity': fields.float('Q.', digits=(16, 3)),
+        'unit_price': fields.float('Price', digits=(16, 3)),
+        'subtotal': fields.float('Subtotal', digits=(16, 3)),
         'order_id': fields.many2one('portal.sale.order', 'Order'),
         }
        

@@ -46,6 +46,7 @@ folder = os.path.expanduser(config.get('folder', 'input'))
 file_log = 'activity.log'
 
 deadline_fullname = os.path.expanduser(config.get('fullname', 'deadline'))
+order_fullname = os.path.expanduser(config.get('fullname', 'order'))
 
 # -----------------------------------------------------------------------------
 # Connect to ODOO:
@@ -79,14 +80,6 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
 #                                      START: 
 # -----------------------------------------------------------------------------   
 log_data('Start import procedure', f_log)
-
-# TODO REMOVE
-deadline_pool = odoo.model('portal.deadline')
-log_data('Start import deadline from %s' % deadline_fullname, f_log)
-deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
-log_data('End import deadline from %s' % deadline_fullname, f_log)
-sys.exit()
-# TODO REMOVE
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
@@ -144,7 +137,15 @@ log_data('End import partner from %s' % file_csv, f_log)
 deadline_pool = odoo.model('portal.deadline')
 log_data('Start import deadline from %s' % deadline_fullname, f_log)
 deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
-log_data('End import deadline from %s' % deadline_fullname, f_log)
+log_data('End import o from %s' % deadline_fullname, f_log)
+
+# -----------------------------------------------------------------------------
+#                                     ORDER:
+# -----------------------------------------------------------------------------   
+order_pool = odoo.model('portal.sale.order')
+log_data('Start import order from %s' % order_fullname, f_log)
+order_pool.schedule_etl_accounting_order(order_fullname)
+log_data('End import order from %s' % order_fullname, f_log)
 
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:

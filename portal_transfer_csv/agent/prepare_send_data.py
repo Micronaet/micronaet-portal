@@ -252,7 +252,7 @@ for record in cursor:
 
     line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
         header,
-        record['NPR_RIGA'],
+        record['NPR_RIGA'], # 7
 
         record['DTT_SCAD'],
         record['CKY_ART'],
