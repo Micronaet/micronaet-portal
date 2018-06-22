@@ -47,7 +47,7 @@ class ResPartner(orm.Model):
     # -------------------------------------------------------------------------
     # Utility:
     # -------------------------------------------------------------------------
-    def create_portal_user(self, cr, uid, ids, context=None):
+    def create_portal_user(self, cr, uid, ids, update=False, context=None):
         ''' Create porta user for partner passed:
         '''
         user_pool = self.pool.get('res.users')
@@ -65,19 +65,22 @@ class ResPartner(orm.Model):
             
             user_ids = user_pool.search(cr, uid, [
                 ('login', '=', partner.ref),
-                ], context=context)    
+                ], context=context)
+            data = {
+                'active': True,
+                'login': ref,
+                'password': 'secret%s' % ref,
+                'partner_id': partner.id,
+                #'name': 'User: %s' % partner.name,
+                'signature': partner.name,                
+                }        
             if user_ids:
                 # TODO manage multiple
+                if update: 
+                    user_pool.write(cr, uid, user_ids, data, context=context)
                 user_id = user_ids[0]    
             else:
-                user_id = user_pool.create(cr, uid, {
-                    'active': True,
-                    'login': ref,
-                    'password': ref,
-                    'partner_id': partner.id,
-                    #'name': 'User: %s' % partner.name,
-                    'signature': partner.name,                
-                    }, context=context)
+                user_id = user_pool.create(cr, uid, data, context=context)
             update_list.append((partner.id, user_id))    
         
         # Update portal user for partner:
