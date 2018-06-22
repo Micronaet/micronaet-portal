@@ -250,7 +250,7 @@ for record in cursor:
     if not header:
         continue # no header order now
 
-    line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s' % (
+    line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
         header,
         record['NPR_RIGA'],
 
