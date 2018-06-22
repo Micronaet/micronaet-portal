@@ -198,7 +198,9 @@ f_csv.close()
 table_order = 'oc_testate'
 table_line = 'oc_righe'
 
-f_csv = os.path.join(folder, 'order.csv')
+file_csv = os.path.join(folder, 'order.csv')
+f_csv = open(file_csv, 'w')
+
 if mysql['capital']:
     table_order = table_order.upper()
     table_line = table_line.upper()
