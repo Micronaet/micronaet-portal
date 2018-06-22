@@ -224,7 +224,7 @@ cursor.execute(query)
 order_db = {}
 for record in cursor:
     key = get_key(record)
-    order_db[key] = '%s|%s|%s|%s|%s|%s' % (
+    order_db[key] = '%s|%s|%s|%s|%s|%s|%s' % (
         key, 
         record['DTT_DOC'],
         record['CKY_CNT_CLFR'],
