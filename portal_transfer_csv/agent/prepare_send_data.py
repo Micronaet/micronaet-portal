@@ -217,7 +217,7 @@ def get_key(record):
         )
 
 # A. OC Header
-query = 'SELECT * FROM %s WHERE CSG_DOC=\'OC\';' % table_order
+query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
 log_data('Run SQL %s' % query, f_log)
 
 cursor.execute(query)
