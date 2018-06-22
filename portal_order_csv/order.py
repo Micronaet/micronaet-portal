@@ -51,7 +51,6 @@ class PortalSaleOrder(orm.Model):
     def schedule_etl_accounting_order(self, cr, uid, fullname, context=None):
         ''' Import procedure
         '''
-        import pdb; pdb.set_trace()
         # Pool used:
         line_pool = self.pool.get('portal.sale.order.line')
         partner_pool = self.pool.get('res.partner')
@@ -73,6 +72,7 @@ class PortalSaleOrder(orm.Model):
         # ---------------------------------------------------------------------
         tot_col = False
         i = 0        
+        import pdb; pdb.set_trace()
         for line in open(fullname, 'r'):
             i += 1
             row = line.strip().split('|')
