@@ -48,7 +48,7 @@ class PortalSaleOrder(orm.Model):
     _order = 'name'
 
     # Schedule function:
-    def schedule_etl_accounting_order(cr, uid, fullname, context=None):
+    def schedule_etl_accounting_order(self, cr, uid, fullname, context=None):
         ''' Import procedure
         '''
         import pdb; pdb.set_trace()
