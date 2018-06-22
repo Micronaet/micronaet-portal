@@ -72,7 +72,6 @@ class PortalSaleOrder(orm.Model):
         # ---------------------------------------------------------------------
         tot_col = False
         i = 0        
-        import pdb; pdb.set_trace()
         for line in open(fullname, 'r'):
             i += 1
             row = line.strip().split('|')
