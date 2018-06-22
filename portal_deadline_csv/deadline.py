@@ -115,8 +115,9 @@ class PortalDeadline(osv.osv):
                     deadline = self.format_date(line[1])
                     total = self.format_float(line[2]) 
                     type_id = self.clean(line[3]).lower()
-                    date = self.format_date(line[4])
-                    currency = self.clean(line[5])
+                    invoice = self.clean(line[4])
+                    date = self.format_date(line[5])
+                    currency = self.clean(line[6])
                     
                     if partner_ref[:1] == '4':
                         continue # XXX no supplier data
@@ -155,6 +156,7 @@ class PortalDeadline(osv.osv):
                         'user_id': partner_proxy.portal_user_id.id,
                         'deadline': deadline,
                         'date': date,
+                        'invoice': invoice,
                         'currency': currency,
                         'total': total,
                         'in': total_in,
@@ -180,6 +182,7 @@ class PortalDeadline(osv.osv):
         'user_id': fields.many2one('res.users', 'User'),
         'date': fields.date('Date'),
         'deadline': fields.date('Deadline'),
+        'invoice': fields.char('Invoice', size=30),
         'total': fields.float('Amount', digits=(16, 2)),
         'in': fields.float('IN', digits=(16, 2)),
         'out': fields.float('OUT', digits=(16, 2)),
