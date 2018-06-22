@@ -17,7 +17,7 @@
             </field>
         </record>
         <record model="ir.ui.view" id="view_portal_sale_order_form">
-            <field name="name">portal.sale.order.tree</field>
+            <field name="name">portal.sale.order.form</field>
             <field name="model">portal.sale.order</field>
             <field name="arch" type="xml">
                 <form string="Portal sale order" version="7.0">        
