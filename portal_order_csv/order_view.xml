@@ -29,7 +29,7 @@
                             <field name="partner_id" readonly="1"/>
                             <field name="user_id" invisible="1"/>
                             
-                            <field name="line_ids" editable="bottom">
+                            <field name="line_ids" editable="bottom" colspan="4">
                                 <tree string="Line:">
                                     <field name="name" readonly="1"/>
                                     <field name="deadline" readonly="1"/>
