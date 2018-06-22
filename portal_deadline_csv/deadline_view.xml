@@ -33,6 +33,7 @@
                     <field name="total" readonly="1" />
                     <field name="currency" readonly="1"/>
                     <field name="type" readonly="1"/>
+                    <field name="invoice" readonly="1"/>
                 </group>
             </form>
         </field>
@@ -44,6 +45,7 @@
             <tree string="Deadline terms of payments" colors="green:total&gt;0;red:total&lt;0" create="0" edit="0" delete="0">
                 <!--<field name="name" />-->
                 <field name="partner_id" readonly="1"/>
+                <field name="invoice" readonly="1"/>
                 <field name="date"  readonly="1" />
                 <field name="deadline"  readonly="1" />
                 <!--<field name="out" sum="Dare"  readonly="1"  />
@@ -79,7 +81,7 @@
         <field name="name">Open payment</field>
         <field name="res_model">portal.deadline</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,calendar,graph,form</field>
+        <field name="view_mode">tree,graph</field>
         <field name="search_view_id" ref="view_portal_deadline_search"/>
         <field name="domain">[('user_id', '=', uid)]</field>
         <!--<field name="context">{'search_default_deadline': time.strftime('%Y-%m-01')}</field>-->
