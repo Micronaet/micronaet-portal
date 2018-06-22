@@ -190,16 +190,89 @@ for record in cursor:
     except: 
         print 'Jump line error'
         continue    
-        
-# Publish command:        
-log_data('Publish operation: %s' % publish, f_log)
-os.system(publish)
-  
+f_csv.close()
+
+# -----------------------------------------------------------------------------
+#                                     ORDERS: 
+# -----------------------------------------------------------------------------   
+table_order = 'oc_testate'
+table_line = 'oc_righe'
+
+f_csv = os.path.join(folder, 'order.csv')
+if mysql['capital']:
+    table_order = table_rubrica.upper()
+    table_line = table_extra.upper()
+
+log_data('Extract order: %s, detail: %s)' % (
+    table_order, table_line), f_log)
+
+# -----------------------------------------------------------------------------
+def get_key(record):
+    ''' Key value generation:
+    '''
+    return '%s/%s/%s' % (
+        record['CSG_DOC'],
+        record['NGB_SR_DOC'],
+        record['NGL_DOC'],        
+        )
+
+# A. OC Header
+query = 'SELECT * FROM %s WHERE CSG_DOC=\'OC\';' % table_order
+log_data('Run SQL %s' % query, f_log)
+
+cursor.execute(query)
+order_db = {}
+for record in cursor:
+    key = get_key(record)
+    order_db[key] = '%s|%s|%s|%s|%s|%s' % (
+        key, 
+        record['DTT_DOC'],
+        record['CKY_CNT_CLFR'],
+        record['CKY_CNT_SPED_ALT'],
+        #record['NKY_CNT_AGENTE'],
+        #record['IST_PORTO'],
+        record['NKY_CAUM'],
+        record['NKY_PAG'],
+        record['CDS_NOTE'],
+        )
+
+# -----------------------------------------------------------------------------
+# B. OC Line
+query = 'SELECT * FROM %s;' % table_line
+log_data('Run SQL %s' % query, f_log)
+
+cursor.execute(query)
+for record in cursor:
+    key = get_key(record)
+    header = order_db.get(key, '')
+    if not header:
+        continue # no header order now
+
+    line = '%s|%s|%s|%s|%s|%s' % (
+        header,
+        record['NPR_RIGA'],
+
+        record['DTT_SCAD'],
+        record['CKY_ART'],
+        record['CDS_VARIAZ_ART'],
+        record['NPZ_UNIT'],
+        record['NDC_QTA'],
+        record['CKY_ART'],
+        record['NQT_RIGA_O_PLOR'],
+        record['NCF_CONV'],
+        )
+    f_csv.write(clean_ascii(line))
+f_csv.close()
+
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
-f_log.close()  
+# Publish command:        
+log_data('Publish operation: %s' % publish, f_log)
+os.system(publish)
 
+# Close open files:
+f_log.close()  
 
 
 
