@@ -127,7 +127,6 @@ class PortalSaleOrder(orm.Model):
         return True
         
     _columns = {
-        'sequence': fields.char('Seq.', size=4), 
         'name': fields.char('Number', size=64, required=True), 
         'date': fields.date('Date'),
         'deadline': fields.date('Dateline'),
@@ -147,6 +146,7 @@ class PortalSaleOrderLine(orm.Model):
     _order = 'name'
     
     _columns = {
+        'sequence': fields.char('Seq.', size=4), 
         'name': fields.char('Number', size=64, required=True),
         'deadline': fields.date('Deadline'),
         'quantity': fields.float('Q.', digits=(16, 3)),
