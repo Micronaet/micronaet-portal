@@ -89,6 +89,9 @@ class PortalSaleOrder(orm.Model):
             partner_ref = row[2]
             address_ref = row[3] # TODO
             
+            if not partner_ref:
+                _logger.error('Partner ref. not found, no import!')
+                continue
             partner_ids = partner_pool.search(cr, uid, [
                 ('ref', '=', partner_ref),
                 ], context=context)
@@ -116,7 +119,7 @@ class PortalSaleOrder(orm.Model):
                 'sequence': row[7],  
                 'deadline': row[8],
                 'name': row[10],
-                'quantity': row[13],
+                'quantity': row[12],
                 'unit_price': row[11],
                 'subtotal': 0.0
                 }
