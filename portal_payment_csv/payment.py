@@ -48,7 +48,7 @@ class ResPartner(models.Model):
     # -------------------------------------------------------------------------
     #                              COLUMNS
     # -------------------------------------------------------------------------
-    portal_payment = fields.Text('Portal payment'),
-    portal_user_id = fields.Many2one('res.users', 'Portal user'),
+    portal_payment = fields.Text('Portal payment')
+    portal_user_id = fields.Many2one('res.users', 'Portal user')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
