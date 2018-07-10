@@ -16,7 +16,7 @@
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <search string="String">
-                    <filter name="portal_current_uid" string="Payment reference" domain="[('portal_user_id', '=', uid)]"/>
+                    <!--<filter name="portal_current_uid" string="Payment reference" domain="[('portal_user_id', '=', uid)]"/>-->
                 </search>
             </field>
         </record>
