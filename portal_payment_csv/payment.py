@@ -38,14 +38,16 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class ResPartner(orm.Model):
+class ResPartner(models.Model):
     """ Model name: ResPartner
     """
     
     _inherit = 'res.partner'
     
-    _columns = {
-        'portal_payment': fields.text('Portal payment'),
-        'portal_user_id': fields.many2one('res.users', 'Portal user'),
-        }
+    # -------------------------------------------------------------------------
+    #                              COLUMNS
+    # -------------------------------------------------------------------------
+    portal_payment = fields.Text('Portal payment'),
+    portal_user_id = fields.Many2one('res.users', 'Portal user'),
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
