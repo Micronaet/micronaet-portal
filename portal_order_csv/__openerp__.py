@@ -36,7 +36,7 @@
     'demo': [],
     'data': [
         'security/ir.model.access.csv',    
-        'order_view.xml',
+        'views/order_view.xml',
         ],
     'active': False,
     'installable': True,

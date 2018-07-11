@@ -4,7 +4,7 @@
 #
 # ODOO (ex OpenERP) 
 # Open Source Management Solution
-# Copyright (C) 2001-2018 Micronaet S.r.l. (<https://micronaet.com>)
+# Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -21,35 +21,6 @@
 #
 ###############################################################################
 
-import os
-import sys
-import openerp
-import logging
-from openerp import models, fields, api
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from openerp.tools.translate import _
-from openerp.tools import (
-    DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
-    float_compare,
-    )
-
-
-_logger = logging.getLogger(__name__)
-
-class ResPartner(models.Model):
-    """ Model name: ResPartner
-    """
-    
-    _inherit = 'res.partner'
-    
-    # -------------------------------------------------------------------------
-    #                              COLUMNS
-    # -------------------------------------------------------------------------
-    portal_payment = fields.Text('Portal payment')
-    portal_user_id = fields.Many2one('res.users', 'Portal user')
-    # -------------------------------------------------------------------------
+from . import order 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
