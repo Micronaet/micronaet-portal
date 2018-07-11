@@ -91,7 +91,7 @@ class ResPartner(models.Model):
     # -------------------------------------------------------------------------
     # Scheduled import operation:
     # -------------------------------------------------------------------------
-    @api.multi
+    @api.model
     def import_csv_partner_data(self, filename, user_creation=False):
         ''' Import filename for partner creation (and users too)
         '''
