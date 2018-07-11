@@ -1,46 +1,44 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
-#    OpenERP, Open Source Management Solution    
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
-#    d$
+# ODOO (ex OpenERP) 
+# Open Source Management Solution
+# Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
+# Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# See the GNU Affero General Public License for more details.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+###############################################################################
 import os
 import sys
-import logging
 import openerp
-import openerp.netsvc as netsvc
-import openerp.addons.decimal_precision as dp
-from openerp.osv import fields, osv, expression, orm
+import logging
+from openerp import models, fields
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from openerp import SUPERUSER_ID
-from openerp import tools
 from openerp.tools.translate import _
-from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
+from openerp.tools import (
+    DEFAULT_SERVER_DATE_FORMAT, 
     DEFAULT_SERVER_DATETIME_FORMAT, 
     DATETIME_FORMATS_MAP, 
-    float_compare)
+    float_compare,
+    )
+
 
 _logger = logging.getLogger(__name__)
 
-
-class PortalDeadline(osv.osv):
+class PortalDeadline(models.Model):
     ''' Porta deadline data obj
     '''
     _name = 'portal.deadline'
@@ -51,6 +49,7 @@ class PortalDeadline(osv.osv):
     # Utility function:
     # -----------------------------------------------------------------------------
     # Conversion function:
+    @api.model
     def clean(self, value):  
         ''' ASCII Problem conversion
         '''
@@ -58,6 +57,7 @@ class PortalDeadline(osv.osv):
         value = value.encode('utf-8')
         return value.strip()
 
+    @api.model
     def format_date(self, value):
         ''' Format data value
         '''
@@ -67,6 +67,7 @@ class PortalDeadline(osv.osv):
               return value[:4] + '-' + value[4:6] + '-' + value[6:8]
         return False
 
+    @api.model
     def format_float(self, value):
         ''' Format float value
         '''
@@ -79,8 +80,8 @@ class PortalDeadline(osv.osv):
     # -------------------------------------------------------------------------
     # Scheduled action: 
     # -------------------------------------------------------------------------
-    def schedule_etl_accounting_deadline(
-            self, cr, uid, fullname, verbose=True, context=None):
+    @api.model
+    def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
         partner_pool = self.pool.get('res.partner')
@@ -175,28 +176,30 @@ class PortalDeadline(osv.osv):
                 _logger.error('Generic error!')
         _logger.info('End importation deadline')
         return True
-    
-    _columns = {
-        'name': fields.char('Deadline', size=80),
-        'partner_id': fields.many2one('res.partner', 'Partner'),
-        'user_id': fields.many2one('res.users', 'User'),
-        'date': fields.date('Date'),
-        'deadline': fields.date('Deadline'),
-        'invoice': fields.char('Invoice', size=30),
-        'total': fields.float('Amount', digits=(16, 2)),
-        'in': fields.float('IN', digits=(16, 2)),
-        'out': fields.float('OUT', digits=(16, 2)),
-        'currency': fields.char('Currency', size=25),
-        'type': fields.selection([
-            ('b', 'Bonifico'),            
-            ('c', 'Contanti'),            
-            ('r', 'RIBA'),            
-            ('t', 'Tratta'),            
-            ('m', 'Rimessa diretta'),            
-            ('x', 'Rimessa diretta X'),
-            ('y', 'Rimessa diretta Y'),            
-            ('z', 'Rimessa diretta Z'),            
-            ('v', 'MAV'),            
-            ], 'Type', select=True),
-        }
+
+    # -------------------------------------------------------------------------
+    #                                    COLUMNS:
+    # -------------------------------------------------------------------------
+    'name' = fields.Char('Deadline', size=80, required=True)
+    'partner_id' = fields.many2one('res.partner', 'Label')
+    'user_id' = fields.many2one('res.users', 'User')
+    'date' = fields.Date('Date')
+    'deadline' = fields.Date('Deadline')
+    'invoice' = fields.Char('Invoice', size=30)
+    'total': fields.Float('Amount', digits=(16, 2))
+    'in' = fields.Float('IN', digits=(16, 2))
+    'out' = fields.Float('OUT', digits=(16, 2))
+    'currency' = fields.Char('Currency', size=25)
+    'type' = fields.Selection([
+        ('b', 'Bonifico'),            
+        ('c', 'Contanti'),            
+        ('r', 'RIBA'),            
+        ('t', 'Tratta'),            
+        ('m', 'Rimessa diretta'),            
+        ('x', 'Rimessa diretta X'),
+        ('y', 'Rimessa diretta Y'),            
+        ('z', 'Rimessa diretta Z'),            
+        ('v', 'MAV'),            
+        ], 'Type')
+    # -------------------------------------------------------------------------
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
