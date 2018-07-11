@@ -25,7 +25,7 @@ import os
 import sys
 import openerp
 import logging
-from openerp import models, fields
+from openerp import models, fields, api
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from openerp.tools.translate import _

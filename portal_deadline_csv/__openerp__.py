@@ -37,7 +37,7 @@
         ],
     'init_xml': [], 
     'data': [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         'views/deadline_view.xml',
         ],
     'demo_xml': [],

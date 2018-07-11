@@ -24,11 +24,11 @@ import os
 import sys
 import openerp
 import logging
-from openerp import models, fields
+from odoo import models, fields, api
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from openerp.tools.translate import _
-from openerp.tools import (
+from odoo.tools.translate import _
+from odoo.tools import (
     DEFAULT_SERVER_DATE_FORMAT, 
     DEFAULT_SERVER_DATETIME_FORMAT, 
     DATETIME_FORMATS_MAP, 
@@ -115,7 +115,7 @@ class PortalDeadline(models.Model):
                     partner_ref = self.clean(line[0])
                     deadline = self.format_date(line[1])
                     total = self.format_float(line[2]) 
-                    type_id = self.clean(line[3]).lower()
+                    payment = self.clean(line[3]).lower()
                     invoice = self.clean(line[4])
                     date = self.format_date(line[5])
                     currency = self.clean(line[6])
@@ -160,9 +160,9 @@ class PortalDeadline(models.Model):
                         'invoice': invoice,
                         'currency': currency,
                         'total': total,
-                        'in': total_in,
-                        'out': total_out, # XXX needed?
-                        'type': type_id,
+                        'total_in': total_in,
+                        'total_out': total_out, # XXX needed?
+                        'payment': payment,
                         }                          
                     try:
                         self.create(cr, uid, data, context=context)
@@ -180,17 +180,17 @@ class PortalDeadline(models.Model):
     # -------------------------------------------------------------------------
     #                                    COLUMNS:
     # -------------------------------------------------------------------------
-    'name' = fields.Char('Deadline', size=80, required=True)
-    'partner_id' = fields.many2one('res.partner', 'Label')
-    'user_id' = fields.many2one('res.users', 'User')
-    'date' = fields.Date('Date')
-    'deadline' = fields.Date('Deadline')
-    'invoice' = fields.Char('Invoice', size=30)
-    'total': fields.Float('Amount', digits=(16, 2))
-    'in' = fields.Float('IN', digits=(16, 2))
-    'out' = fields.Float('OUT', digits=(16, 2))
-    'currency' = fields.Char('Currency', size=25)
-    'type' = fields.Selection([
+    name = fields.Char('Deadline', size=80, required=True)
+    partner_id = fields.Many2one('res.partner', 'Label')
+    user_id = fields.Many2one('res.users', 'User')
+    date = fields.Date('Date')
+    deadline = fields.Date('Deadline')
+    invoice = fields.Char('Invoice', size=30)
+    total = fields.Float('Amount', digits=(16, 2))
+    total_in = fields.Float('IN', digits=(16, 2))
+    total_out = fields.Float('OUT', digits=(16, 2))
+    currency = fields.Char('Currency', size=25)
+    payment = fields.Selection([
         ('b', 'Bonifico'),            
         ('c', 'Contanti'),            
         ('r', 'RIBA'),            
