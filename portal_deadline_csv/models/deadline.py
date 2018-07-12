@@ -45,37 +45,6 @@ class PortalDeadline(models.Model):
     _description = 'Payment deadline'
     _order='name,deadline' 
 
-    # -----------------------------------------------------------------------------
-    # Utility function:
-    # -----------------------------------------------------------------------------
-    # Conversion function:
-    @api.model
-    def clean(self, value):  
-        ''' ASCII Problem conversion
-        '''
-        value = value.decode('cp1252')
-        value = value.encode('utf-8')
-        return value.strip()
-
-    @api.model
-    def format_date(self, value):
-        ''' Format data value
-        '''
-        value = value.strip()
-        if len(value)==8:
-           if value:
-              return value[:4] + '-' + value[4:6] + '-' + value[6:8]
-        return False
-
-    @api.model
-    def format_float(self, value):
-        ''' Format float value
-        '''
-        value = value.strip() 
-        if value:
-           return float(value.replace(',', '.'))
-        else:
-           return 0.0
 
     # -------------------------------------------------------------------------
     # Scheduled action: 
@@ -84,6 +53,35 @@ class PortalDeadline(models.Model):
     def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
+        # ---------------------------------------------------------------------
+        # Utility function:
+        # ---------------------------------------------------------------------
+        # Conversion function:
+        def clean(value):  
+            ''' ASCII Problem conversion
+            '''
+            value = value.decode('cp1252')
+            value = value.encode('utf-8')
+            return value.strip()
+
+        def format_date(value):
+            ''' Format data value
+            '''
+            value = value.strip()
+            if len(value)==8:
+               if value:
+                  return value[:4] + '-' + value[4:6] + '-' + value[6:8]
+            return False
+
+        def format_float(value):
+            ''' Format float value
+            '''
+            value = value.strip() 
+            if value:
+               return float(value.replace(',', '.'))
+            else:
+               return 0.0
+
         import pdb; pdb.set_trace()
         partner_pool = self.env['res.partner']
         tot_col = 0
