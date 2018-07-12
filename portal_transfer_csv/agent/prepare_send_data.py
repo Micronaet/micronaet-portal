@@ -1,22 +1,26 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-#    Copyright (C) 2001-2014 Micronaet SRL (<http://www.micronaet.it>).
+# ODOO (ex OpenERP) 
+# Open Source Management Solution
+# Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
+# Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# See the GNU Affero General Public License for more details.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+
 import os
 import sys
 import shutil
@@ -38,14 +42,14 @@ config.read([cfg_file])
 # -----------------------------------------------------------------------------
 # MySQL Access
 mysql = {
-    'hostname': config.get('mysql', 'hostname'),
-    'username': config.get('mysql', 'username'),
-    'password': config.get('mysql', 'password'),
+    'hostname': config.get('mysql1', 'hostname'),
+    'username': config.get('mysql1', 'username'),
+    'password': config.get('mysql1', 'password'),
 
-    'database': config.get('mysql', 'database'),
-    'port': eval(config.get('mysql', 'port')),
+    'database': config.get('mysql1', 'database'),
+    'port': eval(config.get('mysql1', 'port')),
 
-    'capital': eval(config.get('mysql', 'capital')),
+    'capital': eval(config.get('mysql1', 'capital')),
     }
 
 # Transafer data:
