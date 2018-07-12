@@ -41,7 +41,7 @@ config.read([cfg_file])
 # Parameters:
 # -----------------------------------------------------------------------------
 # MySQL Access
-mysql = {
+mysql1 = {
     'hostname': config.get('mysql1', 'hostname'),
     'username': config.get('mysql1', 'username'),
     'password': config.get('mysql1', 'password'),
@@ -68,6 +68,7 @@ f_log = open(file_log, 'a')
 # -----------------------------------------------------------------------------
 #                                UTILITY FUNCTION:
 # -----------------------------------------------------------------------------   
+# SQL Connection function:
 def mssql_connect(mysql):
     ''' Connect to partner MySQL table
     '''
@@ -83,18 +84,7 @@ def mssql_connect(mysql):
     except:
         return False
 
-def clean_ascii(value):
-    ''' Clean not ascii char
-    '''
-    value = value or ''
-    res = ''
-    for c in value:
-        if ord(c) < 127:
-            res += c
-        else:    
-            res += '*'
-    return res
-
+# Log function
 def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
     ''' Log data:
     '''
@@ -109,13 +99,44 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
     f_log.write(message)
     return True
 
+# Format function:
+def clean_ascii(value):
+    ''' Clean not ascii char
+    '''
+    value = value or ''
+    res = ''
+    for c in value:
+        if ord(c) < 127:
+            res += c
+        else:    
+            res += '*'
+    return res
+
+def get_html_bank(record):
+    ''' Rerturn HTML record for bank label for portal representation
+    '''
+    return u'''<p>
+        <b>Bank:</b> %s<br/>
+        <b>IBAN code:</b> %s<br/>
+        <b>BIC SWIFT code:</b> %s<br/>
+        </p>''' % (
+            record['CDS_BANCA'] or '/',
+            record['CSG_IBAN_BBAN'] or '/',
+            record['CSG_BIC'] or '/',
+            )
+            
 # -----------------------------------------------------------------------------
 #                                      START: 
 # -----------------------------------------------------------------------------   
 log_data('Start publish procedure', f_log)
-connection = mssql_connect(mysql)
-cursor = connection.cursor()
-log_data('Connect with MySQL database: %s' % connection, f_log)
+
+connection1 = mssql_connect(mysql1)
+cursor1 = connection1.cursor()
+log_data('Connect with MySQL 1 database: %s' % connection1, f_log)
+
+connection2 = mssql_connect(mysql2)
+cursor2 = connection2.cursor()
+log_data('Connect with MySQL 2 database: %s' % connection2, f_log)
 
 # -----------------------------------------------------------------------------
 #                                 DEADLINE PAYMENT:
@@ -130,15 +151,36 @@ for origin in copy_files:
 table_extra = 'pc_progressivi'
 table_rubrica = 'pa_rubr_pdc_clfr'
 table_condition = 'pc_condizioni_comm'
+table_payment = 'cp_pagamenti'
+table_currency = 'mu_valute'
+table_order = 'oc_testate'
+table_line = 'oc_righe'
+table_currency = 'mu_valute'
+
 
 file_csv = os.path.join(folder, 'partner.csv')
-if mysql['capital']:
+if mysql1['capital']: # Use first SQL for check (are on the sasme server)
     table_rubrica = table_rubrica.upper()
     table_extra = table_extra.upper()
     table_condition = table_condition.upper()
+    table_payment = table_payment.upper()
+    table_currency = table_currency.upper()
+    table_order = table_order.upper()
+    table_line = table_line.upper()
+    table_currency = table_currency.upper()
 
-log_data('Extract partner: %s, last delivery %s, condition: %s)' % (
-    table_rubrica, table_extra, table_condition), f_log)
+log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s, 
+    currency: %s, order: %s - %s, currency: %s)''' % (
+        table_rubrica, 
+        table_extra, 
+        table_condition, 
+        table_payment
+        table_currency,
+        table_order,
+        table_line,
+        table_currency,
+        ), f_log)
+
 
 # -----------------------------------------------------------------------------
 # A. Load active partner (date of delivery)
@@ -149,36 +191,45 @@ query = '''
     ''' % (table_extra, from_date)
 log_data('Run SQL %s' % query, f_log)
 
-cursor.execute(query)
-user_db = [record['CKY_CNT'] for record in cursor]
+cursor1.execute(query)
+user_db = [record['CKY_CNT'] for record in cursor1]
 
 # -----------------------------------------------------------------------------
-# B. Load bank
+# B. Load active partner (date of delivery)
+currency_db = {}
+
+query = 'SELECT * FROM %s;' % table_currency
+log_data('Run SQL %s' % query, f_log)
+
+cursor2.execute(query)
+for record in cursor2:
+    ref = record['NKY_VLT']
+    currency_db[ref] = record['CDS_VLT']
+
+# -----------------------------------------------------------------------------
+# C. Load bank
+bank_db = {}
+
 query = '''
     SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_condition
 log_data('Run SQL %s' % query, f_log)
 
-cursor.execute(query)
-bank_db = {}
-for record in cursor:
-    bank_db[record['CKY_CNT']] = u'Bank: %s [ABI: %s] [CAB: %s]' % (
-        record['CDS_BANCA'],
-        record['NGL_ABI'],
-        record['NGL_CAB'],
-        )
+cursor2.execute(query)
+for record in cursor2:
+    bank_db[record['CKY_CNT']] = get_html_bank(record)
 
 # -----------------------------------------------------------------------------
-# C. Load partner list
+# D. Load partner list
 query = '''
     SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % table_rubrica
 log_data('Run SQL %s' % query, f_log)
-cursor.execute(query)
+cursor2.execute(query)
 
 i = 0
 f_csv = open(file_csv, 'w')
-for record in cursor:
+for record in cursor2:
     try:
         i += 1
         ref = record['CKY_CNT']        
@@ -199,15 +250,8 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 #                                     ORDERS: 
 # -----------------------------------------------------------------------------   
-table_order = 'oc_testate'
-table_line = 'oc_righe'
-
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
-
-if mysql['capital']:
-    table_order = table_order.upper()
-    table_line = table_line.upper()
 
 log_data('Extract order: %s, detail: %s)' % (
     table_order, table_line), f_log)
