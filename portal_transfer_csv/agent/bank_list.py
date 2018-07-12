@@ -229,7 +229,6 @@ for ref in bank_db:
         f_csv.write(clean_ascii(line))
     except: 
         print 'Jump line error'
-        import pdb; pdb.set_trace()
         continue    
 f_csv.close()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
