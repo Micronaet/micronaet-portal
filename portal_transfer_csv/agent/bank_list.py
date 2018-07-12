@@ -141,7 +141,7 @@ query = '''
         CC.CKY_CNT >= '2' AND CC.CKY_CNT < '3';
     ''' % (table_bank, table_payment)
 print 'Run SQL %s' % query
-import pdb; pdb.set_trace()
+
 for cursor, position in ((cursor1, 1), (cursor2, 2)):
     cursor.execute(query)
     for record in cursor:
@@ -157,13 +157,12 @@ for cursor, position in ((cursor1, 1), (cursor2, 2)):
 # ----------------
 # Anagraphic data:
 # ----------------
-import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_partner
 print 'Run SQL %s' % query
 
-cursor1.execute(query) # XXX better DB 1?
-for record in cursor1:
+cursor2.execute(query) # XXX better DB 1?
+for record in cursor2:
     ref = record['CKY_CNT']
     if ref in bank_db:
         bank_db[ref][0] = record
@@ -173,13 +172,13 @@ for record in cursor1:
 # ---------
 import pdb; pdb.set_trace()
 currency_db = {}
-query = 'SELECT * FROM %s' % table_currency
+query = 'SELECT * FROM %s;' % table_currency
 print 'Run SQL %s' % query
 
 cursor2.execute(query)
 for record in cursor2:
     ref = record['NKY_VLT']
-    currency_db[ref] = record['NKY_VLT']
+    currency_db[ref] = record['CDS_VLT']
 
 # -----------------------------------------------------------------------------
 # Write output file:
