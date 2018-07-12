@@ -205,7 +205,7 @@ for ref in bank_db:
         
         payment = bank2.get('CDS_PAG') # XXX status of payment
         
-        currency = currency_db.get(bank2.ge('NKY_VLT'), '') # XXX Used Bank 2
+        currency = currency_db.get(bank2.get('NKY_VLT'), '') # XXX Used Bank 2
 
         status = '' # XXX test for check status
         if iban1 and iban1 != iban2:
