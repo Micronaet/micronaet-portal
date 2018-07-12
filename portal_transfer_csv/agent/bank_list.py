@@ -210,7 +210,8 @@ for ref in bank_db:
         if iban1 and iban1 != iban2:
             status = 'IBAN' # Different IBAN
 
-        line = '%s|' * 12 + '\n' % (
+        mask = '%s|' * 12 + '\n'
+        line =  mask % (
             status,
             ref,
             partner['CDS_RAGSOC_COGN'] or partner['CDS_CNT'],
