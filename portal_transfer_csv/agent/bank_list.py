@@ -182,7 +182,6 @@ for record in cursor2:
 # -----------------------------------------------------------------------------
 # Write output file:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 i = 0
 file_csv = os.path.join(folder, 'bank_check.csv')
 f_csv = open(file_csv, 'w')
