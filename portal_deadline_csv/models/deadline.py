@@ -60,8 +60,6 @@ class PortalDeadline(models.Model):
         def clean(value):  
             ''' ASCII Problem conversion
             '''
-            value = value.decode('cp1252')
-            value = value.encode('utf-8')
             return value.strip()
 
         def format_date(value):
