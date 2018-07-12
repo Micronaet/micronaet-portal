@@ -148,9 +148,9 @@ for cursor, position in ((cursor1, 1), (cursor2, 2)):
         ref = record['CKY_CNT']
         if ref not in bank_db:
            bank_db[ref] = [
-               '', # Anagrafici 
-               '', # Bank 1
-               '', # Bank 2
+               {}, # Anagrafici 
+               {}, # Bank 1
+               {}, # Bank 2
                ]
         bank_db[ref][position] = record
 
@@ -200,12 +200,12 @@ for ref in bank_db:
     try:
         i += 1
 
-        iban1 = bank1['CSG_IBAN_BBAN']
-        iban2 = bank2['CSG_IBAN_BBAN']        
+        iban1 = bank1.get('CSG_IBAN_BBAN')
+        iban2 = bank2.get('CSG_IBAN_BBAN')
         
-        payment = bank2['CDS_PAG'] # XXX status of payment
+        payment = bank2.get('CDS_PAG') # XXX status of payment
         
-        currency = currency_db.get(bank2['NKY_VLT'], '') # XXX Used Bank 2
+        currency = currency_db.get(bank2.ge('NKY_VLT'), '') # XXX Used Bank 2
 
         status = '' # XXX test for check status
         if iban1 and iban1 != iban2:
@@ -214,22 +214,21 @@ for ref in bank_db:
         line =  mask % (
             status,
             ref,
-            partner['CDS_RAGSOC_COGN'] or partner['CDS_CNT'],
-            partner['CDS_LOC'],
+            partner.get('CDS_RAGSOC_COGN') or partner.get('CDS_CNT'),
+            partner.get('CDS_LOC'),
             payment,
             currency,
-            bank1['CDS_BANCA'],
+            bank1.get('CDS_BANCA'),
             iban1,
-            bank1['CSG_BIC'],
-            bank2['CDS_BANCA'],
+            bank1.get('CSG_BIC'),
+            bank2.get('CDS_BANCA'),
             iban2,
-            bank2['CSG_BIC'], 
+            bank2.get('CSG_BIC'), 
             )
         
         f_csv.write(clean_ascii(line))
     except: 
         print 'Jump line error'
-        import pdb; pdb.set_trace()
         continue    
 f_csv.close()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
