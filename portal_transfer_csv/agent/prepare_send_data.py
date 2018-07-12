@@ -193,7 +193,7 @@ log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s,
         table_rubrica, 
         table_extra, 
         table_condition, 
-        table_payment
+        table_payment,
         table_currency,
         table_order,
         table_line,
