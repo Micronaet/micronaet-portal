@@ -159,7 +159,7 @@ for cursor, position in ((cursor1, 1), (cursor2, 2)):
 # Anagraphic data:
 # ----------------
 import pdb; pdb.set_trace()
-query = 'SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';' % \
+query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_partner
 print 'Run SQL %s' % query
 
