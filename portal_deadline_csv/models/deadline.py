@@ -95,8 +95,8 @@ class PortalDeadline(models.Model):
             return
         
         # Remove all previous
-        deadline_ids = self.search([]) 
-        self.unlink(deadline_ids)
+        deadlines = self.search([]) 
+        deadlines.unlink()
 
         for row in rows:
             try:
@@ -146,6 +146,7 @@ class PortalDeadline(models.Model):
                     if not partners:
                        _logger.error('Not found: %s' % partner_ref)
                        continue
+                       
                     partner = partners[0]
                     data = {
                         'name': '%s [%s]: %s (%s EUR)' % (
