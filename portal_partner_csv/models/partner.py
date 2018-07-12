@@ -95,7 +95,6 @@ class ResPartner(models.Model):
     def import_csv_partner_data(self, filename, user_creation=False):
         ''' Import filename for partner creation (and users too)
         '''
-        import pdb; pdb.set_trace()
         _logger.info('Update partner user, creation = %s' % user_creation)
         partner_user_ids = []
         max_col = False
@@ -140,7 +139,6 @@ class ResPartner(models.Model):
                 
             break # TODO remove
             
-        import pdb; pdb.set_trace()        
         if user_creation:
             _logger.info('Update user')
             self.create_portal_user(partner_user_ids)
