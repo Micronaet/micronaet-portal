@@ -35,7 +35,6 @@ from dateutil.relativedelta import relativedelta
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 cfg_file = os.path.expanduser('./odoo.cfg')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
