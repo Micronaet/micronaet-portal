@@ -87,16 +87,17 @@ log_data('Start import procedure', f_log)
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
-import pdb; pdb.set_trace()
 partner_pool = odoo.model('res.partner') 
 user_pool = odoo.model('res.users') 
 
 file_csv = os.path.join(folder, 'partner.csv')
 
 log_data('Start import partner from %s' % file_csv, f_log)
+
 # Create partner:
+import pdb; pdb.set_trace()
 update_user_ids = partner_pool.import_csv_partner_data(
-    file_csv)
+    file_csv, user_creation=False)
     
 # Create user procedure:
 # Note: moved here instead of ODOO module procedure (for rollback error)

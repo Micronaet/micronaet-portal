@@ -99,6 +99,7 @@ class ResPartner(models.Model):
         _logger.info('Update partner user, creation = %s' % user_creation)
         partner_user_ids = []
         max_col = False
+
         i = 0
         for line in open(filename):
             i += 1
@@ -136,11 +137,12 @@ class ResPartner(models.Model):
             else:
                 partner = self.create(data)
                 partner_user_ids.append(partner)
-        
+                
+            break # TODO remove
+            
         import pdb; pdb.set_trace()        
         if user_creation:
             _logger.info('Update user')
             self.create_portal_user(partner_user_ids)
-        return partner_user_ids
-    
+        return [p.id for p in partner_user_ids]    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
