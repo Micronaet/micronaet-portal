@@ -128,12 +128,13 @@ def clean_ascii(value):
 def get_html_bank(record):
     ''' Rerturn HTML record for bank label for portal representation
     '''
-    return u'<p><b>Bank:</b> %s<br/><b>IBAN code:</b> %s<br/>' + \
-        '<b>BIC SWIFT code:</b> %s<br/></p>' % (
-            record['CDS_BANCA'] or '/',
-            record['CSG_IBAN_BBAN'] or '/',
-            record['CSG_BIC'] or '/',
-            )
+    mask = '<p><b>Bank: </b>%s<br/><b>IBAN code: </b>%s<br/>'
+        '<b>BIC SWIFT code: </b>%s<br/></p>' 
+    return mask % (
+        record['CDS_BANCA'] or '/',
+        record['CSG_IBAN_BBAN'] or '/',
+        record['CSG_BIC'] or '/',
+        )
 
 def get_key(record):
     ''' Key value generation:
@@ -201,7 +202,6 @@ log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s,
 
 # -----------------------------------------------------------------------------
 # A. Load active partner (date of delivery)
-import pdb; pdb.set_trace()
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
 query = '''
     SELECT CKY_CNT FROM %s WHERE 
@@ -214,7 +214,6 @@ user_db = [record['CKY_CNT'] for record in cursor1]
 
 # -----------------------------------------------------------------------------
 # B. Currency list
-import pdb; pdb.set_trace()
 currency_db = {}
 
 query = 'SELECT * FROM %s;' % table_currency
