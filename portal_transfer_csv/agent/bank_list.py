@@ -170,7 +170,6 @@ for record in cursor2:
 # ---------
 # Currency:
 # ---------
-import pdb; pdb.set_trace()
 currency_db = {}
 query = 'SELECT * FROM %s;' % table_currency
 print 'Run SQL %s' % query
