@@ -128,7 +128,7 @@ def clean_ascii(value):
 def get_html_bank(record):
     ''' Rerturn HTML record for bank label for portal representation
     '''
-    mask = '<p><b>Bank: </b>%s<br/><b>IBAN code: </b>%s<br/>'
+    mask = '<p><b>Bank: </b>%s<br/><b>IBAN code: </b>%s<br/>'  + \
         '<b>BIC SWIFT code: </b>%s<br/></p>' 
     return mask % (
         record['CDS_BANCA'] or '/',
