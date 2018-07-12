@@ -228,7 +228,6 @@ for record in cursor2:
 
 # -----------------------------------------------------------------------------
 # C. Load bank reference
-import pdb; pdb.set_trace()
 bank_db = {}
 
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
@@ -241,7 +240,6 @@ for record in cursor2:
 
 # -----------------------------------------------------------------------------
 # D. Load partner list
-import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_rubrica
 log_data('Run SQL %s' % query, f_log)
@@ -270,7 +268,6 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 #                                     ORDERS: 
 # -----------------------------------------------------------------------------   
-import pdb; pdb.set_trace()
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
 
@@ -278,7 +275,6 @@ log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
 
 # -----------------------------------------------------------------------------
 # A. OC Header
-import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
 log_data('Run SQL %s' % query, f_log)
 
@@ -301,7 +297,6 @@ for record in cursor1:
 
 # -----------------------------------------------------------------------------
 # B. OC Line
-import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s;' % table_line
 log_data('Run SQL %s' % query, f_log)
 
@@ -331,8 +326,8 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
+sys.exit() # END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # Publish command:        
-import pdb; pdb.set_trace()
 log_data('Publish operation: %s' % publish, f_log)
 os.system(publish)
 
@@ -342,7 +337,6 @@ f_log.close()
 # -----------------------------------------------------------------------------
 #                                     TRANSFER: 
 # -----------------------------------------------------------------------------   
-sys.exit()
 
 # Generate key from password:
 key = hashlib.sha256(password).digest()
