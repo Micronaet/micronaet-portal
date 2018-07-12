@@ -84,6 +84,7 @@ class PortalDeadline(models.Model):
     def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
+        import pdb; pdb.set_trace()
         partner_pool = self.env['res.partner']
         tot_col = 0
         old_order_ref = ''
