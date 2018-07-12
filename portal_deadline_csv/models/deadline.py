@@ -112,13 +112,13 @@ class PortalDeadline(models.Model):
                     continue
 
                 try: # master error:
-                    partner_ref = self.clean(line[0])
-                    deadline = self.format_date(line[1])
-                    total = self.format_float(line[2]) 
-                    payment = self.clean(line[3]).lower()
-                    invoice = self.clean(line[4])
-                    date = self.format_date(line[5])
-                    currency = self.clean(line[6])
+                    partner_ref = clean(line[0])
+                    deadline = format_date(line[1])
+                    total = format_float(line[2]) 
+                    payment = clean(line[3]).lower()
+                    invoice = clean(line[4])
+                    date = format_date(line[5])
+                    currency = clean(line[6])
                     
                     if partner_ref[:1] == '4':
                         continue # XXX no supplier data
