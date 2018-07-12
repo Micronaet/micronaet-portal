@@ -125,7 +125,7 @@ for partner in partner_pool.browse(update_user_ids):
             'signature': partner.name,                
             })
     update_list.append((partner.id, user_id.id))
-import pdb; pdb.set_trace()
+
 # Update portal user for partner:
 for partner_id, user_id in update_list:
     partner_pool.write(partner_id, {

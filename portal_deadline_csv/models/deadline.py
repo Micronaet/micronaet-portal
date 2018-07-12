@@ -84,26 +84,27 @@ class PortalDeadline(models.Model):
     def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
-        partner_pool = self.pool.get('res.partner')
+        partner_pool = self.env['res.partner']
         tot_col = 0
         old_order_ref = ''
         try: 
-            file_input=os.path.join(os.path.expanduser(fullname))
+            file_input = os.path.join(os.path.expanduser(fullname))
             rows = open(file_input, 'rb') 
         except:
             _logger.error('Problem open file: [%s, %s]' % (path, file_name))
             return
         
         # Remove all previous
-        deadline_ids = self.search(cr, uid, [], context=context) 
-        self.unlink(cr, uid, deadline_ids, context=context) 
+        deadline_ids = self.search([]) 
+        self.unlink(deadline_ids)
+
         for row in rows:
             try:
                 line=row.split(';')
                 if tot_col == 0:
                    tot_col = len(line)
                    _logger.info(
-                       'Start import [%s] Cols: %s' % (file_input, tot_col,))
+                       'Start import [%s] Cols: %s' % (file_input, tot_col))
                    
                 if not (len(line) and (tot_col==len(line))):
                     _logger.error(
@@ -122,12 +123,11 @@ class PortalDeadline(models.Model):
                     
                     if partner_ref[:1] == '4':
                         continue # XXX no supplier data
-                    elif partner_ref[:1] == "2": # Customer
+                    elif partner_ref[:1] == '2': # Customer
                         pass
                     else:    
                         _logger.error(
-                            'Cannot find c/s from code: %s' % (
-                                partner_ref, ))
+                            'Cannot find c/s from code: %s' % partner_ref)
                         continue
                      
                     # Calculated field:                   
@@ -139,22 +139,23 @@ class PortalDeadline(models.Model):
                        total_out = -total # DARE
 
  
-                    partner_ids = partner_pool.search(cr, uid, [
+                    partners = partner_pool.search([
                         ('ref', '=', partner_ref),
-                        ], context=context)
+                        ])
                      
-                    if not partner_ids:
+                    if not partners:
                        _logger.error('Not found: %s' % partner_ref)
                        continue
-                    partner_proxy = partner_pool.browse(
-                        cr, uid, partner_ids, context=context)[0]
+                    partner = partners[0]
                     data = {
                         'name': '%s [%s]: %s (%s EUR)' % (
-                            partner_proxy.name, 
+                            partner.name, 
                             partner_ref, 
-                            deadline, total),
-                        'partner_id': partner_proxy.id,
-                        'user_id': partner_proxy.portal_user_id.id,
+                            deadline, 
+                            total,
+                            ),
+                        'partner_id': partner.id,
+                        'user_id': partner.portal_user_id.id,
                         'deadline': deadline,
                         'date': date,
                         'invoice': invoice,
@@ -165,7 +166,7 @@ class PortalDeadline(models.Model):
                         'payment': payment,
                         }                          
                     try:
-                        self.create(cr, uid, data, context=context)
+                        self.create(data)
                         if verbose: 
                             _logger.info('Deadline insert')
                     except:
