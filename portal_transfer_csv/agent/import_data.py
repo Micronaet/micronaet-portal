@@ -84,18 +84,10 @@ def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
 # -----------------------------------------------------------------------------   
 log_data('Start import procedure', f_log)
 
-# XXX REMOVE
-order_pool = odoo.model('portal.sale.order')
-log_data('Start import order from %s' % order_fullname, f_log)
-import pdb; pdb.set_trace()
-order_pool.schedule_etl_accounting_order(order_fullname)
-log_data('End import order from %s' % order_fullname, f_log)
-sys.exit()
-# XXX REMOVE
-
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
+import pdb; pdb.set_trace()
 partner_pool = odoo.model('res.partner') 
 user_pool = odoo.model('res.users') 
 

@@ -55,7 +55,6 @@ class PortalSaleOrder(models.Model):
     def schedule_etl_accounting_order(self, fullname):
         ''' Import procedure
         '''
-        import pdb; pdb.set_trace()
         # Pool used:
         line_pool = self.env['portal.sale.order.line']
         partner_pool = self.env['res.partner']
