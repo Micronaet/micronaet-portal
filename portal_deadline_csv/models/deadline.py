@@ -90,7 +90,7 @@ class PortalDeadline(models.Model):
         old_order_ref = ''
         try: 
             file_input = os.path.join(os.path.expanduser(fullname))
-            rows = open(file_input, 'rb') 
+            rows = open(file_input, 'r') 
         except:
             _logger.error('Problem open file: [%s, %s]' % (path, file_name))
             return
