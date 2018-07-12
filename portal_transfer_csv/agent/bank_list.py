@@ -199,8 +199,8 @@ for ref in bank_db:
     try:
         i += 1
 
-        iban1 = bank1['CSB_IBAN_BBAN']
-        iban2 = bank2['CSB_IBAN_BBAN']        
+        iban1 = bank1['CSG_IBAN_BBAN']
+        iban2 = bank2['CSG_IBAN_BBAN']        
         
         payment = bank2['CDS_PAG'] # XXX status of payment
         
