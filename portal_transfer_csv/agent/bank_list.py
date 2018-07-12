@@ -52,6 +52,17 @@ mysql1 = {
     'capital': eval(config.get('mysql1', 'capital')),
     }
 
+mysql2 = {
+    'hostname': config.get('mysql2', 'hostname'),
+    'username': config.get('mysql2', 'username'),
+    'password': config.get('mysql2', 'password'),
+
+    'database': config.get('mysql2', 'database'),
+    'port': eval(config.get('mysql2', 'port')),
+
+    'capital': eval(config.get('mysql2', 'capital')),
+    }
+
 # Transafer data:
 folder = os.path.expanduser(config.get('transfer', 'folder'))
 
@@ -89,9 +100,11 @@ def clean_ascii(value):
 #                                      START: 
 # -----------------------------------------------------------------------------   
 print 'Start payment check procedure'
+
 connection1 = mssql_connect(mysql1)
 cursor1 = connection1.cursor()
 print  'Connect with MySQL1 database: %s' % connection1
+
 connection2 = mssql_connect(mysql2)
 cursor2 = connection2.cursor()
 print  'Connect with MySQL2 database: %s' % connection2
@@ -99,70 +112,105 @@ print  'Connect with MySQL2 database: %s' % connection2
 # -----------------------------------------------------------------------------
 #                                       BANK: 
 # -----------------------------------------------------------------------------   
-table_bank = 'con_comm' # TODO
+table_bank = 'pc_condizioni_comm'
+table_partner = 'pa_rubr_pdc_clfr'
+table_payment = 'cp_pagamenti'
+table_currency = 'mu_valute'
 
-file_csv = os.path.join(folder, 'banck_check.csv')
-if mysql['capital']:
+if mysql1['capital']:
     table_bank = table_bank.upper()
-
-print 'Extract bank: %s' % table_bank
+    table_partner = table_partner.upper()
+    table_payment = table_payment.upper()
+    table_currency = table_currency.upper()
+print 'Table used: Bank: %s, Partner: %s, Payment: %s, Currency: %s ' % (
+    table_bank, table_partner, table_payment, table_currency)
 
 # -----------------------------------------------------------------------------
 # Load bank information:
 # -----------------------------------------------------------------------------
 bank_db = {}
 
+# -------------
+# Bank 1 and 2:
+# -------------
 query = '''
-    SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
-    ''' % table_bank
+    SELECT CC.*, P.*
+    FROM 
+        %s CC LEFT JOIN %s P ON (CC.NKY_PAG=P.NKY_PAG) 
+    WHERE 
+        CC.CKY_CNT >= '2' AND CC.CKY_CNT < '3';
+    ''' % (table_bank, table_payment)
 print 'Run SQL %s' % query
 
-# -------
-# Bank 1:
-# -------
-cursor1.execute(query)
-for record in cursor1:
-    ref = record['CKY_CNT']
-    if ref not in bank_db:
-       bank_db[ref] = [
-           False, # Anagrafici 
-           False, # Bank 1
-           False, # Bank 2
-           ]
-       
-    bank_db[ref][1] = record
-
-# -------
-# Bank 2:
-# -------
+for cursor, position in ((cursor1, 1), (cursor2, 2)):
+    cursor.execute(query)
+    for record in cursor:
+        ref = record['CC.CKY_CNT']
+        if ref not in bank_db:
+           bank_db[ref] = [
+               '', # Anagrafici 
+               '', # Bank 1
+               '', # Bank 2
+               ]
+        bank_db[ref][position] = record
 
 # ----------------
 # Anagraphic data:
 # ----------------
+query = 'SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';' % \
+    table_partner
+print 'Run SQL %s' % query
 
-# -------------
-# Payment data:
-# -------------
+cursor1.execute(query) # XXX better DB 1?
+for record in cursor1:
+    ref = record['CKY_CNT']
+    if ref in bank_db:
+        bank_db[ref][0] = record
+
+# ---------
+# Currency:
+# ---------
+currency_db = {}
+query = 'SELECT * FROM %s' % table_currency
+print 'Run SQL %s' % query
+
+cursor2.execute(query)
+for record in cursor2:
+    ref = record['NKY_VLT']
+    currency_db[ref] = record['NKY_VLT']
 
 # -----------------------------------------------------------------------------
 # Write output file:
 # -----------------------------------------------------------------------------
 i = 0
+file_csv = os.path.join(folder, 'bank_check.csv')
 f_csv = open(file_csv, 'w')
 
 # TODO controlla se serve comunicare altri dati
-for record in cursor:
+f_csv.write(
+    'Stato|Conto|Ragione sociale|Paese|Pagamento|Valuta'
+    '|Banca 1|IBAN1|BIC1'
+    '|Banca 2|IBAN2|BIC2\n'
+    )
+for ref in bank_db:
+    (partner, bank1, bank2) = bank_db[ref]
+    
     try:
         i += 1
-        ref = record['CKY_CNT']        
+        status = '' # XXX test for check status
         
-        line = u'%s|%s|%s|%s|%s\n' % (
-            ref,             
-            record['CDS_CNT'], # name
-            record['CDS_INDIR'], # street
-            'X' if ref in user_db else '',
-            bank_db.get(ref, 'Not present'),
+        payment = bank2['P.CDS_PAG'] # XXX status of payment
+        currency = currency_db.get(bank2['CC.NKY_VLT'], '')
+        line = '%s|%s|%s|%s|%s|%s|Banca 1|IBAN1|BIC1|Banca 2|IBAN2|BIC2\n' % (
+            status,
+            ref,
+            partner['CDS_RAGSOC_COGN'] or partner['CDS_CNT'],
+            partner['CDS_LOC'],
+            payment,
+            currency,
+            # TODO 
             )
+        
         f_csv.write(clean_ascii(line))
     except: 
         print 'Jump line error'
