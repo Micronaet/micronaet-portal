@@ -133,7 +133,6 @@ bank_db = {}
 # -------------
 # Bank 1 and 2:
 # -------------
-import pdb; pdb.set_trace()
 query = '''
     SELECT CC.*, P.*
     FROM 
@@ -142,11 +141,11 @@ query = '''
         CC.CKY_CNT >= '2' AND CC.CKY_CNT < '3';
     ''' % (table_bank, table_payment)
 print 'Run SQL %s' % query
-
+import pdb; pdb.set_trace()
 for cursor, position in ((cursor1, 1), (cursor2, 2)):
     cursor.execute(query)
     for record in cursor:
-        ref = record['CC.CKY_CNT']
+        ref = record['CKY_CNT']
         if ref not in bank_db:
            bank_db[ref] = [
                '', # Anagrafici 
@@ -202,12 +201,12 @@ for ref in bank_db:
     try:
         i += 1
 
-        iban1 = bank1['CC.CSB_IBAN_BBAN']
-        iban2 = bank2['CC.CSB_IBAN_BBAN']        
+        iban1 = bank1['CSB_IBAN_BBAN']
+        iban2 = bank2['CSB_IBAN_BBAN']        
         
-        payment = bank2['P.CDS_PAG'] # XXX status of payment
+        payment = bank2['CDS_PAG'] # XXX status of payment
         
-        currency = currency_db.get(bank2['CC.NKY_VLT'], '') # XXX Used Bank 2
+        currency = currency_db.get(bank2['NKY_VLT'], '') # XXX Used Bank 2
 
         status = '' # XXX test for check status
         if iban1 and iban1 != iban2:
@@ -220,12 +219,12 @@ for ref in bank_db:
             partner['CDS_LOC'],
             payment,
             currency,
-            bank1['CC.CDS_BANCA'],
+            bank1['CDS_BANCA'],
             iban1,
-            bank1['CC.CSG_BIC'],
-            bank2['CC.CDS_BANCA'],
+            bank1['CSG_BIC'],
+            bank2['CDS_BANCA'],
             iban2,
-            bank2['CC.CSG_BIC'], 
+            bank2['CSG_BIC'], 
             )
         
         f_csv.write(clean_ascii(line))
