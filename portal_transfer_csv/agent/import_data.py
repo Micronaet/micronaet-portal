@@ -37,7 +37,6 @@ config.read([cfg_file])
 # -----------------------------------------------------------------------------
 # Parameters:
 # -----------------------------------------------------------------------------
-import pdb; pdb.set_trace()
 # ODOO:
 hostname = config.get('portal', 'hostname')
 username = config.get('portal', 'username')
@@ -88,6 +87,7 @@ log_data('Start import procedure', f_log)
 # XXX REMOVE
 order_pool = odoo.model('portal.sale.order')
 log_data('Start import order from %s' % order_fullname, f_log)
+import pdb; pdb.set_trace()
 order_pool.schedule_etl_accounting_order(order_fullname)
 log_data('End import order from %s' % order_fullname, f_log)
 sys.exit()
