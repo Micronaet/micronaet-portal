@@ -193,6 +193,7 @@ f_csv.write(
     '|Banca 1|IBAN1|BIC1'
     '|Banca 2|IBAN2|BIC2\n'
     )
+mask = '%s|' * 12 + '\n'
 for ref in bank_db:
     (partner, bank1, bank2) = bank_db[ref]
     
@@ -210,7 +211,6 @@ for ref in bank_db:
         if iban1 and iban1 != iban2:
             status = 'IBAN' # Different IBAN
 
-        mask = '%s|' * 12 + '\n'
         line =  mask % (
             status,
             ref,
