@@ -327,7 +327,6 @@ f_csv.close()
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
 # Publish command:        
-import pdb; pdb.set_trace()
 log_data('Publish operation: %s' % publish, f_log)
 os.system(publish)
 
