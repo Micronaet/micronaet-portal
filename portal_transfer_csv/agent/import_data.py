@@ -124,7 +124,7 @@ for partner in partner_pool.browse(update_user_ids):
             #'name': 'User: %s' % partner.name,
             'signature': partner.name,                
             })
-    update_list.append((partner.id, user_id))    
+    update_list.append((partner.id, user_id.id))
 
 # Update portal user for partner:
 for partner_id, user_id in update_list:
