@@ -38,6 +38,7 @@ config.read([cfg_file])
 # -----------------------------------------------------------------------------
 # Parameters:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 # ODOO:
 hostname = config.get('portal', 'hostname')
 username = config.get('portal', 'username')
