@@ -27,12 +27,15 @@ import shutil
 import MySQLdb
 import MySQLdb.cursors
 import ConfigParser
+import hashlib
+from Crypto.Cipher import AES
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 cfg_file = os.path.expanduser('./odoo.cfg')
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
@@ -52,15 +55,26 @@ mysql1 = {
     'capital': eval(config.get('mysql1', 'capital')),
     }
 
+mysql2 = {
+    'hostname': config.get('mysql2', 'hostname'),
+    'username': config.get('mysql2', 'username'),
+    'password': config.get('mysql2', 'password'),
+
+    'database': config.get('mysql2', 'database'),
+    'port': eval(config.get('mysql2', 'port')),
+
+    'capital': eval(config.get('mysql2', 'capital')),
+    }
+
 # Transafer data:
 folder = os.path.expanduser(config.get('transfer', 'folder'))
 compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
+password = config.get('transfer', 'password')
 days = 365 # create user only for active partner
 
 # File to copy in destination folder:
 copy_files = eval(config.get('copy', 'origin'))
-
 
 file_log = 'activity.log'
 f_log = open(file_log, 'a')
@@ -115,16 +129,22 @@ def clean_ascii(value):
 def get_html_bank(record):
     ''' Rerturn HTML record for bank label for portal representation
     '''
-    return u'''<p>
-        <b>Bank:</b> %s<br/>
-        <b>IBAN code:</b> %s<br/>
-        <b>BIC SWIFT code:</b> %s<br/>
-        </p>''' % (
+    return u'<p><b>Bank:</b> %s<br/><b>IBAN code:</b> %s<br/>'
+        '<b>BIC SWIFT code:</b> %s<br/></p>' % (
             record['CDS_BANCA'] or '/',
             record['CSG_IBAN_BBAN'] or '/',
             record['CSG_BIC'] or '/',
             )
-            
+
+def get_key(record):
+    ''' Key value generation:
+    '''
+    return '%s/%s/%s' % (
+        record['CSG_DOC'],
+        record['NGB_SR_DOC'],
+        record['NGL_DOC'],        
+        )
+
 # -----------------------------------------------------------------------------
 #                                      START: 
 # -----------------------------------------------------------------------------   
@@ -157,7 +177,6 @@ table_order = 'oc_testate'
 table_line = 'oc_righe'
 table_currency = 'mu_valute'
 
-
 file_csv = os.path.join(folder, 'partner.csv')
 if mysql1['capital']: # Use first SQL for check (are on the sasme server)
     table_rubrica = table_rubrica.upper()
@@ -181,9 +200,9 @@ log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s,
         table_currency,
         ), f_log)
 
-
 # -----------------------------------------------------------------------------
 # A. Load active partner (date of delivery)
+import pdb; pdb.set_trace()
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
 query = '''
     SELECT CKY_CNT FROM %s WHERE 
@@ -195,7 +214,8 @@ cursor1.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor1]
 
 # -----------------------------------------------------------------------------
-# B. Load active partner (date of delivery)
+# B. Currency list
+import pdb; pdb.set_trace()
 currency_db = {}
 
 query = 'SELECT * FROM %s;' % table_currency
@@ -205,14 +225,16 @@ cursor2.execute(query)
 for record in cursor2:
     ref = record['NKY_VLT']
     currency_db[ref] = record['CDS_VLT']
+    # IST_LIT_EURO (sign)
+    # CSG_SIMB_VLT (symbol)
 
 # -----------------------------------------------------------------------------
-# C. Load bank
+# C. Load bank reference
+import pdb; pdb.set_trace()
 bank_db = {}
 
-query = '''
-    SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
-    ''' % table_condition
+query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
+    table_condition
 log_data('Run SQL %s' % query, f_log)
 
 cursor2.execute(query)
@@ -221,9 +243,9 @@ for record in cursor2:
 
 # -----------------------------------------------------------------------------
 # D. Load partner list
-query = '''
-    SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';
-    ''' % table_rubrica
+import pdb; pdb.set_trace()
+query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
+    table_rubrica
 log_data('Run SQL %s' % query, f_log)
 cursor2.execute(query)
 
@@ -235,64 +257,58 @@ for record in cursor2:
         ref = record['CKY_CNT']        
         
         line = u'%s|%s|%s|%s|%s\n' % (
-            ref,             
-            record['CDS_CNT'], # name
-            record['CDS_INDIR'], # street
+            ref,
+            record['CDS_CNT'] or '', # name
+            record['CDS_INDIR'] or '', # street
             'X' if ref in user_db else '',
             bank_db.get(ref, 'Not present'),
             )
         f_csv.write(clean_ascii(line))
     except: 
         print 'Jump line error'
-        continue    
+        continue
 f_csv.close()
 
 # -----------------------------------------------------------------------------
 #                                     ORDERS: 
 # -----------------------------------------------------------------------------   
+import pdb; pdb.set_trace()
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
 
-log_data('Extract order: %s, detail: %s)' % (
-    table_order, table_line), f_log)
+log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
 
 # -----------------------------------------------------------------------------
-def get_key(record):
-    ''' Key value generation:
-    '''
-    return '%s/%s/%s' % (
-        record['CSG_DOC'],
-        record['NGB_SR_DOC'],
-        record['NGL_DOC'],        
-        )
-
 # A. OC Header
+import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
 log_data('Run SQL %s' % query, f_log)
 
-cursor.execute(query)
+cursor1.execute(query)
 order_db = {}
-for record in cursor:
+for record in cursor1:
     key = get_key(record)
-    order_db[key] = '%s|%s|%s|%s|%s|%s|%s' % (
+    order_db[key] = '%s|%s|%s|%s|%s|%s|%s|%s' % (
         key, 
-        record['DTT_DOC'],
-        record['CKY_CNT_CLFR'],
-        record['CKY_CNT_SPED_ALT'],
-        #record['NKY_CNT_AGENTE'],
-        #record['IST_PORTO'],
-        record['NKY_CAUM'],
-        record['NKY_PAG'],
-        record['CDS_NOTE'],
+        record['DTT_DOC'] or '',
+        record['CKY_CNT_CLFR'] or '',
+        record['CKY_CNT_SPED_ALT'] or '',
+        record['NKY_CAUM'] or '',
+        record['NKY_PAG'] or '',
+        record['CDS_NOTE'] or '',
+        currency_db.get(record['NKY_VLT'], ''),
+        #record['NKY_CNT_AGENTE'] or '',
+        #record['IST_PORTO'] or '',
         )
 
 # -----------------------------------------------------------------------------
 # B. OC Line
+import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s;' % table_line
 log_data('Run SQL %s' % query, f_log)
 
-cursor.execute(query)
-for record in cursor:
+cursor1.execute(query)
+for record in cursor1:
     key = get_key(record)
     header = order_db.get(key, '')
     if not header:
@@ -300,16 +316,16 @@ for record in cursor:
 
     line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
         header,
-        record['NPR_RIGA'], # 7
+        record['NPR_RIGA'] or '', # pos: 8
 
-        record['DTT_SCAD'],
-        record['CKY_ART'],
-        record['CDS_VARIAZ_ART'],
-        record['NPZ_UNIT'],
-        record['NDC_QTA'],
-        record['CKY_ART'],
-        record['NQT_RIGA_O_PLOR'],
-        record['NCF_CONV'],
+        record['DTT_SCAD'] or '',
+        record['CKY_ART'] or '',
+        record['CDS_VARIAZ_ART'] or '',
+        record['NPZ_UNIT'] or '',
+        record['NDC_QTA'] or '',
+        record['CKY_ART'] or '',
+        record['NQT_RIGA_O_PLOR'] or '',
+        record['NCF_CONV'] or '',
         )
     f_csv.write(clean_ascii(line))
 f_csv.close()
@@ -318,29 +334,21 @@ f_csv.close()
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
 # Publish command:        
+import pdb; pdb.set_trace()
 log_data('Publish operation: %s' % publish, f_log)
 os.system(publish)
 
 # Close open files:
 f_log.close()  
 
-
-
-
 # -----------------------------------------------------------------------------
 #                                     TRANSFER: 
 # -----------------------------------------------------------------------------   
 sys.exit()
-import hashlib
-from Crypto.Cipher import AES
 
 # Generate key from password:
-password = 'Micronaet'
 key = hashlib.sha256(password).digest()
-print 'Key used:', key
-print 'Lungh.: ', len(key)
-#key = '0123456789abcdef'
-IV = 16 * '\x00'           # Initialization vector: discussed later
+IV = '\x00' * 16 # Empty vector
 mode = AES.MODE_CBC
 encryptor = AES.new(key, mode, IV=IV)
 
@@ -348,9 +356,7 @@ text = 'j' * 64 + 'i' * 128
 ciphertext = encryptor.encrypt(text)
 print '\nText: ', text, '\nCipher:', ciphertext
 
-
 decryptor = AES.new(key, mode, IV=IV)
 plain = decryptor.decrypt(ciphertext)
-print '\nCipher:', ciphertext, '\nPlain: ', plain,
-        
+print '\nCipher:', ciphertext, '\nPlain: ', plain        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
