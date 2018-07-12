@@ -133,6 +133,7 @@ bank_db = {}
 # -------------
 # Bank 1 and 2:
 # -------------
+import pdb; pdb.set_trace()
 query = '''
     SELECT CC.*, P.*
     FROM 
@@ -157,6 +158,7 @@ for cursor, position in ((cursor1, 1), (cursor2, 2)):
 # ----------------
 # Anagraphic data:
 # ----------------
+import pdb; pdb.set_trace()
 query = 'SELECT * FROM %s WHERE CKY_CNT >= '2' AND CKY_CNT < '3';' % \
     table_partner
 print 'Run SQL %s' % query
@@ -170,6 +172,7 @@ for record in cursor1:
 # ---------
 # Currency:
 # ---------
+import pdb; pdb.set_trace()
 currency_db = {}
 query = 'SELECT * FROM %s' % table_currency
 print 'Run SQL %s' % query
@@ -182,6 +185,7 @@ for record in cursor2:
 # -----------------------------------------------------------------------------
 # Write output file:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 i = 0
 file_csv = os.path.join(folder, 'bank_check.csv')
 f_csv = open(file_csv, 'w')
@@ -197,18 +201,31 @@ for ref in bank_db:
     
     try:
         i += 1
-        status = '' # XXX test for check status
+
+        iban1 = bank1['CC.CSB_IBAN_BBAN']
+        iban2 = bank2['CC.CSB_IBAN_BBAN']        
         
         payment = bank2['P.CDS_PAG'] # XXX status of payment
-        currency = currency_db.get(bank2['CC.NKY_VLT'], '')
-        line = '%s|%s|%s|%s|%s|%s|Banca 1|IBAN1|BIC1|Banca 2|IBAN2|BIC2\n' % (
+        
+        currency = currency_db.get(bank2['CC.NKY_VLT'], '') # XXX Used Bank 2
+
+        status = '' # XXX test for check status
+        if iban1 and iban1 != iban2:
+            status = 'IBAN' # Different IBAN
+
+        line = '%s|' * 12 + '\n' % (
             status,
             ref,
             partner['CDS_RAGSOC_COGN'] or partner['CDS_CNT'],
             partner['CDS_LOC'],
             payment,
             currency,
-            # TODO 
+            bank1['CC.CDS_BANCA'],
+            iban1,
+            bank1['CC.CSG_BIC'],
+            bank2['CC.CDS_BANCA'],
+            iban2,
+            bank2['CC.CSG_BIC'], 
             )
         
         f_csv.write(clean_ascii(line))
