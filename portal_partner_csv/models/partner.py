@@ -95,6 +95,7 @@ class ResPartner(models.Model):
     def import_csv_partner_data(self, filename, user_creation=False):
         ''' Import filename for partner creation (and users too)
         '''
+        import pdb; pdb.set_trace()
         _logger.info('Update partner user, creation = %s' % user_creation)
         partner_user_ids = []
         max_col = False
@@ -125,17 +126,18 @@ class ResPartner(models.Model):
                 'name': name,
                 'street': street,
                 'portal_payment': portal_payment,
-                # portal_user_id:                    
+                # portal_user_id:       
                 }
             if partners: 
                 # TODO multiple management
-                partner_id = partner[0].id
-                partner_user_ids.append(partner_id)
+                partner = partners[0]
+                partner_user_ids.append(partner)
                 partners.write(data)
             else:
-                partner_id = self.create(data).id
-                partner_user_ids.append(partner_id)
-                
+                partner = self.create(data)
+                partner_user_ids.append(partner)
+        
+        import pdb; pdb.set_trace()        
         if user_creation:
             _logger.info('Update user')
             self.create_portal_user(partner_user_ids)
