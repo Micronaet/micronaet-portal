@@ -26,7 +26,6 @@ import sys
 import erppeek
 import ConfigParser
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
