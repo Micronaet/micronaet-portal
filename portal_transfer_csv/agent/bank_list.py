@@ -112,12 +112,14 @@ print  'Connect with MySQL2 database: %s' % connection2
 # -----------------------------------------------------------------------------
 #                                       BANK: 
 # -----------------------------------------------------------------------------   
+table_extra = 'pc_progressivi'
 table_bank = 'pc_condizioni_comm'
 table_partner = 'pa_rubr_pdc_clfr'
 table_payment = 'cp_pagamenti'
 table_currency = 'mu_valute'
 
 if mysql1['capital']:
+    table_extra = table_extra.upper()  
     table_bank = table_bank.upper()
     table_partner = table_partner.upper()
     table_payment = table_payment.upper()
