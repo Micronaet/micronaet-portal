@@ -247,4 +247,5 @@ for ref in bank_db:
         print 'Jump line error'
         continue    
 f_csv.close()
+print 'Export:', file_csv
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
