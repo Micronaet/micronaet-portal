@@ -189,7 +189,7 @@ query = '''
     SELECT CKY_CNT FROM %s WHERE 
         DTT_ULT_CONSG >= '%s' AND CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
-log_data('Run SQL %s' % query, f_log)
+print 'Run SQL', query
 
 cursor2.execute(query)
 active_partner_code = [record['CKY_CNT'] for record in cursor2]
