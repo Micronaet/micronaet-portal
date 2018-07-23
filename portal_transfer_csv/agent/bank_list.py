@@ -180,6 +180,20 @@ for record in cursor2:
     currency_db[ref] = record['CDS_VLT']
 
 # -----------------------------------------------------------------------------
+# Active partner with delivery
+days = 400
+from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
+query = '''
+    SELECT CKY_CNT FROM %s WHERE 
+        DTT_ULT_CONSG >= '%s' AND CKY_CNT >= '2' AND CKY_CNT < '3';
+    ''' % (table_extra, from_date)
+log_data('Run SQL %s' % query, f_log)
+
+cursor2.execute(query)
+active_partner_code = [record['CKY_CNT'] for record in cursor2]
+
+# ------
+# -----------------------------------------------------------------------------
 # Write output file:
 # -----------------------------------------------------------------------------
 i = 0
@@ -188,7 +202,7 @@ f_csv = open(file_csv, 'w')
 
 # TODO controlla se serve comunicare altri dati
 f_csv.write(
-    'Stato|Conto|Ragione sociale|Paese|Pagamento|Valuta'
+    'Cons. < 400gg|Stato|Conto|Ragione sociale|Paese|Pagamento|Valuta'
     '|Banca 1|IBAN1|BIC1'
     '|Banca 2|IBAN2|BIC2\n'
     )
@@ -211,6 +225,7 @@ for ref in bank_db:
             status = 'IBAN' # Different IBAN
 
         line =  mask % (
+            'X' if partner.get('CKY_CNT') in active_partner_code else '',
             status,
             ref,
             partner.get('CDS_RAGSOC_COGN') or partner.get('CDS_CNT'),
