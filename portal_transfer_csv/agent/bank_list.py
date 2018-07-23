@@ -209,6 +209,7 @@ f_csv.write(
     '|Banca 2|IBAN2|BIC2\n'
     )
 mask = '%s|' * 12 + '\n'
+import pdb; pdb.set_trace()
 for ref in bank_db:
     (partner, bank1, bank2) = bank_db[ref]
     
