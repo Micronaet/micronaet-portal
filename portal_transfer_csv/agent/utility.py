@@ -20,9 +20,24 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+# Standard:
 import os
 import sys
+import shutil
+import ConfigParser
+
+# MySQL access:
+import MySQLdb
+import MySQLdb.cursors
+
+# Utility:
+from utility import *
+from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
+
+# Crypto library:
+import hashlib
+from Crypto.Cipher import AES
 
 # -----------------------------------------------------------------------------
 #                                UTILITY FUNCTION:
