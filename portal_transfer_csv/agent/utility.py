@@ -49,9 +49,9 @@ def mssql_check_export(mysql):
             error += '%s. Line not correct\n' % i
             continue # jump line not correct
 
-        date = line[0]
-        table = line[1]
-        esit = line[2]
+        date = line[0].strip()
+        table = line[1].strip()
+        esit = line[2].strip()
         
         # ---------------------------------------------------------------------
         # Table esit:
