@@ -74,7 +74,15 @@ def mssql_check_export(mysql):
         else:
             error += '%s. Table %s not in check list\n' % (i, table)
             continue # jump line not correct
-
+            
+    # -------------------------------------------------------------------------
+    # Table check list remain:
+    # -------------------------------------------------------------------------
+    if check_list: # not all table removed
+        error += '%s. Table not exported on database [%s]\n' % (
+            i, table, check_list)
+        
+    
     if error: 
         error = 'Database check: %s\n%s' % (
             mysql['database'],
