@@ -21,10 +21,16 @@
 #
 ###############################################################################
 
+# Standard:
 import os
 import sys
+
+# Access:
 import erppeek
 import ConfigParser
+
+# Utilty: 
+from utility import *
 from datetime import datetime, timedelta
 
 # -----------------------------------------------------------------------------
@@ -61,23 +67,6 @@ odoo = erppeek.Client(
 
 # Transafer data:
 f_log = open(file_log, 'a')
-
-# -----------------------------------------------------------------------------
-#                                UTILITY FUNCTION:
-# -----------------------------------------------------------------------------   
-def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
-    ''' Log data:
-    '''
-    message = '%s. [%s] %s%s' % (
-        datetime.now(),
-        mode,
-        message,
-        cr,
-        )
-    if verbose:
-        print message.strip()
-    f_log.write(message)
-    return True
 
 # -----------------------------------------------------------------------------
 #                                      START: 
