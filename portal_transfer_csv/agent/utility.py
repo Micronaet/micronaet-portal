@@ -56,7 +56,7 @@ def mssql_check_export(mysql):
         # ---------------------------------------------------------------------
         # Table esit:
         # ---------------------------------------------------------------------
-        if esit != 0:
+        if esit != '0':
             error += '%s. Table %s negative export esit: %s\n' % (
                 i, table, esit)                
             continue # jump line not correct
