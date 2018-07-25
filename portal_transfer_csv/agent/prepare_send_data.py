@@ -98,6 +98,7 @@ log_data('Start publish procedure', f_log)
 error = mssql_check_export(mysql1)
 if error:
     log_data(error, f_log, mode='ERROR')
+import pdb; pdb.set_trace()    
 connection1 = mssql_connect(mysql1)
 cursor1 = connection1.cursor()
 log_data('Connect with MySQL 1 database: %s' % connection1, f_log)
