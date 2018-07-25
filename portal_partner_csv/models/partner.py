@@ -50,7 +50,7 @@ class ResUsers(models.Model):
     # -------------------------------------------------------------------------
     # Columns:
     # -------------------------------------------------------------------------
-    first_password = fields.char('First password', size=25)
+    first_password = fields.Char('First password', size=25)
 
 class ResPartner(models.Model):
     """ Model name: ResPartner
@@ -75,6 +75,7 @@ class ResPartner(models.Model):
                 string.ascii_letters.upper(), # upper letters
                 string.digits, # numbers
                 u'!@#_-$%', # extra char
+                )
             return ''.join(random.choise(origin) for i in range(size))
         
         user_pool = self.env['res.users']
