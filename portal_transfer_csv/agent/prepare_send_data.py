@@ -27,10 +27,6 @@ import sys
 import shutil
 import ConfigParser
 
-# MySQL access:
-import MySQLdb
-import MySQLdb.cursors
-
 # Utility:
 from utility import *
 from dateutil.relativedelta import relativedelta
@@ -98,7 +94,6 @@ log_data('Start publish procedure', f_log)
 error = mssql_check_export(mysql1)
 if error:
     log_data(error, f_log, mode='ERROR')
-import pdb; pdb.set_trace()    
 connection1 = mssql_connect(mysql1)
 cursor1 = connection1.cursor()
 log_data('Connect with MySQL 1 database: %s' % connection1, f_log)
@@ -161,7 +156,7 @@ log_data('Run SQL %s' % query, f_log)
 
 cursor2.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor2]
-
+import pdb; pdb.set_trace()
 # -----------------------------------------------------------------------------
 # B. Currency list
 currency_db = {}
