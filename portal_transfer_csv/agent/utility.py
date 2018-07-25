@@ -37,6 +37,7 @@ def mssql_check_export(mysql):
     
     error = ''
     i = 0
+    import pdb; pdb.set_trace()
     for line in f_log:
         i += 1
         line = line.strip().split('|')
