@@ -25,6 +25,8 @@ import os
 import sys
 import openerp
 import logging
+import string
+import random
 from openerp import models, fields, api
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -39,6 +41,17 @@ from openerp.tools import (
 
 _logger = logging.getLogger(__name__)
 
+class ResUsers(models.Model):
+    """ Model name: ResPartner
+    """
+    
+    _inherit = 'res.users'
+    
+    # -------------------------------------------------------------------------
+    # Columns:
+    # -------------------------------------------------------------------------
+    first_password = fields.char('First password', size=25)
+
 class ResPartner(models.Model):
     """ Model name: ResPartner
     """
@@ -52,6 +65,18 @@ class ResPartner(models.Model):
     def create_portal_user(self, update=False):
         ''' Create porta user for partner passed:
         '''
+        def get_random_password(size):
+            ''' Generate random password take elements in lower upper number
+                and some random chars
+                Max length is size
+            '''
+            origin = '%s%s%s%s' % (
+                string.ascii_letters, # lower letters
+                string.ascii_letters.upper(), # upper letters
+                string.digits, # numbers
+                u'!@#_-$%', # extra char
+            return ''.join(random.choise(origin) for i in range(size))
+        
         user_pool = self.env['res.users']
         update_list = [] # (partner, user_id)
         
@@ -69,7 +94,7 @@ class ResPartner(models.Model):
             data = {
                 'active': True,
                 'login': ref,
-                'password': 'secret%s' % ref,
+                #'password': 'secret%s' % ref,
                 'partner_id': partner.id,
                 #'name': 'User: %s' % partner.name,
                 'signature': partner.name,                
@@ -80,6 +105,11 @@ class ResPartner(models.Model):
                     users.write(data)
                 user_id = users[0].id
             else:
+                # Generate random password when creating:
+                password = get_random_password(10)
+                data['password'] = password
+                data['first_password'] = password
+                
                 user_id = user_pool.create(data)
             update_list.append((partner, user_id))    
         

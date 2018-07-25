@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -29,7 +29,7 @@ import sys
 import erppeek
 import ConfigParser
 
-# Utilty: 
+# Utilty:
 from utility import *
 from datetime import datetime, timedelta
 
@@ -61,23 +61,21 @@ order_fullname = os.path.expanduser(config.get('fullname', 'order'))
 # Connect to ODOO:
 # -----------------------------------------------------------------------------
 odoo = erppeek.Client(
-    'http://%s:%s' % (hostname, port), 
+    'http://%s:%s' % (hostname, port),
     db=database, user=username, password=password,
     )
 
-# Transafer data:
-f_log = open(file_log, 'a')
-
 # -----------------------------------------------------------------------------
-#                                      START: 
-# -----------------------------------------------------------------------------   
+#                                      START:
+# -----------------------------------------------------------------------------
+f_log = open(file_log, 'a')
 log_data('Start import procedure', f_log)
 
 # -----------------------------------------------------------------------------
-#                                     PARTNER: 
-# -----------------------------------------------------------------------------   
-partner_pool = odoo.model('res.partner') 
-user_pool = odoo.model('res.users') 
+#                                     PARTNER:
+# -----------------------------------------------------------------------------
+partner_pool = odoo.model('res.partner')
+user_pool = odoo.model('res.users')
 
 file_csv = os.path.join(folder, 'partner.csv')
 
@@ -87,7 +85,7 @@ log_data('Start import partner from %s' % file_csv, f_log)
 import pdb; pdb.set_trace()
 update_user_ids = partner_pool.import_csv_partner_data(
     file_csv, user_creation=False)
-    
+
 # Create user procedure:
 # Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
@@ -97,13 +95,13 @@ for partner in partner_pool.browse(update_user_ids):
         continue
     if partner.portal_user_id:
         continue # yet present
-    
+
     user_ids = user_pool.search([
         ('login', '=', partner.ref),
         ])
     if user_ids:
         # TODO manage multiple
-        user_id = user_ids[0]    
+        user_id = user_ids[0]
     else:
         user_id = user_pool.create({
             'active': True,
@@ -111,7 +109,7 @@ for partner in partner_pool.browse(update_user_ids):
             'password': ref,
             'partner_id': partner.id,
             #'name': 'User: %s' % partner.name,
-            'signature': partner.name,                
+            'signature': partner.name,
             })
     update_list.append((partner.id, user_id.id))
 
@@ -120,14 +118,14 @@ for partner_id, user_id in update_list:
     partner_pool.write(partner_id, {
         'portal_user_id': user_id,
         })
-    
+
 # Link user to partner updated
 #partner_pool.create_portal_user(update_user_ids)
 log_data('End import partner from %s' % file_csv, f_log)
 
 # -----------------------------------------------------------------------------
 #                                     DEADLINE:
-# -----------------------------------------------------------------------------   
+# -----------------------------------------------------------------------------
 deadline_pool = odoo.model('portal.deadline')
 log_data('Start import deadline from %s' % deadline_fullname, f_log)
 deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
@@ -135,7 +133,7 @@ log_data('End import o from %s' % deadline_fullname, f_log)
 
 # -----------------------------------------------------------------------------
 #                                     ORDER:
-# -----------------------------------------------------------------------------   
+# -----------------------------------------------------------------------------
 order_pool = odoo.model('portal.sale.order')
 log_data('Start import order from %s' % order_fullname, f_log)
 order_pool.schedule_etl_accounting_order(order_fullname)
@@ -143,5 +141,5 @@ log_data('End import order from %s' % order_fullname, f_log)
 
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
-# -----------------------------------------------------------------------------   
+# -----------------------------------------------------------------------------
 f_log.close()
