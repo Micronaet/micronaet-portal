@@ -79,9 +79,9 @@ mysql2 = {
 
 # Transafer data:
 folder = os.path.expanduser(config.get('transfer', 'folder'))
-compress = os.path.expanduser(config.get('transfer', 'compress'))
+#compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
-password = config.get('transfer', 'password')
+#password = config.get('transfer', 'password')
 days = eval(os.path.expanduser(config.get('transfer', 'days')))
 
 # File to copy in destination folder:
