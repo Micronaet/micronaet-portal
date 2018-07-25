@@ -156,7 +156,7 @@ log_data('Run SQL %s' % query, f_log)
 
 cursor2.execute(query)
 user_db = [record['CKY_CNT'] for record in cursor2]
-import pdb; pdb.set_trace()
+
 # -----------------------------------------------------------------------------
 # B. Currency list
 currency_db = {}
@@ -269,6 +269,7 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
+import pdb; pdb.set_trace()
 # Publish command:        
 log_data('Publish operation: %s' % publish, f_log)
 os.system(publish)
