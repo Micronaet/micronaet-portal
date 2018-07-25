@@ -28,9 +28,63 @@ from datetime import datetime, timedelta
 #                                UTILITY FUNCTION:
 # -----------------------------------------------------------------------------   
 # SQL Connection function:
+def mssql_check_export(mysql):
+    ''' Check status of export in database
+    '''
+    # Check file:
+    f_log = open(mysql['check_file'], 'r')
+    check_list = mysql['check_list']
+    
+    error = ''
+    i = 0
+    for line in f_log:
+        i += 1
+        line = line.strip().split('|')
+        
+        # ---------------------------------------------------------------------
+        # Line format check:
+        # ---------------------------------------------------------------------
+        if len(line) != 3:
+            error += '%s. Line not correct\n' % i
+            continue # jump line not correct
+
+        date = line[0]
+        table = line[1]
+        esit = line[2]
+        
+        # ---------------------------------------------------------------------
+        # Table esit:
+        # ---------------------------------------------------------------------
+        if esit != 0:
+            error += '%s. Table %s negative export esit: %s\n' % (
+                i, table, esit)                
+            continue # jump line not correct
+            
+        # ---------------------------------------------------------------------
+        # Date check:
+        # ---------------------------------------------------------------------
+        # TODO Date check
+        
+        # ---------------------------------------------------------------------
+        # Table check list:
+        # ---------------------------------------------------------------------
+        if table in check_list:
+            check_list.remove(table)
+        else:
+            error += '%s. Table %s not in check list\n' % (i, table)
+            continue # jump line not correct
+
+    if error: 
+        error = 'Database check: %s\n%s' % (
+            mysql['database'],
+            error,
+            )
+    return error
+
 def mssql_connect(mysql):
     ''' Connect to partner MySQL table
     '''
+    
     try: # Every error return no cursor
         return MySQLdb.connect(
             host=mysql['hostname'],

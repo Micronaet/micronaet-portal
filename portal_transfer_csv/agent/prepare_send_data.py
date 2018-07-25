@@ -60,6 +60,8 @@ mysql1 = {
     'port': eval(config.get('mysql1', 'port')),
 
     'capital': eval(config.get('mysql1', 'capital')),
+    'check_export': config.get('mysql1', 'check_export'),
+    'check_list': eval(config.get('mysql1', 'check_list')),
     }
 
 mysql2 = {
@@ -71,6 +73,8 @@ mysql2 = {
     'port': eval(config.get('mysql2', 'port')),
 
     'capital': eval(config.get('mysql2', 'capital')),
+    'check_export': config.get('mysql2', 'check_export'),
+    'check_list': eval(config.get('mysql2', 'check_list')),
     }
 
 # Transafer data:
@@ -91,10 +95,16 @@ f_log = open(file_log, 'a')
 # -----------------------------------------------------------------------------   
 log_data('Start publish procedure', f_log)
 
+error = mssql_check_export(mysql1)
+if error:
+    log_data(error, f_log, mode='ERROR')
 connection1 = mssql_connect(mysql1)
 cursor1 = connection1.cursor()
 log_data('Connect with MySQL 1 database: %s' % connection1, f_log)
 
+error = mssql_check_export(mysql2)
+if error:
+    log_data(error, f_log, mode='ERROR')
 connection2 = mssql_connect(mysql2)
 cursor2 = connection2.cursor()
 log_data('Connect with MySQL 2 database: %s' % connection2, f_log)
@@ -110,7 +120,7 @@ for origin in copy_files:
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
 table_extra = 'pc_progressivi'
-table_rubrica = 'pa_rubr_pdc_clfr'
+table_rubrica = 'pa_rubr_pdc_clfr' # pa
 table_condition = 'pc_condizioni_comm'
 table_payment = 'cp_pagamenti'
 table_currency = 'mu_valute'
