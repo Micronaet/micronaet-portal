@@ -60,7 +60,7 @@ mysql1 = {
     'port': eval(config.get('mysql1', 'port')),
 
     'capital': eval(config.get('mysql1', 'capital')),
-    'check_export': config.get('mysql1', 'check_export'),
+    'check_file': config.get('mysql1', 'check_file'),
     'check_list': eval(config.get('mysql1', 'check_list')),
     }
 
@@ -73,7 +73,7 @@ mysql2 = {
     'port': eval(config.get('mysql2', 'port')),
 
     'capital': eval(config.get('mysql2', 'capital')),
-    'check_export': config.get('mysql2', 'check_export'),
+    'check_file': config.get('mysql2', 'check_file'),
     'check_list': eval(config.get('mysql2', 'check_list')),
     }
 
