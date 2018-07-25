@@ -70,7 +70,7 @@ folder = os.path.expanduser(config.get('transfer', 'folder'))
 compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
 password = config.get('transfer', 'password')
-days = 365 # create user only for active partner
+days = eval(os.path.expanduser(config.get('transfer', 'days')))
 
 # File to copy in destination folder:
 copy_files = eval(config.get('copy', 'origin'))
@@ -128,7 +128,7 @@ def clean_ascii(value):
 def get_html_bank(record):
     ''' Rerturn HTML record for bank label for portal representation
     '''
-    mask = '<p><b>Bank: </b>%s<br/><b>IBAN code: </b>%s<br/>'  + \
+    mask = '<p><b>Bank: </b>%s<br/><b>IBAN code: </b>%s<br/>' + \
         '<b>BIC SWIFT code: </b>%s<br/></p>' 
     return mask % (
         record['CDS_BANCA'] or '/',
@@ -175,10 +175,8 @@ table_payment = 'cp_pagamenti'
 table_currency = 'mu_valute'
 table_order = 'oc_testate'
 table_line = 'oc_righe'
-table_currency = 'mu_valute'
 
-file_csv = os.path.join(folder, 'partner.csv')
-if mysql1['capital']: # Use first SQL for check (are on the sasme server)
+if mysql1['capital']: # Use first SQL for check (are on the same MySQL server)
     table_rubrica = table_rubrica.upper()
     table_extra = table_extra.upper()
     table_condition = table_condition.upper()
@@ -186,10 +184,9 @@ if mysql1['capital']: # Use first SQL for check (are on the sasme server)
     table_currency = table_currency.upper()
     table_order = table_order.upper()
     table_line = table_line.upper()
-    table_currency = table_currency.upper()
 
 log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s, 
-    currency: %s, order: %s - %s, currency: %s)''' % (
+    currency: %s, order: %s - %s)''' % (
         table_rubrica, 
         table_extra, 
         table_condition, 
@@ -197,7 +194,6 @@ log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s,
         table_currency,
         table_order,
         table_line,
-        table_currency,
         ), f_log)
 
 # -----------------------------------------------------------------------------
@@ -215,11 +211,10 @@ user_db = [record['CKY_CNT'] for record in cursor1]
 # -----------------------------------------------------------------------------
 # B. Currency list
 currency_db = {}
-
 query = 'SELECT * FROM %s;' % table_currency
 log_data('Run SQL %s' % query, f_log)
-
 cursor2.execute(query)
+
 for record in cursor2:
     ref = record['NKY_VLT']
     currency_db[ref] = record['CDS_VLT']
@@ -229,12 +224,11 @@ for record in cursor2:
 # -----------------------------------------------------------------------------
 # C. Load bank reference
 bank_db = {}
-
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_condition
 log_data('Run SQL %s' % query, f_log)
-
 cursor2.execute(query)
+
 for record in cursor2:
     bank_db[record['CKY_CNT']] = get_html_bank(record)
 
@@ -246,6 +240,7 @@ log_data('Run SQL %s' % query, f_log)
 cursor2.execute(query)
 
 i = 0
+file_csv = os.path.join(folder, 'partner.csv')
 f_csv = open(file_csv, 'w')
 for record in cursor2:
     try:
@@ -270,15 +265,14 @@ f_csv.close()
 # -----------------------------------------------------------------------------   
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
-
 log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
 
 # -----------------------------------------------------------------------------
 # A. OC Header
 query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
 log_data('Run SQL %s' % query, f_log)
-
 cursor1.execute(query)
+
 order_db = {}
 for record in cursor1:
     key = get_key(record)
@@ -299,8 +293,8 @@ for record in cursor1:
 # B. OC Line
 query = 'SELECT * FROM %s;' % table_line
 log_data('Run SQL %s' % query, f_log)
-
 cursor1.execute(query)
+
 for record in cursor1:
     key = get_key(record)
     header = order_db.get(key, '')
@@ -335,9 +329,8 @@ f_log.close()
 sys.exit() # END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # -----------------------------------------------------------------------------
-#                                     TRANSFER: 
+#                                ENCRYPTO TRANSFER: 
 # -----------------------------------------------------------------------------   
-
 # Generate key from password:
 key = hashlib.sha256(password).digest()
 IV = '\x00' * 16 # Empty vector
