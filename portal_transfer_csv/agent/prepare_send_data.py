@@ -119,32 +119,34 @@ for origin in copy_files:
 # -----------------------------------------------------------------------------
 #                                     PARTNER: 
 # -----------------------------------------------------------------------------   
-table_extra = 'pc_progressivi'
-table_rubrica = 'pa_rubr_pdc_clfr' # pa
-table_condition = 'pc_condizioni_comm'
-table_payment = 'cp_pagamenti'
-table_currency = 'mu_valute'
-table_order = 'oc_testate'
-table_line = 'oc_righe'
+table_order = 'oc_testate' # DB1
+table_line = 'oc_righe' # DB1
+
+table_extra = 'pc_progressivi' # DB2
+table_rubrica = 'pa_rubr_pdc_clfr' # DB2
+table_condition = 'pc_condizioni_comm' # DB2
+table_payment = 'cp_pagamenti' # DB2
+table_currency = 'mu_valute' # DB2
 
 if mysql1['capital']: # Use first SQL for check (are on the same MySQL server)
+    table_order = table_order.upper()
+    table_line = table_line.upper()
     table_rubrica = table_rubrica.upper()
     table_extra = table_extra.upper()
     table_condition = table_condition.upper()
     table_payment = table_payment.upper()
     table_currency = table_currency.upper()
-    table_order = table_order.upper()
-    table_line = table_line.upper()
 
-log_data('''Extract partner: %s, last delivery %s, condition: %s, payment: %s, 
-    currency: %s, order: %s - %s)''' % (
-        table_rubrica, 
-        table_extra, 
+log_data('''Extract order: %s - %s, partner: %s, last delivery %s, 
+    condition: %s, payment: %s, currency: %s)''' % (
+        table_order,
+        table_line,
+
+        table_rubrica,
+        table_extra,
         table_condition, 
         table_payment,
         table_currency,
-        table_order,
-        table_line,
         ), f_log)
 
 # -----------------------------------------------------------------------------
@@ -156,8 +158,8 @@ query = '''
     ''' % (table_extra, from_date)
 log_data('Run SQL %s' % query, f_log)
 
-cursor1.execute(query)
-user_db = [record['CKY_CNT'] for record in cursor1]
+cursor2.execute(query)
+user_db = [record['CKY_CNT'] for record in cursor2]
 
 # -----------------------------------------------------------------------------
 # B. Currency list
