@@ -80,7 +80,7 @@ def mssql_check_export(mysql):
     # -------------------------------------------------------------------------
     if check_list: # not all table removed
         error += '%s. Table not exported on database [%s]\n' % (
-            i, table, check_list)
+            i, check_list)
         
     
     if error: 
