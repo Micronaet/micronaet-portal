@@ -119,7 +119,7 @@ def mssql_connect(mysql):
 def log_data(message, f_log, mode='INFO', verbose=True, cr='\n'):
     ''' Log data:
     '''
-    message = '%s. [%s] %s%s' % (
+    message = '%s [%s] %s%s' % (
         datetime.now(),
         mode,
         message,
