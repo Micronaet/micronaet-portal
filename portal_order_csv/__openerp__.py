@@ -37,6 +37,8 @@
     'data': [
         'security/ir.model.access.csv',    
         'views/order_view.xml',
+        
+        'scheduler.xml',
         ],
     'active': False,
     'installable': True,
