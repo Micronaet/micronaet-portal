@@ -155,7 +155,8 @@ cursor2.execute(query)
 
 for record in cursor2:
     ref = record['NKY_VLT']
-    currency_db[ref] = record['CDS_VLT']
+    currency_db[ref] = record['CSG_VLT']
+    #currency_db[ref] = record['CDS_VLT']
     # IST_LIT_EURO (sign)
     # CSG_SIMB_VLT (symbol)
 
