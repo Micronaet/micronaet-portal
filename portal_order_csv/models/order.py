@@ -156,8 +156,8 @@ class PortalSaleOrder(models.Model):
                 
         # Update total and deadline:        
         _logger.error('Update order header information')
-        for key, record in order_db.iteritems():
-            order, total, deadline = record
+        for key in order_db:
+            order, total, deadline = order_db[key]
             order.write({
                 'total': total,
                 'deadline': deadline,
