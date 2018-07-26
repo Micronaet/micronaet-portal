@@ -148,6 +148,19 @@ for origin in copy_files:
 # -----------------------------------------------------------------------------
 # 2. ORDERS: 
 # -----------------------------------------------------------------------------   
+# -----------------------------------------------------------------------------
+# >> Currency list
+currency_db = {}
+query = 'SELECT * FROM %s;' % table_currency
+log_data('Run SQL %s' % query, f_log)
+cursor2.execute(query)
+
+for record in cursor2:
+    ref = record['NKY_VLT']
+    currency_db[ref] = record['CDS_VLT']
+    # IST_LIT_EURO (sign)
+    # CSG_SIMB_VLT (symbol)
+
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
 log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
@@ -211,7 +224,6 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 # 3. PARTNER: 
 # -----------------------------------------------------------------------------   
-
 # -----------------------------------------------------------------------------
 # A. Load active partner (date of delivery)
 from_date = (datetime.now() - relativedelta(days=days)).strftime('%Y-%m-%d')
@@ -229,20 +241,7 @@ user_db = set(order_cky_db) | set(active_partner_db)
 log_data('Active users: %s' % (user_db, ), f_log)
 
 # -----------------------------------------------------------------------------
-# B. Currency list
-currency_db = {}
-query = 'SELECT * FROM %s;' % table_currency
-log_data('Run SQL %s' % query, f_log)
-cursor2.execute(query)
-
-for record in cursor2:
-    ref = record['NKY_VLT']
-    currency_db[ref] = record['CDS_VLT']
-    # IST_LIT_EURO (sign)
-    # CSG_SIMB_VLT (symbol)
-
-# -----------------------------------------------------------------------------
-# C. Load bank reference
+# B. Load bank reference
 bank_db = {}
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_condition
@@ -253,7 +252,7 @@ for record in cursor2:
     bank_db[record['CKY_CNT']] = get_html_bank(record)
 
 # -----------------------------------------------------------------------------
-# D. Load partner list
+# C. Load partner list
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_rubrica
 log_data('Run SQL %s' % query, f_log)
