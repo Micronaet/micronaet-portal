@@ -92,6 +92,7 @@ class PortalSaleOrder(models.Model):
                 # -------------------------------------------------------------
                 # Header creation:
                 # -------------------------------------------------------------
+                # Fields:
                 key = row[0]
                 partner_ref = row[2]
                 address_ref = row[3] # TODO
@@ -125,19 +126,22 @@ class PortalSaleOrder(models.Model):
                 # -------------------------------------------------------------
                 # Line creation:
                 # -------------------------------------------------------------
+                # Fields:
+                quantity = float(row[15])
+                unit_price = float(row[12])
+                
                 data = {
                     'order_id': order_id,
 
                     'sequence': row[7],  
                     'deadline': row[8],
                     'name': row[10],
-                    'quantity': row[15],
-                    'unit_price': row[12],
-                    'subtotal': 0.0
+                    'quantity': quantity,
+                    'unit_price': unit_price,
+                    'subtotal': quantity * unit_price,
                     }
                 line_pool.create(data)
             except:
-                import pdb; pdb.set_trace()
                 _logger.error('%s. General error on line' % i)
                 continue    
         return True
