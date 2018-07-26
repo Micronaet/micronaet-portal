@@ -36,8 +36,8 @@ import random
 from datetime import datetime, timedelta
 
 # Crypto library:
-import hashlib
-from Crypto.Cipher import AES
+#import hashlib
+#from Crypto.Cipher import AES
 
 # -----------------------------------------------------------------------------
 #                                UTILITY FUNCTION:
@@ -179,4 +179,22 @@ def get_key(record):
         record['NGB_SR_DOC'],
         record['NGL_DOC'],        
         )
+        
+'''def crypt_text(text):
+    # -------------------------------------------------------------------------
+    #                                ENCRYPTO TRANSFER: 
+    # -------------------------------------------------------------------------
+    # Generate key from password:
+    key = hashlib.sha256(password).digest()
+    IV = '\x00' * 16 # Empty vector
+    mode = AES.MODE_CBC
+    encryptor = AES.new(key, mode, IV=IV)
 
+    text = 'j' * 64 + 'i' * 128
+    ciphertext = encryptor.encrypt(text)
+    print '\nText: ', text, '\nCipher:', ciphertext
+
+    decryptor = AES.new(key, mode, IV=IV)
+    plain = decryptor.decrypt(ciphertext)
+    print '\nCipher:', ciphertext, '\nPlain: ', plain        
+'''

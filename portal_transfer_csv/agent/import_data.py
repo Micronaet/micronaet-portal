@@ -52,10 +52,16 @@ port = eval(config.get('portal', 'port'))
 
 # Folder:
 folder = os.path.expanduser(config.get('folder', 'input'))
-file_log = 'activity.log'
 
 deadline_fullname = os.path.expanduser(config.get('fullname', 'deadline'))
 order_fullname = os.path.expanduser(config.get('fullname', 'order'))
+
+# Log files:
+schedule_log = os.path.expanduser(config.get('log', 'schedule'))
+f_schedule = open(schedule_log, 'a')
+
+activity_log = os.path.expanduser(config.get('log', 'activity'))
+f_activity = open(activity_log, 'a')
 
 # -----------------------------------------------------------------------------
 # Connect to ODOO:
@@ -68,8 +74,8 @@ odoo = erppeek.Client(
 # -----------------------------------------------------------------------------
 #                                      START:
 # -----------------------------------------------------------------------------
-f_log = open(file_log, 'a')
-log_data('Start import procedure', f_log)
+log_data('Start import procedure', f_schedule)
+log_data('ODOO Connection: %s' % odoo, f_activity)
 
 # -----------------------------------------------------------------------------
 #                                     PARTNER:
@@ -78,8 +84,7 @@ partner_pool = odoo.model('res.partner')
 user_pool = odoo.model('res.users')
 
 file_csv = os.path.join(folder, 'partner.csv')
-
-log_data('Start import partner from %s' % file_csv, f_log)
+log_data('Start import partner from %s' % file_csv, f_activity)
 
 # Create partner:
 update_user_ids = partner_pool.import_csv_partner_data(
@@ -89,8 +94,10 @@ update_user_ids = partner_pool.import_csv_partner_data(
 # Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
 total_user = len(update_user_ids)
-print 'User list # %s' % total_user
+log_data('User list # %s' % total_user, f_activity)
+
 i = 0
+new_users = ''
 for partner in partner_pool.browse(update_user_ids):
     i += 1
     if i % 10 == 0:
@@ -109,6 +116,7 @@ for partner in partner_pool.browse(update_user_ids):
         user_id = user_ids[0]
     else:
         first_password = get_random_password(10)
+        new_users += '[%s] ' % ref
         user_id = user_pool.create({
             'active': True,
             'login': ref,
@@ -120,6 +128,8 @@ for partner in partner_pool.browse(update_user_ids):
             })
     update_list.append((partner.id, user_id.id))
 
+log_data('New users: %s' % new_users, f_activity)
+
 # Update portal user for partner:
 for partner_id, user_id in update_list:
     partner_pool.write(partner_id, {
@@ -128,25 +138,29 @@ for partner_id, user_id in update_list:
 
 # Link user to partner updated
 #partner_pool.create_portal_user(update_user_ids)
-log_data('End import partner from %s' % file_csv, f_log)
+log_data('End import partner from %s' % file_csv, f_activity)
 
 # -----------------------------------------------------------------------------
 #                                     DEADLINE:
 # -----------------------------------------------------------------------------
 deadline_pool = odoo.model('portal.deadline')
-log_data('Start import deadline from %s' % deadline_fullname, f_log)
+log_data('Start import deadline from %s' % deadline_fullname, f_activity)
 deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)
-log_data('End import o from %s' % deadline_fullname, f_log)
+log_data('End import o from %s' % deadline_fullname, f_activity)
 
 # -----------------------------------------------------------------------------
 #                                     ORDER:
 # -----------------------------------------------------------------------------
 order_pool = odoo.model('portal.sale.order')
-log_data('Start import order from %s' % order_fullname, f_log)
+log_data('Start import order from %s' % order_fullname, f_activity)
 order_pool.schedule_etl_accounting_order(order_fullname)
-log_data('End import order from %s' % order_fullname, f_log)
+log_data('End import order from %s' % order_fullname, f_activity)
 
 # -----------------------------------------------------------------------------
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------
-f_log.close()
+log_data('End import procedure', f_schedule)
+
+# Close log files:
+f_schedule.close()
+f_activity.close()

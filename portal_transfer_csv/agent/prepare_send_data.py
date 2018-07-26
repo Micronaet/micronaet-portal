@@ -32,10 +32,6 @@ from utility import *
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 
-# Crypto library:
-import hashlib
-from Crypto.Cipher import AES
-
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
@@ -75,35 +71,37 @@ mysql2 = {
 
 # Transafer data:
 folder = os.path.expanduser(config.get('transfer', 'folder'))
-#compress = os.path.expanduser(config.get('transfer', 'compress'))
 publish = config.get('transfer', 'publish')
-#password = config.get('transfer', 'password')
-days = eval(os.path.expanduser(config.get('transfer', 'days')))
+days = eval(config.get('transfer', 'days'))
 
 # File to copy in destination folder:
 copy_files = eval(config.get('copy', 'origin'))
 
-file_log = 'activity.log'
-f_log = open(file_log, 'a')
+# Log files:
+schedule_log = os.path.expanduser(config.get('log', 'schedule'))
+f_schedule = open(schedule_log, 'a')
+
+activity_log = os.path.expanduser(config.get('log', 'activity'))
+f_activity = open(activity_log, 'a')
 
 # -----------------------------------------------------------------------------
 #                                      START: 
 # -----------------------------------------------------------------------------   
-log_data('Start publish procedure', f_log)
+log_data('Start publish procedure', f_schedule)
 
 error = mssql_check_export(mysql1)
 if error:
-    log_data(error, f_log, mode='ERROR')
+    log_data(error, f_activity, mode='ERROR')
 connection1 = mssql_connect(mysql1)
 cursor1 = connection1.cursor()
-log_data('Connect with MySQL 1 database: %s' % connection1, f_log)
+log_data('Connect with MySQL 1 database: %s' % connection1, f_activity)
 
 error = mssql_check_export(mysql2)
 if error:
-    log_data(error, f_log, mode='ERROR')
+    log_data(error, f_activity, mode='ERROR')
 connection2 = mssql_connect(mysql2)
 cursor2 = connection2.cursor()
-log_data('Connect with MySQL 2 database: %s' % connection2, f_log)
+log_data('Connect with MySQL 2 database: %s' % connection2, f_activity)
 
 # -----------------------------------------------------------------------------   
 # Initial startup for table:
@@ -136,12 +134,12 @@ log_data('''Extract order: %s - %s, partner: %s, last delivery %s,
         table_condition, 
         table_payment,
         table_currency,
-        ), f_log)
+        ), f_activity)
 
 # -----------------------------------------------------------------------------
 # 1. DEADLINE PAYMENT:
 # -----------------------------------------------------------------------------   
-log_data('Copy as is files: %s' % (copy_files, ), f_log)
+log_data('Copy in data folder files: %s' % (copy_files, ), f_activity)
 for origin in copy_files:
     shutil.copy(origin, folder)
 
@@ -152,7 +150,7 @@ for origin in copy_files:
 # >> Currency list
 currency_db = {}
 query = 'SELECT * FROM %s;' % table_currency
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 cursor2.execute(query)
 
 for record in cursor2:
@@ -163,12 +161,13 @@ for record in cursor2:
 
 file_csv = os.path.join(folder, 'order.csv')
 f_csv = open(file_csv, 'w')
-log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
+log_data('Extract order: %s, detail: %s)' % (
+    table_order, table_line), f_activity)
 
 # -----------------------------------------------------------------------------
 # >> A. OC Header
 query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 cursor1.execute(query)
 
 order_db = {}
@@ -196,7 +195,7 @@ for record in cursor1:
 # -----------------------------------------------------------------------------
 # >> B. OC Line
 query = 'SELECT * FROM %s;' % table_line
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 cursor1.execute(query)
 
 for record in cursor1:
@@ -231,21 +230,21 @@ query = '''
     SELECT CKY_CNT FROM %s WHERE 
         DTT_ULT_CONSG >= '%s' AND CKY_CNT >= '2' AND CKY_CNT < '3';
     ''' % (table_extra, from_date)
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 
 cursor2.execute(query)
 
 # User partner to create:
 active_partner_db = [record['CKY_CNT'] for record in cursor2]
 user_db = set(order_cky_db) | set(active_partner_db)
-log_data('Active users: %s' % (user_db, ), f_log)
+log_data('Active users: %s' % (user_db, ), f_activity)
 
 # -----------------------------------------------------------------------------
 # B. Load bank reference
 bank_db = {}
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_condition
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 cursor2.execute(query)
 
 for record in cursor2:
@@ -255,7 +254,7 @@ for record in cursor2:
 # C. Load partner list
 query = 'SELECT * FROM %s WHERE CKY_CNT >= \'2\' AND CKY_CNT < \'3\';' % \
     table_rubrica
-log_data('Run SQL %s' % query, f_log)
+log_data('Run SQL %s' % query, f_activity)
 cursor2.execute(query)
 
 i = 0
@@ -283,27 +282,13 @@ f_csv.close()
 #                                  END OPERATION:
 # -----------------------------------------------------------------------------   
 # Publish command:        
-log_data('Publish operation: %s' % publish, f_log)
+log_data('Publish operation: %s' % publish, f_activity)
 os.system(publish)
 
+log_data('End publish operation', f_schedule)
+
 # Close open files:
-f_log.close()  
-sys.exit() # END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-# -----------------------------------------------------------------------------
-#                                ENCRYPTO TRANSFER: 
-# -----------------------------------------------------------------------------   
-# Generate key from password:
-key = hashlib.sha256(password).digest()
-IV = '\x00' * 16 # Empty vector
-mode = AES.MODE_CBC
-encryptor = AES.new(key, mode, IV=IV)
-
-text = 'j' * 64 + 'i' * 128
-ciphertext = encryptor.encrypt(text)
-print '\nText: ', text, '\nCipher:', ciphertext
-
-decryptor = AES.new(key, mode, IV=IV)
-plain = decryptor.decrypt(ciphertext)
-print '\nCipher:', ciphertext, '\nPlain: ', plain        
+f_schedule.close()  
+f_activity.close()  
+sys.exit() 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
