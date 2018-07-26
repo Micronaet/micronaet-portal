@@ -106,14 +106,77 @@ cursor2 = connection2.cursor()
 log_data('Connect with MySQL 2 database: %s' % connection2, f_log)
 
 # -----------------------------------------------------------------------------
-#                                 DEADLINE PAYMENT:
+# 1. DEADLINE PAYMENT:
 # -----------------------------------------------------------------------------   
 log_data('Copy as is files: %s' % (copy_files, ), f_log)
 for origin in copy_files:
     shutil.copy(origin, folder)
 
 # -----------------------------------------------------------------------------
-#                                     PARTNER: 
+# 2. ORDERS: 
+# -----------------------------------------------------------------------------   
+file_csv = os.path.join(folder, 'order.csv')
+f_csv = open(file_csv, 'w')
+log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
+
+# -----------------------------------------------------------------------------
+# >> A. OC Header
+query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
+log_data('Run SQL %s' % query, f_log)
+cursor1.execute(query)
+
+order_db = {}
+order_cky_db = [] # List of account code for create user login
+for record in cursor1:
+    key = get_key(record)
+    
+    cky = record['CKY_CNT_CLFR'] or ''
+    if cky and cky not in order_cky_db:
+        order_cky_db.append(cky)
+
+    order_db[key] = '%s|%s|%s|%s|%s|%s|%s|%s' % (
+        key, 
+        record['DTT_DOC'] or '',
+        cky,
+        record['CKY_CNT_SPED_ALT'] or '',
+        record['NKY_CAUM'] or '',
+        record['NKY_PAG'] or '',
+        record['CDS_NOTE'] or '',
+        currency_db.get(record['NKY_VLT'], ''),
+        #record['NKY_CNT_AGENTE'] or '',
+        #record['IST_PORTO'] or '',
+        )
+
+# -----------------------------------------------------------------------------
+# >> B. OC Line
+query = 'SELECT * FROM %s;' % table_line
+log_data('Run SQL %s' % query, f_log)
+cursor1.execute(query)
+
+for record in cursor1:
+    key = get_key(record)
+    header = order_db.get(key, '')
+    if not header:
+        continue # no header order now
+
+    line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
+        header,
+        record['NPR_RIGA'] or '', # pos: 8
+
+        record['DTT_SCAD'] or '',
+        record['CKY_ART'] or '',
+        record['CDS_VARIAZ_ART'] or '',
+        record['NPZ_UNIT'] or '',
+        record['NDC_QTA'] or '',
+        record['CKY_ART'] or '',
+        record['NQT_RIGA_O_PLOR'] or '',
+        record['NCF_CONV'] or '',
+        )
+    f_csv.write(clean_ascii(line))
+f_csv.close()
+
+# -----------------------------------------------------------------------------
+# 3. PARTNER: 
 # -----------------------------------------------------------------------------   
 table_order = 'oc_testate' # DB1
 table_line = 'oc_righe' # DB1
@@ -155,7 +218,10 @@ query = '''
 log_data('Run SQL %s' % query, f_log)
 
 cursor2.execute(query)
-user_db = [record['CKY_CNT'] for record in cursor2]
+
+# User partner to create:
+active_partner_db = [record['CKY_CNT'] for record in cursor2]
+user_db = set(order_cky_db) | set(active_partner_db)
 
 # -----------------------------------------------------------------------------
 # B. Currency list
@@ -207,63 +273,6 @@ for record in cursor2:
     except: 
         print 'Jump line error'
         continue
-f_csv.close()
-
-# -----------------------------------------------------------------------------
-#                                     ORDERS: 
-# -----------------------------------------------------------------------------   
-file_csv = os.path.join(folder, 'order.csv')
-f_csv = open(file_csv, 'w')
-log_data('Extract order: %s, detail: %s)' % (table_order, table_line), f_log)
-
-# -----------------------------------------------------------------------------
-# A. OC Header
-query = 'SELECT * FROM %s WHERE CSG_DOC="OC";' % table_order
-log_data('Run SQL %s' % query, f_log)
-cursor1.execute(query)
-
-order_db = {}
-for record in cursor1:
-    key = get_key(record)
-    order_db[key] = '%s|%s|%s|%s|%s|%s|%s|%s' % (
-        key, 
-        record['DTT_DOC'] or '',
-        record['CKY_CNT_CLFR'] or '',
-        record['CKY_CNT_SPED_ALT'] or '',
-        record['NKY_CAUM'] or '',
-        record['NKY_PAG'] or '',
-        record['CDS_NOTE'] or '',
-        currency_db.get(record['NKY_VLT'], ''),
-        #record['NKY_CNT_AGENTE'] or '',
-        #record['IST_PORTO'] or '',
-        )
-
-# -----------------------------------------------------------------------------
-# B. OC Line
-query = 'SELECT * FROM %s;' % table_line
-log_data('Run SQL %s' % query, f_log)
-cursor1.execute(query)
-
-for record in cursor1:
-    key = get_key(record)
-    header = order_db.get(key, '')
-    if not header:
-        continue # no header order now
-
-    line = '%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
-        header,
-        record['NPR_RIGA'] or '', # pos: 8
-
-        record['DTT_SCAD'] or '',
-        record['CKY_ART'] or '',
-        record['CDS_VARIAZ_ART'] or '',
-        record['NPZ_UNIT'] or '',
-        record['NDC_QTA'] or '',
-        record['CKY_ART'] or '',
-        record['NQT_RIGA_O_PLOR'] or '',
-        record['NCF_CONV'] or '',
-        )
-    f_csv.write(clean_ascii(line))
 f_csv.close()
 
 # -----------------------------------------------------------------------------
