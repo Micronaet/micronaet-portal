@@ -88,7 +88,13 @@ update_user_ids = partner_pool.import_csv_partner_data(
 # Create user procedure:
 # Note: moved here instead of ODOO module procedure (for rollback error)
 update_list = [] # (partner_id, user_id)
+total_user = len(update_user_ids)
+print 'User list # %s' % total_user
+i = 0
 for partner in partner_pool.browse(update_user_ids):
+    i += 1
+    if i % 10 == 0:
+        print 'User create/update: %s / %s' % (i, total_user)
     ref = partner.ref
     if not ref:
         continue
