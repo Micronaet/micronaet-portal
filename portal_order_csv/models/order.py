@@ -79,6 +79,8 @@ class PortalSaleOrder(models.Model):
         i = 0        
         for line in open(fullname, 'r'):
             i += 1
+            if i == 10: # XXX remove
+                import pdb; pdb.set_trace()
             try:
                 row = line.strip().split('|')
                 if tot_col == False:
