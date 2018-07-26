@@ -95,7 +95,6 @@ class ResPartner(models.Model):
             data = {
                 'active': True,
                 'login': ref,
-                #'password': 'secret%s' % ref,
                 'partner_id': partner.id,
                 #'name': 'User: %s' % partner.name,
                 'signature': partner.name,                
@@ -142,13 +141,19 @@ class ResPartner(models.Model):
             if len(row) != max_col:
                 _logger.error('Different col: %s' % line)
                 continue
-                    
+            
+            # -----------------------------------------------------------------
+            # Fields:        
+            # -----------------------------------------------------------------
             ref = row[0]
             name = row[1]
             street = row[2]
             create_user = row[3] == 'X'
             portal_payment = row[4]
             
+            # -----------------------------------------------------------------
+            # Partner creation:
+            # -----------------------------------------------------------------
             partners = self.search([('ref', '=', ref)])
             data = {
                 'ref': ref,
@@ -162,14 +167,17 @@ class ResPartner(models.Model):
             if partners: 
                 # TODO multiple management
                 partner = partners[0]
-                partner_user_ids.append(partner)
                 partners.write(data)
             else:
                 partner = self.create(data)
-                partner_user_ids.append(partner)
-                
-            break # TODO remove
             
+            # Create user only for X selection
+            if create_user:    
+                partner_user_ids.append(partner)
+
+        # ---------------------------------------------------------------------
+        # User creation:
+        # ---------------------------------------------------------------------        
         if user_creation:
             _logger.info('Update user')
             self.create_portal_user(partner_user_ids)

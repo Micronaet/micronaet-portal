@@ -103,10 +103,12 @@ for partner in partner_pool.browse(update_user_ids):
         # TODO manage multiple
         user_id = user_ids[0]
     else:
+        password = get_random_password(10)
         user_id = user_pool.create({
             'active': True,
             'login': ref,
-            'password': ref,
+            'first_password': password,
+            'password': password,
             'partner_id': partner.id,
             #'name': 'User: %s' % partner.name,
             'signature': partner.name,

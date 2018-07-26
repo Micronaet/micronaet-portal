@@ -42,6 +42,19 @@ from Crypto.Cipher import AES
 # -----------------------------------------------------------------------------
 #                                UTILITY FUNCTION:
 # -----------------------------------------------------------------------------   
+def get_random_password(size):
+    ''' Generate random password take elements in lower upper number
+        and some random chars
+        Max length is size
+    '''
+    origin = '%s%s%s%s' % (
+        string.ascii_letters, # lower letters
+        string.ascii_letters.upper(), # upper letters
+        string.digits, # numbers
+        u'!@#_-$%', # extra char
+        )
+    return ''.join(random.choise(origin) for i in range(size))
+            
 # SQL Connection function:
 def mssql_check_export(mysql):
     ''' Check status of export in database
