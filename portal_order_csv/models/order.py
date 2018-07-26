@@ -118,8 +118,12 @@ class PortalSaleOrder(models.Model):
                     'note': row[6],                
                     }
                 if key not in order_db:
-                    order_db[key] = self.create(header).id
-                order_id = order_db[key]
+                    order_db[key] = [
+                        self.create(header) # Browse
+                        0.0, # Total
+                        False, # Deadline
+                        ]
+                order_id = order_db[key][0].id
                 
                 # -------------------------------------------------------------
                 # Line creation:
@@ -127,21 +131,37 @@ class PortalSaleOrder(models.Model):
                 # Fields:
                 quantity = float(row[15])
                 unit_price = float(row[12])
+                subtotal = quantity * unit_price
+                deadline = row[9]
+                
+                # Update order fields: 
+                order_db[key][1] += subtotal
+                if not order_db[key][2] or deadline < order_db[key][2]
+                    order_db[key][2] = deadline
                 
                 data = {
                     'order_id': order_id,
 
                     'sequence': row[7],  
-                    'deadline': row[9],
+                    'deadline': deadline,
                     'name': row[11],
                     'quantity': quantity,
                     'unit_price': unit_price,
-                    'subtotal': quantity * unit_price,
+                    'subtotal': subtotal,
                     }
                 line_pool.create(data)
             except:
                 _logger.error('%s. General error on line' % i)
-                continue    
+                continue
+                
+        # Update total and deadline:        
+        _logger.error('%s. Update order header information')
+        for record in order_db:
+            order, total, deadline = record
+            order.write({
+                'total': total,
+                'deadline': deadline,
+                })
         return True
         
     # -------------------------------------------------------------------------
