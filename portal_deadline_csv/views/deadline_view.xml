@@ -73,6 +73,7 @@
         <field name="arch" type="xml">
             <graph string="Deadline">
                 <field name="deadline" readonly="1"/>
+                <field name="payment"  readonly="1"/>
                 <field name="total" operator="+" readonly="1"/>
             </graph>
         </field>
