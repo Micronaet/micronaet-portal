@@ -155,7 +155,6 @@ class PortalSaleOrder(models.Model):
                 continue
                 
         # Update total and deadline:        
-        import pdb; pdb.set_trace()
         _logger.error('Update order header information')
         for key, record in order_db.iteritems():
             order, total, deadline = record
