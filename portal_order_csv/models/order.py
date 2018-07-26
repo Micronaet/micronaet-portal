@@ -131,8 +131,8 @@ class PortalSaleOrder(models.Model):
                     'sequence': row[7],  
                     'deadline': row[8],
                     'name': row[10],
-                    'quantity': row[12],
-                    'unit_price': row[11],
+                    'quantity': row[15],
+                    'unit_price': row[12],
                     'subtotal': 0.0
                     }
                 line_pool.create(data)
