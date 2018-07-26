@@ -116,7 +116,7 @@ class PortalDeadline(models.Model):
                     payment = clean(line[3]).lower()
                     invoice = clean(line[4])
                     date = format_date(line[5])
-                    currency = clean(line[6])
+                    currency = clean(line[7])
                     
                     if partner_ref[:1] == '4':
                         continue # XXX no supplier data
