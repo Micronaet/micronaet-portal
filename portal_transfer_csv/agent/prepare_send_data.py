@@ -105,6 +105,39 @@ connection2 = mssql_connect(mysql2)
 cursor2 = connection2.cursor()
 log_data('Connect with MySQL 2 database: %s' % connection2, f_log)
 
+# -----------------------------------------------------------------------------   
+# Initial startup for table:
+# -----------------------------------------------------------------------------   
+table_order = 'oc_testate' # DB1
+table_line = 'oc_righe' # DB1
+
+table_extra = 'pc_progressivi' # DB2
+table_rubrica = 'pa_rubr_pdc_clfr' # DB2
+table_condition = 'pc_condizioni_comm' # DB2
+table_payment = 'cp_pagamenti' # DB2
+table_currency = 'mu_valute' # DB2
+
+if mysql1['capital']: # Use first SQL for check (are on the same MySQL server)
+    table_order = table_order.upper()
+    table_line = table_line.upper()
+    table_rubrica = table_rubrica.upper()
+    table_extra = table_extra.upper()
+    table_condition = table_condition.upper()
+    table_payment = table_payment.upper()
+    table_currency = table_currency.upper()
+
+log_data('''Extract order: %s - %s, partner: %s, last delivery %s, 
+    condition: %s, payment: %s, currency: %s)''' % (
+        table_order,
+        table_line,
+
+        table_rubrica,
+        table_extra,
+        table_condition, 
+        table_payment,
+        table_currency,
+        ), f_log)
+
 # -----------------------------------------------------------------------------
 # 1. DEADLINE PAYMENT:
 # -----------------------------------------------------------------------------   
@@ -178,35 +211,6 @@ f_csv.close()
 # -----------------------------------------------------------------------------
 # 3. PARTNER: 
 # -----------------------------------------------------------------------------   
-table_order = 'oc_testate' # DB1
-table_line = 'oc_righe' # DB1
-
-table_extra = 'pc_progressivi' # DB2
-table_rubrica = 'pa_rubr_pdc_clfr' # DB2
-table_condition = 'pc_condizioni_comm' # DB2
-table_payment = 'cp_pagamenti' # DB2
-table_currency = 'mu_valute' # DB2
-
-if mysql1['capital']: # Use first SQL for check (are on the same MySQL server)
-    table_order = table_order.upper()
-    table_line = table_line.upper()
-    table_rubrica = table_rubrica.upper()
-    table_extra = table_extra.upper()
-    table_condition = table_condition.upper()
-    table_payment = table_payment.upper()
-    table_currency = table_currency.upper()
-
-log_data('''Extract order: %s - %s, partner: %s, last delivery %s, 
-    condition: %s, payment: %s, currency: %s)''' % (
-        table_order,
-        table_line,
-
-        table_rubrica,
-        table_extra,
-        table_condition, 
-        table_payment,
-        table_currency,
-        ), f_log)
 
 # -----------------------------------------------------------------------------
 # A. Load active partner (date of delivery)
