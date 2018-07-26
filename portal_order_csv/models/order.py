@@ -119,7 +119,7 @@ class PortalSaleOrder(models.Model):
                     }
                 if key not in order_db:
                     order_db[key] = [
-                        self.create(header) # Browse
+                        self.create(header), # Browse
                         0.0, # Total
                         False, # Deadline
                         ]
