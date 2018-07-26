@@ -31,8 +31,8 @@ import MySQLdb
 import MySQLdb.cursors
 
 # Utility:
-from utility import *
-#from dateutil.relativedelta import relativedelta
+import string
+import random
 from datetime import datetime, timedelta
 
 # Crypto library:

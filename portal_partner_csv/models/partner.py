@@ -134,6 +134,7 @@ class ResPartner(models.Model):
             i += 1
             if i % 100 == 0:
                 _logger.info('Reading row: %s ' % i)
+                break # TODO remove!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 
             row = (line.strip()).split('|')
             if max_col == False:
