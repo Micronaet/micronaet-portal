@@ -133,7 +133,7 @@ class PortalSaleOrder(models.Model):
 
                     'sequence': row[7],  
                     'deadline': row[9],
-                    'name': row[10],
+                    'name': row[11],
                     'quantity': quantity,
                     'unit_price': unit_price,
                     'subtotal': quantity * unit_price,
@@ -147,7 +147,7 @@ class PortalSaleOrder(models.Model):
     # -------------------------------------------------------------------------
     #                               COLUMNS:    
     # -------------------------------------------------------------------------
-    name = fields.Char('Number', size=64, required=True)
+    name = fields.Char('Order', size=64, required=True)
     date = fields.Date('Date')
     deadline = fields.Date('Dateline')
     partner_id = fields.Many2one('res.partner', 'Partner')
@@ -169,7 +169,7 @@ class PortalSaleOrderLine(models.Model):
     #                               COLUMNS:    
     # -------------------------------------------------------------------------
     sequence = fields.Char('Seq.', size=4)
-    name = fields.Char('Number', size=64, required=True)
+    name = fields.Char('Description', size=64, required=True)
     deadline = fields.Date('Deadline')
     quantity = fields.Float('Q.', digits=(16, 3))
     unit_price = fields.Float('Price', digits=(16, 3))
