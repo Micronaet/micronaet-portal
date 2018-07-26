@@ -237,7 +237,7 @@ cursor2.execute(query)
 # User partner to create:
 active_partner_db = [record['CKY_CNT'] for record in cursor2]
 user_db = set(order_cky_db) | set(active_partner_db)
-log_data('Active users: %s' % (user_db, ), f_activity)
+log_data('Active users: Tot. %s' % len(user_db), f_activity)
 
 # -----------------------------------------------------------------------------
 # B. Load bank reference
@@ -274,7 +274,7 @@ for record in cursor2:
             )
         f_csv.write(clean_ascii(line))
     except: 
-        print 'Jump line error'
+        log_data('%. Jump line error' % i, f_activity)
         continue
 f_csv.close()
 
@@ -289,6 +289,5 @@ log_data('End publish operation', f_schedule)
 
 # Close open files:
 f_schedule.close()  
-f_activity.close()  
-sys.exit() 
+f_activity.close()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
