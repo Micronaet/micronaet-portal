@@ -71,6 +71,17 @@ odoo = erppeek.Client(
 f_log = open(file_log, 'a')
 log_data('Start import procedure', f_log)
 
+# XXX REMOVE
+# -----------------------------------------------------------------------------
+#                                     ORDER:
+# -----------------------------------------------------------------------------
+order_pool = odoo.model('portal.sale.order')
+log_data('Start import order from %s' % order_fullname, f_log)
+order_pool.schedule_etl_accounting_order(order_fullname)
+log_data('End import order from %s' % order_fullname, f_log)
+# XXX REMOVE
+
+
 # -----------------------------------------------------------------------------
 #                                     PARTNER:
 # -----------------------------------------------------------------------------
@@ -102,12 +113,12 @@ for partner in partner_pool.browse(update_user_ids):
         # TODO manage multiple
         user_id = user_ids[0]
     else:
-        password = get_random_password(10)
+        first_password = get_random_password(10)
         user_id = user_pool.create({
             'active': True,
             'login': ref,
-            'first_password': password,
-            'password': password,
+            'first_password': first_password,
+            'password': first_password,
             'partner_id': partner.id,
             #'name': 'User: %s' % partner.name,
             'signature': partner.name,
