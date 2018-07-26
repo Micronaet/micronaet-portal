@@ -53,7 +53,7 @@ def get_random_password(size):
         string.digits, # numbers
         u'!@#_-$%', # extra char
         )
-    return ''.join(random.choise(origin) for i in range(size))
+    return ''.join(random.choice(origin) for i in range(size))
             
 # SQL Connection function:
 def mssql_check_export(mysql):
