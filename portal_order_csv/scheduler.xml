@@ -13,7 +13,7 @@
 			<field eval="0" name="active"/>
 			<field name="args">('~/order.csv', )</field>
 			<field eval="1" name="interval_number"/>
-			<field ref="portal_order_csv.portal_sale_order_model" name="model_id"/>
+			<field ref="model_portal_sale_order" name="model_id"/>
 			<field eval="&quot;&quot;&quot;portal.sale.order&quot;&quot;&quot;" name="model"/>
 		</record>
 	</data>
