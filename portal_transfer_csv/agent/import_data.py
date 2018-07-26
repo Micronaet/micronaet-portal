@@ -71,17 +71,6 @@ odoo = erppeek.Client(
 f_log = open(file_log, 'a')
 log_data('Start import procedure', f_log)
 
-# XXX REMOVE
-# -----------------------------------------------------------------------------
-#                                     ORDER:
-# -----------------------------------------------------------------------------
-order_pool = odoo.model('portal.sale.order')
-log_data('Start import order from %s' % order_fullname, f_log)
-order_pool.schedule_etl_accounting_order(order_fullname)
-log_data('End import order from %s' % order_fullname, f_log)
-# XXX REMOVE
-
-
 # -----------------------------------------------------------------------------
 #                                     PARTNER:
 # -----------------------------------------------------------------------------
