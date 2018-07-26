@@ -32,7 +32,7 @@ import MySQLdb.cursors
 
 # Utility:
 from utility import *
-from dateutil.relativedelta import relativedelta
+#from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 
 # Crypto library:
