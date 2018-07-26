@@ -53,6 +53,7 @@ class PortalDeadline(models.Model):
     def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
+        import pdb; pdb.set_trace()
         # ---------------------------------------------------------------------
         # Utility function:
         # ---------------------------------------------------------------------
@@ -146,11 +147,7 @@ class PortalDeadline(models.Model):
                     partner = partners[0]
                     data = {
                         'name': '%s [%s]: %s (%s EUR)' % (
-                            partner.name, 
-                            partner_ref, 
-                            deadline, 
-                            total,
-                            ),
+                            partner.name, partner_ref, deadline, total),
                         'partner_id': partner.id,
                         'user_id': partner.portal_user_id.id,
                         'deadline': deadline,
@@ -200,4 +197,5 @@ class PortalDeadline(models.Model):
         ('v', 'MAV'),            
         ], 'Type')
     # -------------------------------------------------------------------------
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
