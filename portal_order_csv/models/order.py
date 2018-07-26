@@ -155,7 +155,7 @@ class PortalSaleOrder(models.Model):
                 continue
                 
         # Update total and deadline:        
-        _logger.error('%s. Update order header information')
+        _logger.error('Update order header information')
         for record in order_db:
             order, total, deadline = record
             order.write({
