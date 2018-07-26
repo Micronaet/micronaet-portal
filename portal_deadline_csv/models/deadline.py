@@ -80,7 +80,6 @@ class PortalDeadline(models.Model):
             else:
                return 0.0
 
-        import pdb; pdb.set_trace()
         partner_pool = self.env['res.partner']
         tot_col = 0
         old_order_ref = ''
