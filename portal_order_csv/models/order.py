@@ -136,7 +136,7 @@ class PortalSaleOrder(models.Model):
                 line_pool.create(data)
             except:
                 import pdb; pdb.set_trace()
-                _logger.error('%s. General error on line: %s' % i)
+                _logger.error('%s. General error on line' % i)
                 continue    
         return True
         
