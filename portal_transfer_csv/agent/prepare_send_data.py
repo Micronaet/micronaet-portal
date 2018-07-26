@@ -222,6 +222,7 @@ cursor2.execute(query)
 # User partner to create:
 active_partner_db = [record['CKY_CNT'] for record in cursor2]
 user_db = set(order_cky_db) | set(active_partner_db)
+log_data('Active users: %s' % (user_db, ), f_log)
 
 # -----------------------------------------------------------------------------
 # B. Currency list
