@@ -136,7 +136,7 @@ class PortalSaleOrder(models.Model):
                 
                 # Update order fields: 
                 order_db[key][1] += subtotal
-                if not order_db[key][2] or deadline < order_db[key][2]
+                if not order_db[key][2] or deadline < order_db[key][2]:
                     order_db[key][2] = deadline
                 
                 data = {
