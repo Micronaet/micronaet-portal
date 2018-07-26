@@ -82,7 +82,6 @@ file_csv = os.path.join(folder, 'partner.csv')
 log_data('Start import partner from %s' % file_csv, f_log)
 
 # Create partner:
-import pdb; pdb.set_trace()
 update_user_ids = partner_pool.import_csv_partner_data(
     file_csv, user_creation=False)
 

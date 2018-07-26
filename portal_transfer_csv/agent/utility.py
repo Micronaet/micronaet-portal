@@ -47,9 +47,13 @@ def get_random_password(size):
         and some random chars
         Max length is size
     '''
-    origin = '%s%s%s%s' % (
+    mask = '%s' * 6
+    origin = mask % (
         string.ascii_letters, # lower letters
-        string.ascii_letters.upper(), # upper letters
+        string.digits, # numbers
+        u'!@#_-$%', # extra char
+        
+        string.ascii_letters.upper(), # upper letters                
         string.digits, # numbers
         u'!@#_-$%', # extra char
         )

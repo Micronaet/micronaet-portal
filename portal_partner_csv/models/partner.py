@@ -70,13 +70,17 @@ class ResPartner(models.Model):
                 and some random chars
                 Max length is size
             '''
-            origin = '%s%s%s%s' % (
+            mask = '%s' * 6
+            origin = mask % (
                 string.ascii_letters, # lower letters
-                string.ascii_letters.upper(), # upper letters
+                string.digits, # numbers
+                u'!@#_-$%', # extra char
+                
+                string.ascii_letters.upper(), # upper letters                
                 string.digits, # numbers
                 u'!@#_-$%', # extra char
                 )
-            return ''.join(random.choise(origin) for i in range(size))
+            return ''.join(random.choice(origin) for i in range(size))
         
         user_pool = self.env['res.users']
         update_list = [] # (partner, user_id)
@@ -134,7 +138,6 @@ class ResPartner(models.Model):
             i += 1
             if i % 100 == 0:
                 _logger.info('Reading row: %s ' % i)
-                break # TODO remove!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 
             row = (line.strip()).split('|')
             if max_col == False:
