@@ -35,7 +35,7 @@
                                     <field name="deadline" readonly="1"/>
                                     <field name="quantity" readonly="1"/>
                                     <field name="unit_price" readonly="1"/>
-                                    <field name="subtotal" readonly="1" total="order"/>
+                                    <field name="subtotal" readonly="1" sum="order"/>
                                     <field name="order_id" invisible="1"/>                                                                        
                                 </tree>
                             </field>
