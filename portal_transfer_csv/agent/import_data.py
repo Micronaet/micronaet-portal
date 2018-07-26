@@ -133,6 +133,7 @@ log_data('End import partner from %s' % file_csv, f_log)
 # -----------------------------------------------------------------------------
 #                                     DEADLINE:
 # -----------------------------------------------------------------------------
+import pdb; pdb.set_trace()
 deadline_pool = odoo.model('portal.deadline')
 log_data('Start import deadline from %s' % deadline_fullname, f_log)
 deadline_pool.schedule_etl_accounting_deadline(deadline_fullname)

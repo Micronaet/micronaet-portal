@@ -53,7 +53,6 @@ class PortalDeadline(models.Model):
     def schedule_etl_accounting_deadline(self, fullname, verbose=True):
         ''' Import deadline from accounting
         '''
-        import pdb; pdb.set_trace()
         # ---------------------------------------------------------------------
         # Utility function:
         # ---------------------------------------------------------------------
@@ -67,9 +66,10 @@ class PortalDeadline(models.Model):
             ''' Format data value
             '''
             value = value.strip()
-            if len(value)==8:
+            if len(value) == 8:
                if value:
-                  return value[:4] + '-' + value[4:6] + '-' + value[6:8]
+                  return '%s-%s-%s' % (
+                      value[:4], value[4:6], value[6:8])
             return False
 
         def format_float(value):
