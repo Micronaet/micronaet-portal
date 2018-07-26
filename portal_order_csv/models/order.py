@@ -79,60 +79,65 @@ class PortalSaleOrder(models.Model):
         i = 0        
         for line in open(fullname, 'r'):
             i += 1
-            row = line.strip().split('|')
-            if tot_col == False:
-                tot_col = len(row)
-            if len(row) != tot_col:
-                _log.error('%s. Different col, jump' % i)
-                continue
-            
-            # -----------------------------------------------------------------
-            # Header creation:
-            # -----------------------------------------------------------------
-            key = row[0]
-            partner_ref = row[2]
-            address_ref = row[3] # TODO
-            
-            if not partner_ref:
-                _logger.error('Partner ref. not found, no import!')
-                continue
-            partners = partner_pool.search([('ref', '=', partner_ref)])
-            if not partners:
-                _logger.error('Partner ref. not found, no import: %s' % \
-                    partner_ref)
-                continue
-
-            users = user_pool.search([('login', '=', partner_ref)])
-            if not users:
-                _logger.error('User login ref. not found, no import: %s' % \
-                    partner_ref)
-                continue
+            try:
+                row = line.strip().split('|')
+                if tot_col == False:
+                    tot_col = len(row)
+                if len(row) != tot_col:
+                    _log.error('%s. Different col, jump' % i)
+                    continue
                 
-            header = {
-                'name': key,
-                'date': row[1],
-                'partner_id': partners[0].id,
-                'user_id': users[0].id,
-                'note': row[6],                
-                }
-            if key not in order_db:
-                order_db[key] = self.create(header).id
-            order_id = order_db[key]
-            
-            # -----------------------------------------------------------------
-            # Line creation:
-            # -----------------------------------------------------------------
-            data = {
-                'order_id': order_id,
+                # -------------------------------------------------------------
+                # Header creation:
+                # -------------------------------------------------------------
+                key = row[0]
+                partner_ref = row[2]
+                address_ref = row[3] # TODO
+                
+                if not partner_ref:
+                    _logger.error('Partner ref. not found, no import!')
+                    continue
+                partners = partner_pool.search([('ref', '=', partner_ref)])
+                if not partners:
+                    _logger.error('Partner ref. not found, no import: %s' % \
+                        partner_ref)
+                    continue
 
-                'sequence': row[7],  
-                'deadline': row[8],
-                'name': row[10],
-                'quantity': row[12],
-                'unit_price': row[11],
-                'subtotal': 0.0
-                }
-            line_pool.create(data)
+                users = user_pool.search([('login', '=', partner_ref)])
+                if not users:
+                    _logger.error('User login ref. not found, no import: %s' %\
+                        partner_ref)
+                    continue
+                    
+                header = {
+                    'name': key,
+                    'date': row[1],
+                    'partner_id': partners[0].id,
+                    'user_id': users[0].id,
+                    'note': row[6],                
+                    }
+                if key not in order_db:
+                    order_db[key] = self.create(header).id
+                order_id = order_db[key]
+                
+                # -------------------------------------------------------------
+                # Line creation:
+                # -------------------------------------------------------------
+                data = {
+                    'order_id': order_id,
+
+                    'sequence': row[7],  
+                    'deadline': row[8],
+                    'name': row[10],
+                    'quantity': row[12],
+                    'unit_price': row[11],
+                    'subtotal': 0.0
+                    }
+                line_pool.create(data)
+            except:
+                import pdb; pdb.set_trace()
+                _log.error('%s. Generar error on line: %s' % i)
+                continue    
         return True
         
     # -------------------------------------------------------------------------
