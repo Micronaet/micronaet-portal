@@ -195,7 +195,7 @@ for record in cursor1:
 
 # -----------------------------------------------------------------------------
 # >> B. OC Line
-query = 'SELECT * FROM %s;' % table_line
+query = 'SELECT * FROM %s ORDER BY NPR_RIGA;' % table_line
 log_data('Run SQL %s' % query, f_activity)
 cursor1.execute(query)
 

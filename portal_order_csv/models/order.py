@@ -153,13 +153,13 @@ class PortalSaleOrder(models.Model):
     partner_id = fields.Many2one('res.partner', 'Partner')
     user_id = fields.Many2one('res.users', 'User')
     total = fields.Float('Total', digits=(16, 3))
+    # TODO currency = fields.Char('Currency', size=25)
     note = fields.Text('Note')
     # -------------------------------------------------------------------------
 
 class PortalSaleOrderLine(models.Model):
     """ Model name: Portal Sale Order Line
     """
-    
     _name = 'portal.sale.order.line'
     _description = 'Portal sale order line'
     _rec_name = 'name'
