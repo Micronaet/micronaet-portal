@@ -132,7 +132,7 @@ class PortalSaleOrder(models.Model):
                     'order_id': order_id,
 
                     'sequence': row[7],  
-                    'deadline': row[8],
+                    'deadline': row[9],
                     'name': row[10],
                     'quantity': quantity,
                     'unit_price': unit_price,
