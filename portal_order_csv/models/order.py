@@ -84,7 +84,7 @@ class PortalSaleOrder(models.Model):
                 if tot_col == False:
                     tot_col = len(row)
                 if len(row) != tot_col:
-                    _log.error('%s. Different col, jump' % i)
+                    _logger.error('%s. Different col, jump' % i)
                     continue
                 
                 # -------------------------------------------------------------
@@ -136,7 +136,7 @@ class PortalSaleOrder(models.Model):
                 line_pool.create(data)
             except:
                 import pdb; pdb.set_trace()
-                _log.error('%s. Generar error on line: %s' % i)
+                _logger.error('%s. General error on line: %s' % i)
                 continue    
         return True
         
