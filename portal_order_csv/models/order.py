@@ -122,6 +122,7 @@ class PortalSaleOrder(models.Model):
                     'user_id': users[0].id,
                     'note': row[6],       
                     'transport': transport,
+                    'currency': row[7],
                     }
                 if key not in order_db:
                     order_db[key] = [
@@ -180,7 +181,7 @@ class PortalSaleOrder(models.Model):
     user_id = fields.Many2one('res.users', 'User')
     total = fields.Float('Total', digits=(16, 3))
     transport = fields.Float('Transport', digits=(16, 3))
-    # TODO currency = fields.Char('Currency', size=25)
+    currency = fields.Char('Currency', size=20)
     note = fields.Text('Note')
     # -------------------------------------------------------------------------
 

@@ -13,6 +13,7 @@
                     <field name="partner_id" readonly="1"/>
                     <field name="user_id" invisible="1" />
                     <field name="transport" readonly="1"/>
+                    <field name="currency" />
                     <field name="total" readonly="1"/>
                 </tree>
             </field>
@@ -28,6 +29,7 @@
                             <field name="date" readonly="1"/>
 
                             <field name="deadline" readonly="1"/>
+                            <field name="currency" />
 
                             <field name="partner_id" invisible="1"/>
                             <field name="user_id" invisible="1"/>
