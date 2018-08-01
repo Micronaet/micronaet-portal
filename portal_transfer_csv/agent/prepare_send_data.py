@@ -185,7 +185,6 @@ for record in cursor1:
     # -------------------------------------------------------------------------
     extra_cost = 0.0
     # Only case when there's the cost:
-    import pdb; pdb.set_trace()
     if record['IST_PORTO'] == 'D' and record['NMP_SPESPE'] > 0.0:
         if record['IST_SPESPE'] == 'K': # Weight coeff.
             extra_cost = record['NMP_SPESPE'] * record['NPS_TOT']
