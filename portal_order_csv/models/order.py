@@ -94,7 +94,11 @@ class PortalSaleOrder(models.Model):
                 key = row[0]
                 partner_ref = row[2]
                 address_ref = row[3] # TODO
-                transport = float(row[8])
+                try:
+                    transport = float(row[8])
+                except:
+                    _logger.error('Error import transport price')
+                    transport = 0.0    
                 
                 if not partner_ref:
                     _logger.error('Partner ref. not found, no import!')
