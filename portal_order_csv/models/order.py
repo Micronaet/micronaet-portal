@@ -94,6 +94,7 @@ class PortalSaleOrder(models.Model):
                 key = row[0]
                 partner_ref = row[2]
                 address_ref = row[3] # TODO
+                transport = float(row[8])
                 
                 if not partner_ref:
                     _logger.error('Partner ref. not found, no import!')
@@ -115,12 +116,13 @@ class PortalSaleOrder(models.Model):
                     'date': row[1],
                     'partner_id': partners[0].id,
                     'user_id': users[0].id,
-                    'note': row[6],                
+                    'note': row[6],       
+                    'transport': transport,
                     }
                 if key not in order_db:
                     order_db[key] = [
                         self.create(header), # Browse
-                        0.0, # Total
+                        transport, # Total (start from transport)
                         False, # Deadline
                         ]
                 order_id = order_db[key][0].id
@@ -129,10 +131,10 @@ class PortalSaleOrder(models.Model):
                 # Line creation:
                 # -------------------------------------------------------------
                 # Fields:
-                quantity = float(row[15])
-                unit_price = float(row[12])
+                quantity = float(row[16])
+                unit_price = float(row[13])
                 subtotal = quantity * unit_price
-                deadline = row[9]
+                deadline = row[10]
                 
                 # Update order fields: 
                 order_db[key][1] += subtotal
@@ -144,7 +146,7 @@ class PortalSaleOrder(models.Model):
 
                     'sequence': row[7],  
                     'deadline': deadline,
-                    'name': row[11],
+                    'name': row[12],
                     'quantity': quantity,
                     'unit_price': unit_price,
                     'subtotal': subtotal,
@@ -173,6 +175,7 @@ class PortalSaleOrder(models.Model):
     partner_id = fields.Many2one('res.partner', 'Partner')
     user_id = fields.Many2one('res.users', 'User')
     total = fields.Float('Total', digits=(16, 3))
+    transport = fields.Float('Transport', digits=(16, 3))
     # TODO currency = fields.Char('Currency', size=25)
     note = fields.Text('Note')
     # -------------------------------------------------------------------------

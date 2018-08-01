@@ -179,8 +179,23 @@ for record in cursor1:
     cky = record['CKY_CNT_CLFR'] or ''
     if cky and cky not in order_cky_db:
         order_cky_db.append(cky)
-
-    order_db[key] = '%s|%s|%s|%s|%s|%s|%s|%s' % (
+    
+    # -------------------------------------------------------------------------
+    # Delivery cost:
+    # -------------------------------------------------------------------------
+    extra_cost = 0.0
+    # Only case when there's the cost:
+    import pdb; pdb.set_trace()
+    if record['IST_PORTO'] == 'D' and record['NMP_SPESPE'] > 0.0:
+        if record['IST_SPESPE'] == 'K': # Weight coeff.
+            extra_cost = record['NMP_SPESPE'] * record['NPS_TOT']
+        elif record['IST_SPESPE'] == 'V': # Valute fixed
+            extra_cost = record['NMP_SPESPE']
+        else: # Case not managed:
+            _logger.error('Case delivery cost not managed!')
+            # B (DDT), M (% on value), C (parcels)
+        
+    order_db[key] = '%s|%s|%s|%s|%s|%s|%s|%s|%s' % (
         key, 
         record['DTT_DOC'] or '',
         cky,
@@ -189,6 +204,7 @@ for record in cursor1:
         record['NKY_PAG'] or '',
         record['CDS_NOTE'] or '',
         currency_db.get(record['NKY_VLT'], ''),
+        extra_cost,        
         #record['NKY_CNT_AGENTE'] or '',
         #record['IST_PORTO'] or '',
         )

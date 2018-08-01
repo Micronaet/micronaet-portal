@@ -12,6 +12,7 @@
                     <field name="deadline" readonly="1"/>
                     <field name="partner_id" readonly="1"/>
                     <field name="user_id" invisible="1" />
+                    <field name="transport" readonly="1"/>
                     <field name="total" readonly="1"/>
                 </tree>
             </field>
@@ -25,9 +26,12 @@
                         <group colspan="4" col="4">
                             <field name="name" readonly="1"/>
                             <field name="date" readonly="1"/>
+
                             <field name="deadline" readonly="1"/>
                             <field name="partner_id" invisible="1"/>
+
                             <field name="user_id" invisible="1"/>
+                            <field name="transport" readonly="1"/>
                             
                             <field name="line_ids" editable="bottom" colspan="4" nolabel="1">
                                 <tree string="Line:">
@@ -78,8 +82,6 @@
                 id="menu_portal_sale_order" 
                 action="action_portal_sale_order"
                 sequence="20"
-                />
-                
+                />                
     </data>
 </openerp>
-
