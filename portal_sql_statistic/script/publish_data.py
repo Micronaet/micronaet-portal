@@ -199,7 +199,7 @@ class PortalAgent:
             self.parameters['transfer']['remote_folder'],
             # 'password': config.get('transfer', 'password'),
             )
-        _logger.warning('Tranfer via rsync: %s' % command)
+        print('Tranfer via rsync: %s' % command)
         os.system(command)
 
 
