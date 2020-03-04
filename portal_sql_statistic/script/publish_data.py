@@ -179,10 +179,11 @@ class PortalAgent:
             import pdb; pdb.set_trace()
             pickle_filename = os.path.join(export_path, '%s.pickle' % year)
             pickle.dump(odoo_data, open(pickle_filename, 'wb'))
-            print('Exported header: %s, line: %s on file: %s' % (
+            print('Exported header: %s, line: %s on file: %s >> record %s' % (
                 pickle_filename,
                 tot['header'],
                 tot['line'],
+                len(odoo_data),
                 ))
         return True
 
