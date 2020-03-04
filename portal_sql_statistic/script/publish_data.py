@@ -134,6 +134,10 @@ class PortalAgent:
             database = self.parameters['mysql']['database'][year]
             odoo_data = []
             header_db = {}
+            tot = {
+                'header': 0,
+                'line': 0,
+                }
             cr = self._connect(database)
 
             # -----------------------------------------------------------------
@@ -141,6 +145,8 @@ class PortalAgent:
             # -----------------------------------------------------------------
             cr.execute(query_header)
             for record in cr.fetchall():
+                tot['header'] += 1
+
                 key = self._get_key(record)
                 if key not in header_db:
                     header_db[key] = record
@@ -150,6 +156,8 @@ class PortalAgent:
             # -----------------------------------------------------------------
             cr.execute(query_line)
             for record in cr.fetchall():
+                tot['line'] += 1
+
                 key = self._get_key(record)
                 if key not in header_db:
                     print('Header line not present: %s' % (key, ))
@@ -169,9 +177,13 @@ class PortalAgent:
             # Write pickle file:
             # -----------------------------------------------------------------
             import pdb; pdb.set_trace()
-            pickle_file = open(
-                os.path.join(export_path, '%s.pickle' % year), 'wb')
-            pickle.dump(odoo_data, pickle_file)
+            pickle_filename = os.path.join(export_path, '%s.pickle' % year)
+            pickle.dump(odoo_data, open(pickle_filename, 'wb'))
+            print('Exported header: %s, line: %s on file: %s' % (
+                pickle_filename,
+                tot['header'],
+                tot['line'],
+                ))
         return True
 
     def publish_data(self, ):
