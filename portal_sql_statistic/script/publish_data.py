@@ -255,9 +255,11 @@ agent = PortalAgent('./openerp.cfg')
 if parameter == 'publish':
     agent.extract_data()
     agent.publish_data()
-else:
+elif parameter == 'import':
     agent.import_data()
-
+else:
+    print('Missed parameter: publish or import')
+    sys.exit()
 
 
 """
