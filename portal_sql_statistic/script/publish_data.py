@@ -246,7 +246,7 @@ if __name__ != '__main__':
 # TODO Portal parameter for send or receive mode:
 argv = sys.argv
 if len(argv) == 2:
-    parameter = argv[2]
+    parameter = argv[1]
 else:
     print('No parameter, lauch with: publish or import')
     sys.exit()
