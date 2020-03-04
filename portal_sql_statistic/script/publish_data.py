@@ -104,7 +104,7 @@ class PortalAgent:
             return False
         return cursor
 
-    def _get_key(record):
+    def _get_key(self, record):
         """ Get key for header and line table
         """
         return (
