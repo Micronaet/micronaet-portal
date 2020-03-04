@@ -130,7 +130,6 @@ class PortalAgent:
             FROM %s;
             """ % self.parameters['mysql']['table']['line']
 
-        import pdb; pdb.set_trace()
         for year in self.parameters['mysql']['database']:
             database = self.parameters['mysql']['database'][year]
             odoo_data = []
@@ -149,6 +148,9 @@ class PortalAgent:
             # -----------------------------------------------------------------
             # Load line
             # -----------------------------------------------------------------
+            import pdb;
+            pdb.set_trace()
+
             cr.execute(query_line)
             for record in cr.fetchall():
                 key = self._get_key(record)
