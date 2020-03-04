@@ -76,7 +76,7 @@ class PortalAgent:
                 'password': config.get('transfer', 'password'),
 
                 'origin_folder': config.get('transfer', 'origin_folder'),
-                'remove_folder': config.get('transfer', 'remove_folder'),
+                'remote_folder': config.get('transfer', 'remote_folder'),
                 },
             }
 
@@ -176,7 +176,6 @@ class PortalAgent:
             # -----------------------------------------------------------------
             # Write pickle file:
             # -----------------------------------------------------------------
-            import pdb; pdb.set_trace()
             pickle_filename = os.path.join(export_path, '%s.pickle' % year)
             pickle.dump(odoo_data, open(pickle_filename, 'wb'))
             print('Exported header: %s, line: %s on file: %s >> record %s' % (
@@ -190,7 +189,19 @@ class PortalAgent:
     def publish_data(self, ):
         """ Rsync items to remote server
         """
-        return True
+        command = 'rsync -avh -e "ssh -p %s" %s/* %s@%s:%s' % (
+            self.parameters['transfer']['port'],
+
+            self.parameters['transfer']['origin_folder'],
+
+            self.parameters['transfer']['username'],
+            self.parameters['transfer']['server'],
+            self.parameters['transfer']['remote_folder'],
+            # 'password': config.get('transfer', 'password'),
+            )
+        _logger.warning('Tranfer via rsync: %s' % command)
+        os.system(command)
+
 
 import pdb; pdb.set_trace()
 if __name__ != '__main__':
