@@ -51,7 +51,7 @@ class PivotSaleLine(models.Model):
 
     # Detail:
     product_id = fields.Many2one('product.template', 'Product')
-    product_id = fields.Many2one('product.uom', 'Uom')
+    uom_id = fields.Many2one('product.uom', 'Uom')
     category_id = fields.Many2one('product.category', 'Category')
     
     product_uom_qty = fields.Float('Q.', digits=(16, 3)
