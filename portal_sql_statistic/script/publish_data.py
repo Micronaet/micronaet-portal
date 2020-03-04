@@ -137,8 +137,8 @@ class PortalAgent():
         return True
 
 import pdb; pdb.set_trace()
-if __main__:
-    print('Procedure is not callable!')
+if __name__ != '__main__':
+    print('Procedure is not callable externally!')
 
 # TODO Portal parameter for send or receive mode:
 agent = PortalAgent('./openerp.cfg')
