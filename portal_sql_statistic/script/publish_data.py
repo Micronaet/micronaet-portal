@@ -107,18 +107,32 @@ class PortalAgent():
     def extract_data(self, ):
         """ Extract all data in output folder
         """
-        query = ''
-        for database in self.parameters['mysql']['database'].values():
-        
+        query = """
+            SELECT 
+                h.*, l.*
+            FROM %s h JOIN %s l ON (
+                h.CSG_DOC = l.CSG_DOC AND 
+                h.NGB_SR_DOC = l.NGB_SR_DOC AND
+                h.NGL_DOC = l.NGL_DOC)
+            """ % (
+               self.parameters['mysql']['table']['header'], 
+               self.parameters['mysql']['table']['line'], 
+               )
+               
+        for year in self.parameters['mysql']['database']:        
+            database = self.parameters['mysql']['database'][year]
+            
             # -----------------------------------------------------------------
             # Generate record list for odoo:
             # -----------------------------------------------------------------
             odoo_data = []
             cr = self._connect(database)
             cr.execute(query)
-            for record in cr.fetchall():
+            import pdb; pdb.set_trace()
+            for record in cr.fetchall():            
                 odoo_data.append({
-                    'name': '',                    
+                    'year': 2000 + year, # XXX
+                    'name': '',           
                     })
 
             # -----------------------------------------------------------------
