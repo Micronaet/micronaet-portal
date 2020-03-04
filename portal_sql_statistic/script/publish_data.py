@@ -42,8 +42,6 @@ class PortalAgent():
             database_list[year] = '%s%s' % (
                 database, text_year)
 
-        print database_list        
-        import pdb; pdb.set_trace()
         # Read parameters:
         self.parameters = {
             'mysql': {
@@ -57,8 +55,8 @@ class PortalAgent():
 
                 'database': database_list,
                 'table': {
-                    'header': 'MM_TESTATE' if upper else 'mm_testate',
-                    'line': 'MM_RIGHE' if upper else 'mm_righe',
+                    'header': 'MM_TESTATE' if uppercase else 'mm_testate',
+                    'line': 'MM_RIGHE' if uppercase else 'mm_righe',
                     },                    
                 },
                 
@@ -80,9 +78,7 @@ class PortalAgent():
                 'origin_folder': config.get('transfer', 'origin_folder'),
                 'remove_folder': config.get('transfer', 'remove_folder'),
                 },    
-            }
-        
-        return 
+            }        
     
     def _connect(self, database):
         """ Connect to MySQL server
