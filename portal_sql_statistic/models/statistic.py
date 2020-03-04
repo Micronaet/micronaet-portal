@@ -48,6 +48,7 @@ class PivotSaleLine(models.Model):
     salesman_id = fields.Many2one('res.partner', 'Salesman')
     responsible_id = fields.Many2one('res.partner', 'Responsible')
     # TODO Zone
+    # TODO product_code, customer_code to automatic link partner and product
 
     # Detail:
     product_id = fields.Many2one('product.template', 'Product')

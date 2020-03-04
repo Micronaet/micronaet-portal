@@ -6,6 +6,10 @@
 # Script for Python 2.7
 
 import os
+import sys
+
+DEFAULT_SERVER_DATE_FORMAT = "%Y-%m-%d"
+
 
 class PortalAgent:
     """ Agent for access to SQL Server
@@ -61,7 +65,7 @@ class PortalAgent:
                 },
 
             'odoo': {
-                # TODO geneate hostname
+                # TODO generate hostname
                 'server': config.get('odoo', 'server'),
                 'port': config.get('odoo', 'port'),
                 'database': config.get('odoo', 'database'),
@@ -167,11 +171,44 @@ class PortalAgent:
                 # Generate record list for ODOO:
                 # -------------------------------------------------------------
                 ref = '%s %s/%s' % key
+                date = header['DTT_DOC'].strftime(DEFAULT_SERVER_DATE_FORMAT)
+                price = record['NPZ_UNIT']
+
+                if key[0] == 'BD':
+                    continue  # Not used for now
+
+                if key[0] in ('BC', 'SL', 'BS'): # not used BD
+                    sign = -1
+                else:  # BF, RC, CL
+                    sign = +1
+
+                qty = record['NQT_RIGA_ART_PLOR']
+                qty_rate = record['NCF_CONV'] or 1
+                qty *= sign / qty_rate
+                # TODO Causale di vendita
+
                 odoo_data.append({
                     'year': year,
                     'name': ref,
-                    # header['CKY_CNT']
-                    })
+
+                    'date': date,
+                    'document_type': key[0],  # BC BD SL CL BF BS RC
+                    'mode': 'sale',  # sale transport discount fee
+
+                    # 'partner_id'
+                    # 'country_id'
+                    # 'agent_id'
+                    # 'salesman_id'
+                    # 'responsible_id'
+
+                    # 'product_id'
+                    # 'uom_id'
+                    # 'category_id'
+
+                    'product_uom_qty': qty,
+                    'list_price': price,
+                    'subtotal': price * qty,
+                })
 
             # -----------------------------------------------------------------
             # Write pickle file:
@@ -203,26 +240,27 @@ class PortalAgent:
         os.system(command)
 
 
-import pdb; pdb.set_trace()
 if __name__ != '__main__':
     print('Procedure is not callable externally!')
 
 # TODO Portal parameter for send or receive mode:
+argv = sys.argv[]
+if len(argv) = 2:
+    parameter = argv[2]
+else:
+    print('No parameter, lauch with: publish or import')
+    sys.exit()
+
 agent = PortalAgent('./openerp.cfg')
-agent.extract_data()
-agent.publish_data()
+if parameter == 'publish':
+    agent.extract_data()
+    agent.publish_data()
+else:
+    agent.import_data()
+
 
 
 """
-        default_code = line['CKY_ART']
-        if default_code in excluded:
-            _logger.warning('Excluded code: %s' % default_code)
-            continue
-        document = line['CSG_DOC']
-        number = '%s: %s/%s' % (
-            document, line['NGB_SR_DOC'], line['NGL_DOC'])
-        qty = line['NQT_RIGA_ART_PLOR']
-        conversion = line['NCF_CONV']
         if default_code[:1] in 'AB':
             product_type = 'Materie prime'
         elif default_code[:1] in 'M':
@@ -235,15 +273,5 @@ agent.publish_data()
         else:  # CL
             sign = +1    
         
-        if conversion:
-            qty *= sign * 1.0 / conversion
-        res.append((                
-            document, 
-            number,
-            product_type,
-            default_code,
-            '%s: %s' % (product_type, default_code),
-            qty,
-            '', # Comment
    """
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
