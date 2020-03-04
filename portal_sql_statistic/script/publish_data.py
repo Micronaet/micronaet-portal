@@ -36,8 +36,8 @@ class PortalAgent():
                 text_year = ''
             elif year_format == 'yy': # 2 char
                     text_year = '%02d' % (year - 2000)
-                else:
-                    text_year = year
+            else:
+                text_year = year
 
             database_list[year] = '%s%s' % (
                 database, text_year)
