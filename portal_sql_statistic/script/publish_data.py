@@ -45,9 +45,9 @@ class PortalAgent():
         # Read parameters:
         self.parameters = {
             'mysql': {
-                'hostname': '%s:%s' % (
+                'hostname': '%s' % (#:%s' % (
                     config.get('mysql', 'server'),
-                    config.get('mysql', 'port'),
+                    #config.get('mysql', 'port'),
                     ),
 
                 'username': config.get('mysql', 'username'),
