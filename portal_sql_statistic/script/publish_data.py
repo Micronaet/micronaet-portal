@@ -1,15 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright 2019  Micronaet SRL (<http://www.micronaet.it>).
+# Copyright 2020  Micronaet SRL (<http://www.micronaet.it>).
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+# Script for Python 2.7
 
 import os
-import sys
 
-class PortalAgent():
+class PortalAgent:
     """ Agent for access to SQL Server
-    """    
+    """
     def __init__(self, config_file):
         """ Access to MySQL server with parameter in Config file
         """
@@ -57,9 +57,9 @@ class PortalAgent():
                 'table': {
                     'header': 'MM_TESTATE' if uppercase else 'mm_testate',
                     'line': 'MM_RIGHE' if uppercase else 'mm_righe',
-                    },                    
+                    },
                 },
-                
+
             'odoo': {
                 # TODO geneate hostname
                 'server': config.get('odoo', 'server'),
@@ -68,7 +68,7 @@ class PortalAgent():
                 'username': config.get('odoo', 'username'),
                 'password': config.get('odoo', 'password'),
                 },
-            
+
             'transfer': {
                 'server': config.get('transfer', 'server'),
                 'port': config.get('transfer', 'port'),
@@ -77,44 +77,48 @@ class PortalAgent():
 
                 'origin_folder': config.get('transfer', 'origin_folder'),
                 'remove_folder': config.get('transfer', 'remove_folder'),
-                },    
-            }        
-    
+                },
+            }
+
     def _connect(self, database):
         """ Connect to MySQL server
         """
         try:
              import MySQLdb, MySQLdb.cursors
         except:
-            _logger.error('Error no module MySQLdb installed!')  
+            print('Error no module MySQLdb installed!')
             return False
-            
+
         connection = MySQLdb.connect(
             host=self.parameters['mysql']['hostname'],
             user=self.parameters['mysql']['username'],
             passwd=self.parameters['mysql']['password'],
             db=database,
             cursorclass=MySQLdb.cursors.DictCursor,
-            charset='utf8', 
+            charset='utf8',
             )
-            
+
         cursor = connection.cursor()
-        if not cursor: 
-            _logger.error('Can\'t access in MSSQL Database: %s!' % database)
+        if not cursor:
+            print('Can\'t access in MSSQL Database: %s!' % database)
             return False
         return cursor
-        
+
+    def _get_key(record):
+        """ Get key for header and line table
+        """
+        return (
+            record['CSG_DOC'],
+            record['NGB_SR_DOC'],
+            record['NGL_DOC'],
+        )
+
     def extract_data(self, ):
         """ Extract all data in output folder
         """
-        def get_key(record):
-            """ Get key for header and line table 
-            """
-            return (
-                record['CSG_DOC'],
-                record['NGB_SR_DOC'],
-                record['NGL_DOC'],
-                )
+        import pickle
+
+        export_path = self.parameters['transfer']['origin_folder']
 
         query_header = """
             SELECT *
@@ -125,49 +129,54 @@ class PortalAgent():
             SELECT *
             FROM %s;
             """ % self.parameters['mysql']['table']['line']
-        
+
+        import pdb; pdb.set_trace()
         for year in self.parameters['mysql']['database']:
             database = self.parameters['mysql']['database'][year]
+            odoo_data = []
+            header_db = {}
+            cr = self._connect(database)
 
             # -----------------------------------------------------------------
             # Load header:
             # -----------------------------------------------------------------
-            header_db = {}
             cr.execute(query_header)
             for record in cr.fetchall():
-                key = get_key(record)
+                key = self._get_key(record)
                 if key not in header_db:
                     header_db[key] = record
 
             # -----------------------------------------------------------------
             # Load line
             # -----------------------------------------------------------------
-            odoo_data = []
             cr.execute(query_line)
             for record in cr.fetchall():
-                key = get_key(record)
+                key = self._get_key(record)
                 if key not in header_db:
-                    print 'Header line not present: %s' % (key, )
-                header = header_db[key]    
+                    print('Header line not present: %s' % (key, ))
+                header = header_db[key]
 
                 # -------------------------------------------------------------
-                # Generate record list for odoo:
+                # Generate record list for ODOO:
                 # -------------------------------------------------------------
                 ref = '%s %s/%s' % key
-                odoo_data.append({                
+                odoo_data.append({
                     'year': year,
                     'name': ref,
+                    # header['CKY_CNT']
                     })
 
             # -----------------------------------------------------------------
             # Write pickle file:
             # -----------------------------------------------------------------
-                                
+            pickle_file = open(
+                os.path.join(export_path, '%s.pickle' % year), 'wb')
+            pickle.dump(odoo_data, pickle_file)
         return True
-    
+
     def publish_data(self, ):
         """ Rsync items to remote server
-        """    
+        """
         return True
 
 import pdb; pdb.set_trace()
@@ -178,7 +187,7 @@ if __name__ != '__main__':
 agent = PortalAgent('./openerp.cfg')
 agent.extract_data()
 agent.publish_data()
-        
+
 
 """
         default_code = line['CKY_ART']
