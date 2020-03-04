@@ -32,18 +32,18 @@ class PortalAgent():
 
         database_list = {}
         for year in range(from_year, current_year + 1):
-            if year_format == 'yy': # 2 char
-                year -= 2000
-                text_year = '%02d' % year
-            else:   
-                if year != current_year:
-                    text_year = year
+            if year == current_year:
+                text_year = ''
+            elif year_format == 'yy': # 2 char
+                    text_year = '%02d' % (year - 2000)
                 else:
-                    text_year = ''    
+                    text_year = year
 
             database_list[year] = '%s%s' % (
                 database, text_year)
 
+        print database_list        
+        import pdb; pdb.set_trace()
         # Read parameters:
         self.parameters = {
             'mysql': {
