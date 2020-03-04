@@ -146,9 +146,7 @@ agent.extract_data()
 agent.publish_data()
         
 
-    res = []
-    for line in cursor.fetchall():
-        # Field used:
+"""
         default_code = line['CKY_ART']
         if default_code in excluded:
             _logger.warning('Excluded code: %s' % default_code)
@@ -180,5 +178,5 @@ agent.publish_data()
             '%s: %s' % (product_type, default_code),
             qty,
             '', # Comment
-            ))
+   """
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
