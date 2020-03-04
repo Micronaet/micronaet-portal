@@ -107,32 +107,56 @@ class PortalAgent():
     def extract_data(self, ):
         """ Extract all data in output folder
         """
-        query = """
-            SELECT 
-                h.*, l.*
-            FROM %s h JOIN %s l ON (
-                h.CSG_DOC = l.CSG_DOC AND 
-                h.NGB_SR_DOC = l.NGB_SR_DOC AND
-                h.NGL_DOC = l.NGL_DOC)
-            """ % (
-               self.parameters['mysql']['table']['header'], 
-               self.parameters['mysql']['table']['line'], 
-               )
-               
-        for year in self.parameters['mysql']['database']:        
+        def get_key(record):
+            """ Get key for header and line table 
+            """
+            return (
+                record['CSG_DOC'],
+                record['NGB_SR_DOC'],
+                record['NGL_DOC'],
+                )
+
+        query_header = """
+            SELECT *
+            FROM %s;
+            """ % self.parameters['mysql']['table']['header']
+
+        query_line = """
+            SELECT *
+            FROM %s;
+            """ % self.parameters['mysql']['table']['line']
+        
+        for year in self.parameters['mysql']['database']:
             database = self.parameters['mysql']['database'][year]
-            
+
             # -----------------------------------------------------------------
-            # Generate record list for odoo:
+            # Load header:
+            # -----------------------------------------------------------------
+            header_db = {}
+            cr.execute(query_header)
+            for record in cr.fetchall():
+                key = get_key(record)
+                if key not in header_db:
+                    header_db[key] = record
+
+            # -----------------------------------------------------------------
+            # Load line
             # -----------------------------------------------------------------
             odoo_data = []
-            cr = self._connect(database)
-            cr.execute(query)
-            import pdb; pdb.set_trace()
-            for record in cr.fetchall():            
-                odoo_data.append({
-                    'year': 2000 + year, # XXX
-                    'name': '',           
+            cr.execute(query_line)
+            for record in cr.fetchall():
+                key = get_key(record)
+                if key not in header_db:
+                    print 'Header line not present: %s' % (key, )
+                header = header_db[key]    
+
+                # -------------------------------------------------------------
+                # Generate record list for odoo:
+                # -------------------------------------------------------------
+                ref = '%s %s/%s' % key
+                odoo_data.append({                
+                    'year': year,
+                    'name': ref,
                     })
 
             # -----------------------------------------------------------------
