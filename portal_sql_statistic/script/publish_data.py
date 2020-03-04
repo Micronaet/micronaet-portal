@@ -244,7 +244,7 @@ if __name__ != '__main__':
     print('Procedure is not callable externally!')
 
 # TODO Portal parameter for send or receive mode:
-argv = sys.argv[]
+argv = sys.argv
 if len(argv) = 2:
     parameter = argv[2]
 else:
