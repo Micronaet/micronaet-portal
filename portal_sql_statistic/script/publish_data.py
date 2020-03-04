@@ -148,9 +148,6 @@ class PortalAgent:
             # -----------------------------------------------------------------
             # Load line
             # -----------------------------------------------------------------
-            import pdb;
-            pdb.set_trace()
-
             cr.execute(query_line)
             for record in cr.fetchall():
                 key = self._get_key(record)
@@ -171,6 +168,7 @@ class PortalAgent:
             # -----------------------------------------------------------------
             # Write pickle file:
             # -----------------------------------------------------------------
+            import pdb; pdb.set_trace()
             pickle_file = open(
                 os.path.join(export_path, '%s.pickle' % year), 'wb')
             pickle.dump(odoo_data, pickle_file)
