@@ -108,7 +108,7 @@ class PortalAgent():
         """ Extract all data in output folder
         """
         query = ''
-        for database in self.parameters['mysql']['database']:
+        for database in self.parameters['mysql']['database'].values():
         
             # -----------------------------------------------------------------
             # Generate record list for odoo:
