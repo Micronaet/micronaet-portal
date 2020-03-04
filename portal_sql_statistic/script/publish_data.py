@@ -25,10 +25,10 @@ class PortalAgent():
         # Generate database name:
         # ---------------------------------------------------------------------
         database = config.get('mysql', 'database')
-        from_year = config.get('mysql', 'year_from')
+        from_year = int(config.get('mysql', 'year_from'))
         year_format = config.get('mysql', 'year_format')
         uppercase = config.get('mysql', 'uppercase')
-        current_year = datetime.now().year
+        current_year = int(datetime.now().year)
 
         database_list = {}
         for year in range(from_year, current_year + 1):
