@@ -2,7 +2,6 @@
 <openerp>
 	<data noupdate="1">
 		<record id="ir_cron_schedule_etl_accounting_order_0" model="ir.cron">
-			<field eval="&quot;&quot;&quot;schedule_etl_accounting_order&quot;&quot;&quot;" name="function"/>
 			<field eval="&quot;&quot;&quot;days&quot;&quot;&quot;" name="interval_type"/>
 			<field name="user_id" ref="base.user_root"/>
 			<field eval="&quot;&quot;&quot;Schedule: Order CSV import&quot;&quot;&quot;" name="name"/>
@@ -11,10 +10,11 @@
 			<field eval="5" name="priority"/>
 			<field eval="0" name="doall"/>
 			<field eval="0" name="active"/>
-			<field name="args">('~/order.csv', )</field>
 			<field eval="1" name="interval_number"/>
 			<field ref="model_portal_sale_order" name="model_id"/>
 			<field eval="&quot;&quot;&quot;portal.sale.order&quot;&quot;&quot;" name="model"/>
+            <field name="state">code</field>
+            <field eval="&quot;&quot;&quot;model.schedule_etl_accounting_order('~/order.csv')&quot;&quot;&quot;" name="code"/>
 		</record>
 	</data>
 </openerp>
