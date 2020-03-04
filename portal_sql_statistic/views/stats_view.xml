@@ -28,12 +28,23 @@
             </tree>
         </field>
     </record>
+    <record model="ir.ui.view" id="view_sale_line_pivot">
+        <field name="name">pivot.sale.line.tree</field>
+        <field name="model">pivot.sale.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Sale line">
+                <field name="year" type="row"/>
+                <!--<field name="date" interval="month" type="col"/>
+                <field name="unit_amount" type="measure" widget="float_time"/>-->
+            </pivot>
+        </field>
+    </record>
     <record model="ir.actions.act_window" id="action_view_pivot_sale_line">
         <field name="name">Sale line stats</field>
         <field name="res_model">pivot.sale.line</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_pivot_sale_line_tree"/>
+        <field name="view_mode">pivot,tree</field>
+        <field name="view_id" ref="view_sale_line_pivot"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
