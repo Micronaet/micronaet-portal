@@ -10,18 +10,18 @@
                 <field name="document_type" readonly="1" />
                 <field name="mode" readonly="1" />
                 <field name="name" readonly="1"/>
-                
+
                 <field name="partner_id" readonly="1" />
                 <field name="country_id" readonly="1" />
                 <field name="agent_id" readonly="1" />
                 <field name="salesman_id" readonly="1" />
-                <field name="responisble_id" readonly="1" />
-                
+                <field name="responsible_id" readonly="1" />
+
 
                 <field name="product_id" readonly="1" />
                 <field name="uom_id" readonly="1" />
                 <field name="category_id" readonly="1" />
-                
+
                 <field name="product_uom_qty" readonly="1" />
                 <field name="list_price" readonly="1" />
                 <field name="subtotal" readonly="1" />
@@ -37,7 +37,7 @@
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
-    
+
     <menuitem
         name="Statistic"
         id="menu_pivot_satistic_root"
@@ -48,6 +48,7 @@
             parent="menu_pivot_satistic_root"
             id="menu_pivot_satistic_sales"
             sequence="10"
+            name="Sales"
             />
             <menuitem
                 parent="menu_pivot_satistic_sales"
