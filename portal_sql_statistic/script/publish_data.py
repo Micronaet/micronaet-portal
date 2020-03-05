@@ -109,7 +109,7 @@ class PortalAgent:
         """ Connect to MySQL server
         """
         try:
-             import MySQLdb, MySQLdb.cursors
+            import MySQLdb, MySQLdb.cursors
         except:
             print('Error no module MySQLdb installed!')
             return False
@@ -138,7 +138,7 @@ class PortalAgent:
             record['NGL_DOC'],
         )
 
-    def _update_partner_template(self, records, update_on=False):
+    def _update_partner_template(self, records, update_on=False, verbose=100):
         """ Import partner from records
         """
         res = {}
@@ -155,7 +155,7 @@ class PortalAgent:
         i = 0
         for record in records:
             i += 1
-            if not i % 20:
+            if not i % verbose:
                 print('%s / %s Partner updated' % (i, total))
             key = record['account_ref']
             partner_ids = partner_pool.search([
@@ -174,7 +174,7 @@ class PortalAgent:
             res[key] = partner_id
         return res
 
-    def _update_product_template(self, records, update_on=False):
+    def _update_product_template(self, records, update_on=False, verbose=100):
         """ Import product from records
         """
         res = {}
@@ -184,7 +184,7 @@ class PortalAgent:
         i = 0
         for record in records:
             i += 1
-            if not i % 20:
+            if not i % verbose:
                 print('%s / %s Product updated' % (i, total))
             key = record['default_code']
             product_ids = product_pool.search([
