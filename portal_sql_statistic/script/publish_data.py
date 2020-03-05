@@ -146,21 +146,18 @@ class PortalAgent:
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
 
-        query_header = """
-            SELECT *
-            FROM %s;
-            """ % self.parameters['mysql']['table']['header']
+        query_header = "SELECT * FROM %s;" % \
+            self.parameters['mysql']['table']['header']
 
-        query_line = """
-            SELECT *
-            FROM %s;
-            """ % self.parameters['mysql']['table']['line']
+        query_line = "SELECT * FROM %s;" % \
+             self.parameters['mysql']['table']['line']
 
         year_list = sorted(self.parameters['mysql']['database'])
         if last:
             year_list = year_list[-1:]
 
         for year in year_list:
+            cr = self._sql_connect(database)
             database = self.parameters['mysql']['database'][year]
             odoo_data = []
             header_db = {}
@@ -168,7 +165,49 @@ class PortalAgent:
                 'header': 0,
                 'line': 0,
                 }
-            cr = self._sql_connect(database)
+
+            if year_list[-1] == year:
+                # -------------------------------------------------------------
+                # Last year operation:
+                # -------------------------------------------------------------
+                print('Start last connection operations:')
+
+                # Export partner:
+                cr.execute('SELECT * FROM PA_RUBR_PDC_CLFR;')
+                partner_data = {}
+                for partner in cr.fetchall():
+                    partner_data.append({
+                        'pivot_partner': True,
+                        'account_ref': partner['CKY_CNT'].strip(),
+                        'name': partner['CDS_CNT'].strip(),
+                        'country_code': partner['CKY_PAESE'].strip(),
+                        'account_mode': partner['IST_NAZ'].strip(),
+                        })
+
+                pickle.dump(
+                    partner_data, open(
+                        os.path.join(export_path, 'partner.pickle'),
+                        'wb'))
+                print('Export partner [# %s]' % len(partner_data))
+
+                # Export product
+                cr.execute('SELECT * FROM AR_ANAGRAFICHE;')
+                product_data = {}
+                for product in cr.fetchall():
+                    product_data.append({
+                        'pivot_product': True,
+                        'default_code': product['CKY_ART'].strip(),
+                        'name': '%s%s' % (
+                            product['CDS_ART'].strip(),
+                            product['CSG_ART_ALT'].strip(),
+                            ),
+                        })
+
+                pickle.dump(
+                    product_data, open(
+                        os.path.join(export_path, 'product.pickle'),
+                        'wb'))
+                print('Export product [# %s]' % len(product_data))
 
             # -----------------------------------------------------------------
             # Load header:

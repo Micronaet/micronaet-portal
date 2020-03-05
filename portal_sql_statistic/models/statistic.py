@@ -11,6 +11,32 @@ from odoo import models, fields, api
 _logger = logging.getLogger(__name__)
 
 
+class ResPartner(models.Model):
+    """ Model update with extra fields
+    """
+    _inherit = 'res.partner'
+
+    # Columns:
+    account_ref = fields.Char(string='Account ref.', size=9)
+    country_code = fields.Char(string='Coutry code', size=4)
+    pivot_partner = fields.Boolean(string='Pivot partner')
+    account_mode = fields.Selection([
+        ('I', 'Italy'),
+        ('R', 'Vatican'),
+        ('E', 'Extra CEE'),
+        ('C', 'CEE'),
+        ], 'Account_mode')
+
+
+class ProductTemplate(models.Model):
+    """ Model update with extra fields
+    """
+    _inherit = 'product.template'
+
+    # Columns:
+    pivot_product = fields.Boolean(string='Pivot product')
+
+
 class PivotSaleLine(models.Model):
     """ Model name: ExcelReportFormatPage
     """
