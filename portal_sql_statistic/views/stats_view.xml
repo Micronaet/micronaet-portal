@@ -18,17 +18,17 @@
                 <field name="responsible_id" />
                 <field name="product_id" />
                 <field name="uom_id" />
-                <field name="category_id" />                
-                
+                <field name="category_id" />
+
                 <filter name="type_sale" string="Sales" domain="[('document_type','in',('BC', 'RC'))]"/>
                 <filter name="type_unload" string="Unload" domain="[('document_type','in',('BC', 'SL', 'BS'))]"/>
                 <filter name="type_load" string="Load" domain="[('document_type','in',('CL', 'BF', 'RC'))]"/>
-                
+
                 <filter name="mode_sale" string="Sale mode" domain="[('mode','=', 'sale')]"/>
                 <filter name="mode_transport" string="Sale transport" domain="[('mode','=', 'transport')]"/>
                 <filter name="mode_discount" string="Sale discount" domain="[('mode','=', 'discount')]"/>
                 <filter name="mode_fee" string="Sale fee" domain="[('mode','=', 'fee')]"/>
-                
+
                 <group expand="0" string="Group By...">
                     <filter name="group_partner" string="Partner" context="{'group_by': 'partner_id'}"/>
                     <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
@@ -45,7 +45,7 @@
                     <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
                     <filter name="group_date" string="Date" context="{'group_by': 'date'}"/>
 
-                </group>                
+                </group>
             </search>
         </field>
     </record>
@@ -83,6 +83,7 @@
         <field name="arch" type="xml">
             <pivot string="Sale line">
                 <field name="year" type="row"/>
+                <field name="subtotal" type="measure"/>
                 <!--<field name="date" interval="month" type="col"/>
                 <field name="unit_amount" type="measure" widget="float_time"/>-->
             </pivot>
