@@ -43,6 +43,25 @@ class ProductTemplate(models.Model):
     pivot_product = fields.Boolean(string='Pivot product')
 
 
+class ResCurrency(models.Model):
+    """ Model update with extra fields
+    """
+    _inherit = 'res.currency'
+
+    # Columns:
+    account_ref = fields.Integer(string='Account ref.')
+
+
+class PivotSaleReason(models.Model):
+    """ Model name: ExcelReportFormatPage
+    """
+    _name = 'pivot.sale.reason'
+    _description = 'Reason'
+
+    name = fields.Char('Sale reason', size=40)
+    account_ref = fields.Integer('Account ref')
+
+
 class PivotSaleLine(models.Model):
     """ Model name: ExcelReportFormatPage
     """
@@ -76,6 +95,8 @@ class PivotSaleLine(models.Model):
 
     partner_id = fields.Many2one('res.partner', 'Partner')
     partner_code = fields.Char('Partner code', size=9)
+    currency_id = fields.Many2one('res.currency', 'Currency')
+    reason_id = fields.Many2one('pivot.sale.reason', 'Reason')
 
     # Partner related fields:
     country_id = fields.Many2one(
