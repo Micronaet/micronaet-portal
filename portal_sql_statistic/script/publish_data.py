@@ -233,7 +233,7 @@ class PortalAgent:
                         continue
                     partner_data.append({
                         'pivot_partner': True,
-                        'account_ref': ,
+                        'account_ref': account_ref,
                         'name': partner['CDS_CNT'].strip(),
                         'country_code': partner['CKY_PAESE'].strip(),
                         'account_mode': partner['IST_NAZ'].strip(),
