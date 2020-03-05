@@ -182,7 +182,7 @@ class PortalAgent:
             res[key] = product_id
         return res
 
-    def extract_data(self, last=True):
+    def extract_data(self, last=False):
         """ Extract all data in output folder
         """
         import pickle
