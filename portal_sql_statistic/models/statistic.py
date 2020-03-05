@@ -49,8 +49,8 @@ class PivotCurrency(models.Model):
     _name = 'pivot.currency'
     _description = 'Currency'
 
-    name = fields.Char('Sale reason', size=40)
-    symbol = fields.Char('Symbol reason', size=10)
+    name = fields.Char('Currency', size=40)
+    symbol = fields.Char('Symbol', size=10)
     account_ref = fields.Integer('Account ref')
 
 
