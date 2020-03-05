@@ -104,23 +104,60 @@
         <field name="domain">[]</field>
     </record>
 
+    <record model="ir.actions.act_window" id="action_res_partner">
+        <field name="name">Partner</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('pivot_partner', '=', True)]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_product_template">
+        <field name="name">Product</field>
+        <field name="res_model">product.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('pivot_product', '=', True)]</field>
+    </record>
+
     <menuitem
         name="Statistic"
-        id="menu_pivot_satistic_root"
+        id="menu_pivot_statistic_root"
         sequence="20"
         groups="group_stats_manager"
         />
         <menuitem
-            parent="menu_pivot_satistic_root"
-            id="menu_pivot_satistic_sales"
+            parent="menu_pivot_statistic_root"
+            id="menu_pivot_statistic_sales"
             sequence="10"
             name="Sales"
             />
             <menuitem
-                parent="menu_pivot_satistic_sales"
-                id="menu_pivot_satistic_sales_lines"
+                parent="menu_pivot_statistic_sales"
+                id="menu_pivot_statistic_sales_lines"
                 sequence="10"
                 action="action_view_pivot_sale_line"
                 />
+
+        <menuitem
+            parent="menu_pivot_statistic_root"
+            id="menu_pivot_statistic_config"
+            sequence="99"
+            name="Configuration"
+            />
+            <menuitem
+                parent="menu_pivot_statistic_config"
+                id="menu_pivot_statistic_config_partner"
+                sequence="10"
+                action="action_res_partner"
+                />
+            <menuitem
+                parent="menu_pivot_statistic_config"
+                id="menu_pivot_statistic_config_product"
+                sequence="20"
+                action="action_product_template"
+                />
+
 
 </odoo>
