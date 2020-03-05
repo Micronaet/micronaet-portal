@@ -65,9 +65,10 @@ class PortalAgent:
                 },
 
             'odoo': {
-                # TODO generate hostname
-                'server': config.get('odoo', 'server'),
-                'port': config.get('odoo', 'port'),
+                'url': r'http://%s:%s' % (
+                    config.get('odoo', 'server'),
+                    config.get('odoo', 'port'),
+                    ),
                 'database': config.get('odoo', 'database'),
                 'username': config.get('odoo', 'username'),
                 'password': config.get('odoo', 'password'),
@@ -84,7 +85,27 @@ class PortalAgent:
                 },
             }
 
-    def _connect(self, database):
+    def _get_odoo(self):
+        """ Return ODOO Erpeek connection
+        """
+        import erppeek
+
+        return erppeek.Client(
+            self.parameters['odoo']['url'],
+            db=self.parameters['odoo']['database'],
+            user=self.parameters['odoo']['username'],
+            password=self.parameters['odoo']['password'],
+            )
+
+    def _get_odoo_model(self, model_name):
+        """ Return ODOO Erpeek connection
+        """
+        odoo = self._get_odoo()
+
+        return odoo.model(model_name)
+
+        return odoo
+    def _sql_connect(self, database):
         """ Connect to MySQL server
         """
         try:
@@ -117,7 +138,7 @@ class PortalAgent:
             record['NGL_DOC'],
         )
 
-    def extract_data(self, ):
+    def extract_data(self, last=True):
         """ Extract all data in output folder
         """
         import pickle
@@ -134,7 +155,11 @@ class PortalAgent:
             FROM %s;
             """ % self.parameters['mysql']['table']['line']
 
-        for year in self.parameters['mysql']['database']:
+        year_list = sorted(self.parameters['mysql']['database'])
+        if last:
+            year_list = year_list[-1:]
+
+        for year in year_list:
             database = self.parameters['mysql']['database'][year]
             odoo_data = []
             header_db = {}
@@ -142,7 +167,7 @@ class PortalAgent:
                 'header': 0,
                 'line': 0,
                 }
-            cr = self._connect(database)
+            cr = self._sql_connect(database)
 
             # -----------------------------------------------------------------
             # Load header:
@@ -223,7 +248,7 @@ class PortalAgent:
                 ))
         return True
 
-    def publish_data(self, ):
+    def publish_data(self):
         """ Rsync items to remote server
         """
         command = 'rsync -avh -e "ssh -p %s" %s/* %s@%s:%s' % (
@@ -236,31 +261,62 @@ class PortalAgent:
             self.parameters['transfer']['remote_folder'],
             # 'password': config.get('transfer', 'password'),
             )
-        print('Tranfer via rsync: %s' % command)
+        print('Transfer via rsync: %s' % command)
         os.system(command)
+
+    def import_data(self, last=False):
+        """ Import data on Remote ODOO
+        """
+        stats_pool = self._get_odoo_model('pivot.sale.line')
+
+        # ---------------------------------------------------------------------
+        # File to be imported:
+        # ---------------------------------------------------------------------
+        path = self.parameters['transfer']['remote_folder']
+        walk = os.walk(path)
+        file_list = sorted(walk[2])  # File list
+        if last:
+            file_list[-1:]
+
+        for filename in file_list:
+            print('Importing %s file...' % filename)
+
+            # Delete all line record for this year
+            year = int(filename.split('.')[0])
+            stats_line = stats_pool.search([
+                ('year', '=', year)])
+            stats_line.unlink()
+
+            # Reload all pickle file for this year
+            for record in pickle.load(open(filename, 'rb')):
+                stats_pool.create(record)
 
 
 if __name__ != '__main__':
     print('Procedure is not callable externally!')
 
-# TODO Portal parameter for send or receive mode:
+# Check parameter (for send or receive mode startup):
 argv = sys.argv
 if len(argv) == 2:
     parameter = argv[1]
 else:
-    print('No parameter, lauch with: publish or import')
+    print('Pass the parameter: publish, publish_last, import, import_last')
     sys.exit()
 
-agent = PortalAgent('./openerp.cfg')
-if parameter == 'publish':
-    agent.extract_data()
-    agent.publish_data()
+portal_agent = PortalAgent('./openerp.cfg')
+if parameter in 'publish':
+    portal_agent.extract_data()
+    portal_agent.publish_data()
+elif parameter in 'publish_last':
+    portal_agent.extract_data(last=True)
+    portal_agent.publish_data()
 elif parameter == 'import':
-    agent.import_data()
+    portal_agent.import_data()
+elif parameter == 'import_last':
+    portal_agent.import_data(last=True)
 else:
     print('Missed parameter: publish or import')
     sys.exit()
-
 
 """
         if default_code[:1] in 'AB':
@@ -269,11 +325,4 @@ else:
             product_type = 'Macchinari'
         else:   
             product_type = 'Prodotti finiti'
-
-        if document in ('BC', 'SL'):
-            sign = -1
-        else:  # CL
-            sign = +1    
-        
    """
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
