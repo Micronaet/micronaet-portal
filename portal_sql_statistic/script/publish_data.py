@@ -412,7 +412,7 @@ class PortalAgent:
                     sign = -1
 
                 qty = record['NQT_RIGA_ART_PLOR']
-                qty_rate = 1 # TODO no more used? record['NCF_CONV'] or 1
+                qty_rate = 1  # TODO no more used? record['NCF_CONV'] or 1
                 qty *= sign / qty_rate
                 # TODO Causale di vendita
 
@@ -424,15 +424,8 @@ class PortalAgent:
                     'document_type': key[0],  # BC BD SL CL BF BS RC
                     'mode': 'sale',  # sale transport discount fee
 
-                    # 'partner_id'
-                    # 'country_id'
-                    # 'agent_id'
-                    # 'salesman_id'
-                    # 'responsible_id'
-
-                    # 'product_id'
-                    # 'uom_id'
-                    # 'category_id'
+                    'partner_code': header['CKY_CNT_CLFR'],
+                    'product_id': record['CKY_ART'],
 
                     'product_uom_qty': qty,
                     'list_price': price,
@@ -541,9 +534,24 @@ class PortalAgent:
                 if not i % 20:
                     print('Import year %s [%s]' % (year, i))
 
+                # -------------------------------------------------------------
                 # Integration:
-                record['partner_id'] = partner_db.get(record['partner_code'])
-                record['product_id'] = product_db.get(record['product_code'])
+                # -------------------------------------------------------------
+                record['partner_id'] = partner_db.get(
+                    record['partner_code'])
+                del(record['partner_code'])
+
+                record['product_id'] = product_db.get(
+                    record['product_code'])
+                del(record['product_code'])
+
+                record['reason_id'] = reason_db.get(
+                    record['reason_code'])
+                del(record['reason_code'])
+
+                record['currency_id'] = currency_db.get(
+                    record['currency_code'])
+                del(record['currency_code'])
 
                 stats_pool.create(record)
 
