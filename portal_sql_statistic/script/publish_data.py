@@ -395,13 +395,13 @@ class PortalAgent:
         fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
-            update=update_on,
+            update_on=update_on,
             )
 
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
-            update=update_on,
+            update_on=update_on,
             )
 
         # ---------------------------------------------------------------------
