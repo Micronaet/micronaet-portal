@@ -267,6 +267,8 @@ class PortalAgent:
     def import_data(self, last=False):
         """ Import data on Remote ODOO
         """
+        import pickle
+
         stats_pool = self._get_odoo_model('pivot.sale.line')
 
         # ---------------------------------------------------------------------
@@ -287,12 +289,19 @@ class PortalAgent:
 
             # Delete all line record for this year
             year = int(filename.split('.')[0])
-            stats_line = stats_pool.search([
+            stats_ids = stats_pool.search([
                 ('year', '=', year)])
-            stats_line.unlink()
+
+            print('Remove all record for year: %' % year)
+            stats_pool.unlink(stats_ids)
 
             # Reload all pickle file for this year
+            i = 0
             for record in pickle.load(open(filename, 'rb')):
+                i += 1
+                if not i % 20:
+                    print('Import year %s [%s]' % (year, i))
+
                 stats_pool.create(record)
 
 
