@@ -157,8 +157,8 @@ class PortalAgent:
             year_list = year_list[-1:]
 
         for year in year_list:
-            cr = self._sql_connect(database)
             database = self.parameters['mysql']['database'][year]
+            cr = self._sql_connect(database)
             odoo_data = []
             header_db = {}
             tot = {
