@@ -23,7 +23,7 @@
     </record>
     
     <!--res.currency-->
-    <record model="ir.actions.act_window" id="view_pivot_currency_minimal_tree">
+    <record model="ir.ui.view" id="view_pivot_currency_minimal_tree">
         <field name="name">Currency</field>
         <field name="res_model">pivot.currency</field>
         <field name="arch" type="xml">
