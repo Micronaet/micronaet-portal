@@ -144,7 +144,6 @@ class PortalAgent:
         """ Extract all data in output folder
         """
         import pickle
-
         export_path = self.parameters['transfer']['origin_folder']
 
         query_header = """
@@ -204,7 +203,7 @@ class PortalAgent:
                 if key[0] == 'BD':
                     continue  # Not used for now
 
-                if key[0] in ('BC', 'SL', 'BS'): # not used BD
+                if key[0] in ('BC', 'SL', 'BS'):  # not used BD
                     sign = -1
                 else:  # BF, RC, CL
                     sign = +1

@@ -1,5 +1,54 @@
 <?xml version="1.0"?>
 <odoo>
+    <record model="ir.ui.view" id="view_pivot_sale_line_search">
+        <field name="name">pivot.sale.line.search</field>
+        <field name="model">pivot.sale.line</field>
+        <field name="arch" type="xml">
+            <search string="Statistic">
+                <field name="year" />
+                <field name="date" />
+                <field name="document_type" />
+                <field name="mode" />
+                <field name="name" />
+                <field name="partner_id" filter_domain="[('partner_id', '=', self)]" />
+                <field name="partner_id" filter_domain="[('partner_id.name', 'ilike', self)]" />
+                <field name="country_id" />
+                <field name="agent_id" />
+                <field name="salesman_id" />
+                <field name="responsible_id" />
+                <field name="product_id" />
+                <field name="uom_id" />
+                <field name="category_id" />                
+                
+                <filter name="type_sale" string="Sales" domain="[('document_type','in',('BC', 'RC'))]"/>
+                <filter name="type_unload" string="Unload" domain="[('document_type','in',('BC', 'SL', 'BS'))]"/>
+                <filter name="type_load" string="Load" domain="[('document_type','in',('CL', 'BF', 'RC'))]"/>
+                
+                <filter name="mode_sale" string="Sale mode" domain="[('mode','=', 'sale')]"/>
+                <filter name="mode_transport" string="Sale transport" domain="[('mode','=', 'transport')]"/>
+                <filter name="mode_discount" string="Sale discount" domain="[('mode','=', 'discount')]"/>
+                <filter name="mode_fee" string="Sale fee" domain="[('mode','=', 'fee')]"/>
+                
+                <group expand="0" string="Group By...">
+                    <filter name="group_partner" string="Partner" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_salesman" string="Salesman" context="{'group_by': 'salesman_id'}"/>
+                    <filter name="group_responsible" string="Responsible" context="{'group_by': 'responsible_id'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_uom" string="UOM" context="{'group_by': 'uom_id'}"/>
+                    <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+
+                    <filter name="group_type" string="Document type" context="{'group_by': 'document_type'}"/>
+                    <filter name="group_mode" string="Node" context="{'group_by': 'mode'}"/>
+
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'date'}"/>
+
+                </group>                
+            </search>
+        </field>
+    </record>
     <record model="ir.ui.view" id="view_pivot_sale_line_tree">
         <field name="name">pivot.sale.line.tree</field>
         <field name="model">pivot.sale.line</field>
@@ -45,6 +94,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">pivot,tree</field>
         <field name="view_id" ref="view_sale_line_pivot"/>
+        <field name="search_view_id" ref="view_pivot_sale_line_search"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
