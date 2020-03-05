@@ -145,11 +145,13 @@ class PortalAgent:
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
+        total = len(records)
+
         i = 0
         for record in records:
             i += 1
             if not i % 20:
-                print('%s Partner updated' % i)
+                print('%s / %s Partner updated' % (i, total))
             key = record['account_ref']
             partner_ids = partner_pool.search([
                 ('account_ref', '=', key),
@@ -171,11 +173,13 @@ class PortalAgent:
         """
         res = {}
         product_pool = self._get_odoo_model('product.template')
+        total = len(records)
+
         i = 0
         for record in records:
             i += 1
             if not i % 20:
-                print('%s Product updated' % i)
+                print('%s / %s Product updated' % (i, total))
             key = record['default_code']
             product_ids = product_pool.search([
                 ('default_code', '=', key),
