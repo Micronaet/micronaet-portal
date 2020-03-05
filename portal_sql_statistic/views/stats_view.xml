@@ -209,7 +209,7 @@
                 />
             <menuitem
                 parent="menu_pivot_statistic_config"
-                id="menu_pivot_statistic_config_reason"
+                id="menu_pivot_statistic_config_currency"
                 sequence="40"
                 action="action_res_currency"
                 />
