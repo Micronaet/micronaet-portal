@@ -241,7 +241,7 @@ class PortalAgent:
         """
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
-        extra_file = self.paramaters['pickle_file']
+        extra_file = self.parameters['pickle_file']
 
         # TODO parameter:
         supplier_code = '2'
