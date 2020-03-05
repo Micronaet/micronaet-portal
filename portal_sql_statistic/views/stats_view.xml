@@ -57,6 +57,8 @@
                 <field name="partner_id" filter_domain="[('partner_id', '=', self)]" />
                 <field name="partner_id" filter_domain="[('partner_id.name', 'ilike', self)]" />
                 <field name="country_id" />
+                <field name="reason_id" />
+                <field name="currency_id" />
                 <field name="agent_id" />
                 <field name="salesman_id" />
                 <field name="responsible_id" />
@@ -89,6 +91,7 @@
                     <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
                     <filter name="group_uom" string="UOM" context="{'group_by': 'uom_id'}"/>
                     <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    <filter name="group_reason" string="Reason" context="{'group_by': 'reason_id'}"/>
                     <filter name="group_currency" string="Currency" context="{'group_by': 'currency_id'}"/>
 
                     <filter name="group_type" string="Document type" context="{'group_by': 'document_type'}"/>
@@ -110,6 +113,8 @@
                 <field name="document_type" readonly="1" />
                 <field name="mode" readonly="1" />
                 <field name="name" readonly="1"/>
+                <field name="reason_id" readonly="1" />
+                <field name="currency_id" readonly="1" />
 
                 <field name="partner_id" readonly="1" />
                 <field name="country_id" readonly="1" />
