@@ -275,8 +275,10 @@ class PortalAgent:
         path = self.parameters['transfer']['remote_folder']
         import pdb; pdb.set_trace()
 
-        walk = os.walk(path)
-        file_list = sorted([f for f in walk[2]])  # File list
+        for root, folders, files in os.walk(path):
+            file_list = sorted(files)  # File list
+            break
+
         if last:
             file_list[-1:]
 
