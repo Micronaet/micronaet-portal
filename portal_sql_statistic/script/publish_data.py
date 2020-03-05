@@ -447,7 +447,7 @@ class PortalAgent:
         import pickle
 
         path = self.parameters['transfer']['remote_folder']
-        extra_file = self.paramaters['pickle_file']
+        extra_file = self.parameters['pickle_file']
 
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
