@@ -323,7 +323,7 @@ class PortalAgent:
                     sign = -1
 
                 qty = record['NQT_RIGA_ART_PLOR']
-                qty_rate = record['NCF_CONV'] or 1
+                qty_rate = 1 # TODO no more used? record['NCF_CONV'] or 1
                 qty *= sign / qty_rate
                 # TODO Causale di vendita
 
