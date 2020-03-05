@@ -80,8 +80,10 @@ class PortalAgent:
                 'username': config.get('transfer', 'username'),
                 'password': config.get('transfer', 'password'),
 
-                'origin_folder': config.get('transfer', 'origin_folder'),
-                'remote_folder': config.get('transfer', 'remote_folder'),
+                'origin_folder': os.path.expanduser(
+                    config.get('transfer', 'origin_folder')),
+                'remote_folder': os.path.expanduser(
+                    config.get('transfer', 'remote_folder')),
                 },
             }
 
