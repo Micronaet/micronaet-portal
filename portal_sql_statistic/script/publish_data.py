@@ -384,17 +384,21 @@ class PortalAgent:
         import pickle
 
         path = self.parameters['transfer']['remote_folder']
+        extra_file = {
+            'partner': 'partner.pickle',
+            'product': 'product.pickle',
+            }
 
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        fullname = os.path.join(path, 'partner.pickle')
+        fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
             update=update_on,
             )
 
-        fullname = os.path.join(path, 'product.pickle')
+        fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
             update=update_on,
@@ -414,13 +418,13 @@ class PortalAgent:
             file_list = file_list[-1:]
 
         for filename in file_list:
-            fullname = os.path.join(path, filename)
-
-            if not filename[:4].isdigit():
-                print('No stats file: %s...' % fullname)
+            if filename in extra_file.values():
+                print('No stats file: %s...' % filename)
                 continue
 
+            fullname = os.path.join(path, filename)
             print('Importing %s file...' % fullname)
+
             # Delete all line record for this year
             year = int(filename.split('.')[0])
             stats_ids = stats_pool.search([
