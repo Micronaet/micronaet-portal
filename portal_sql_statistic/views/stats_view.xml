@@ -22,21 +22,21 @@
         <field name="domain">[]</field>
     </record>
     
-    <!--res.currency-->
+    <!--pivoy.currency-->
     <record model="ir.ui.view" id="view_pivot_currency_tree">
-        <field name="name">Currency</field>
-        <field name="res_model">pivot.currency</field>
+        <field name="name">pivot.currency.tree</field>
+        <field name="model">pivot.currency</field>
         <field name="arch" type="xml">
             <tree string="Currency" editable="bottom">
                 <field name="name" readonly="1"/>
-                <field name="symbol" />
-                <field name="account_ref" />
+                <field name="symbol" readonly="1" />
+                <field name="account_ref" readonly="1" />
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="action_open_pivot_currency">
+    <record model="ir.actions.act_window" id="action_pivot_currency">
         <field name="name">Currency</field>
-        <field name="res_model">pivot.currency</field>
+        <field name="res_model">pivoc.currency</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="view_pivot_currency_tree"/>
@@ -213,8 +213,8 @@
                 />
             <menuitem
                 parent="menu_pivot_statistic_config"
-                id="menu_pivot_statistic_config_currency"
+                id="menu_pivot_currency"
                 sequence="40"
-                action="action_open_pivot_currency"
+                action="action_pivot_currency"
                 />
 </odoo>
