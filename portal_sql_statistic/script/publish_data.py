@@ -292,7 +292,7 @@ class PortalAgent:
             stats_ids = stats_pool.search([
                 ('year', '=', year)])
 
-            print('Remove all record for year: %' % year)
+            print('Remove all record for year: %s' % year)
             stats_pool.unlink(stats_ids)
 
             # Reload all pickle file for this year
