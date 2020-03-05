@@ -1,3 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_pivot_sale_line_user,pivot.sale.line,model_pivot_sale_line,base.group_user,1,1,1,1
+access_pivot_sale_line_user,pivot.sale.line,model_pivot_sale_line,base.group_user,1,0,0,0
+access_pivot_sale_line_user,pivot.sale.line,model_pivot_sale_line,portal_sql_statistic.group_stats_manager,1,1,1,1
+access_product_template_user,product.template,model_product_template,portal_sql_statistic.group_stats_manager,1,1,1,1
 
