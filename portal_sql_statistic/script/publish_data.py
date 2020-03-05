@@ -321,7 +321,7 @@ class PortalAgent:
                 reason_data = []
                 for reason in cr.fetchall():
                     reason_data.append({
-                        'account_ref': reason['NKY_CAUM'].strip(),
+                        'account_ref': str(reason['NKY_CAUM']),
                         'name': reason['CDS_CAUM'].strip(),
                         })
                 pickle.dump(
