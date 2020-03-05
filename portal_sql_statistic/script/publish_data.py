@@ -396,6 +396,10 @@ class PortalAgent:
                 if not i % 20:
                     print('Import year %s [%s]' % (year, i))
 
+                # Integration:
+                record['partner_id'] = partner_db.get(record['partner_code'])
+                record['product_id'] = product_db.get(record['product_code'])
+
                 stats_pool.create(record)
 
 

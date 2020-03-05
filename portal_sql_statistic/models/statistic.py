@@ -69,6 +69,8 @@ class PivotSaleLine(models.Model):
     name = fields.Char('Ref.', size=20)
 
     partner_id = fields.Many2one('res.partner', 'Partner')
+    partner_code = fields.Char('Partner code', size=9)
+
     country_id = fields.Many2one('res.country', 'Country')
     agent_id = fields.Many2one('res.partner', 'Agent')
     salesman_id = fields.Many2one('res.partner', 'Salesman')
@@ -78,6 +80,8 @@ class PivotSaleLine(models.Model):
 
     # Detail:
     product_id = fields.Many2one('product.template', 'Product')
+    product_code = fields.Char('Product code', size=9)
+
     uom_id = fields.Many2one('product.uom', 'Uom')
     category_id = fields.Many2one('product.category', 'Category')
 

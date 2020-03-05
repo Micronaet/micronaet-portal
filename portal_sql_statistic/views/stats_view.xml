@@ -19,6 +19,12 @@
                 <field name="uom_id" />
                 <field name="category_id" />
 
+                <filter name="partner_no" string="Without partner" domain="[('partner_id','=',False)]"/>
+                <filter name="partner_yes" string="With partner" domain="[('partner_id','!=',False)]"/>
+
+                <filter name="product_no" string="Without product" domain="[('product_id','=',False)]"/>
+                <filter name="product_yes" string="With parproducttner" domain="[('product_id','!=',False)]"/>
+
                 <filter name="type_sale" string="Sales" domain="[('document_type','in',('BC', 'RC'))]"/>
                 <filter name="type_unload" string="Unload" domain="[('document_type','in',('BC', 'SL', 'BS'))]"/>
                 <filter name="type_load" string="Load" domain="[('document_type','in',('CL', 'BF', 'RC'))]"/>
