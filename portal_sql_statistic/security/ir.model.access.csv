@@ -3,6 +3,8 @@ access_pivot_sale_line_user,pivot.sale.line,model_pivot_sale_line,base.group_use
 access_pivot_sale_line_user,pivot.sale.line,model_pivot_sale_line,portal_sql_statistic.group_stats_manager,1,1,1,1
 access_pivot_sale_reason_user,pivot.sale.reason,model_pivot_sale_reason,base.group_user,1,0,0,0
 access_pivot_sale_reason_user,pivot.sale.reason,model_pivot_sale_reason,portal_sql_statistic.group_stats_manager,1,1,1,1
+access_pivot_currency_user,pivot.currency,model_pivot_currency,base.group_user,1,0,0,0
+access_pivot_currency_user,pivot.currency,model_pivot_currency,portal_sql_statistic.group_stats_manager,1,1,1,1
 
 access_product_template_stats,product.template,product.model_product_template,portal_sql_statistic.group_stats_manager,1,1,1,1
 access_product_product_stats,product.product,product.model_product_product,portal_sql_statistic.group_stats_manager,1,1,1,1
