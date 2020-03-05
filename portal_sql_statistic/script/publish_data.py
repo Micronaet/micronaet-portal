@@ -249,7 +249,7 @@ class PortalAgent:
                         continue
                     partner_data.append({
                         'pivot_partner': True,
-                        'company': True,
+                        'is_company': True,
                         'customer': account_ref_1 == supplier_code,
                         'supplier': account_ref_1 == customer_code,
                         'account_ref': account_ref,
