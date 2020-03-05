@@ -18,8 +18,14 @@ class ResPartner(models.Model):
 
     # Columns:
     account_ref = fields.Char(string='Account ref.', size=9)
-    country_code = fields.Char(string='Coutry code', size=4)
+    country_code = fields.Char(string='Country code', size=4)
     pivot_partner = fields.Boolean(string='Pivot partner')
+
+    agent_id = fields.Many2one('res.partner', 'Agent')
+    salesman_id = fields.Many2one('res.partner', 'Salesman')
+    responsible_id = fields.Many2one('res.partner', 'Responsible')
+
+    # TODO put also in statistic
     account_mode = fields.Selection([
         ('I', 'Italy'),
         ('R', 'Vatican'),
@@ -71,10 +77,20 @@ class PivotSaleLine(models.Model):
     partner_id = fields.Many2one('res.partner', 'Partner')
     partner_code = fields.Char('Partner code', size=9)
 
-    country_id = fields.Many2one('res.country', 'Country')
-    agent_id = fields.Many2one('res.partner', 'Agent')
-    salesman_id = fields.Many2one('res.partner', 'Salesman')
-    responsible_id = fields.Many2one('res.partner', 'Responsible')
+    # Partner related fields:
+    country_id = fields.Many2one(
+        'res.country', 'Country', related='partner_id.country_id',
+        store=True)
+    agent_id = fields.Many2one(
+        'res.partner', 'Agent', related='partner_id.agent_id',
+        store=True)
+    salesman_id = fields.Many2one(
+        'res.partner', 'Salesman', related='partner_id.salesman_id',
+        store=True)
+    responsible_id = fields.Many2one(
+        'res.partner', 'Responsible', related='partner_id.responsible_id',
+        store=True)
+
     # TODO Zone
     # TODO product_code, customer_code to automatic link partner and product
 
@@ -82,10 +98,14 @@ class PivotSaleLine(models.Model):
     product_id = fields.Many2one('product.template', 'Product')
     product_code = fields.Char('Product code', size=9)
 
-    uom_id = fields.Many2one('product.uom', 'Uom')
-    category_id = fields.Many2one('product.category', 'Category')
+    # Product related
+    category_id = fields.Many2one(
+        'product.category', 'Category',
+        related='product_id.categ_id', store=True)
+    uom_id = fields.Many2one(
+        'product.uom', 'Uom',
+        related='product_id.uom_id', store=True)
 
     product_uom_qty = fields.Float('Q.', digits=(16, 3))
     list_price = fields.Float('Price', digits=(16, 3))
     subtotal = fields.Float('Subtotal', digits=(16, 3))
-

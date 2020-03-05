@@ -145,8 +145,15 @@ class PortalAgent:
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
-        total = len(records)
+        country_pool = self._get_odoo_model('res.country')
 
+        # Load country:
+        country_db = {}
+        country_ids = country_pool.search([])
+        for country in country_pool.browse(country_ids):
+            country_db[country.code] = country.id
+
+        total = len(records)
         i = 0
         for record in records:
             i += 1
@@ -157,9 +164,9 @@ class PortalAgent:
                 ('account_ref', '=', key),
                 ])
 
-            # TODO Integrate with extra fields
+            # TODO Integrate with extra fields:
+            record['country_id'] = country_db.get(record['country_code'])
             if partner_ids:
-
                 partner_pool.write(partner_ids, record)
                 partner_id = partner_ids[0]
             else:
@@ -200,13 +207,17 @@ class PortalAgent:
         """
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
-        start_code_used = '24'  # TODO parameter
 
-        query_header = "SELECT * FROM %s;" % \
-            self.parameters['mysql']['table']['header']
+        # TODO parameter:
+        supplier_code = '2'
+        customer_code = '4'
+        start_code_used = supplier_code + customer_code
 
-        query_line = "SELECT * FROM %s;" % \
-             self.parameters['mysql']['table']['line']
+        query_header = "SELECT * FROM %s;" % (
+            self.parameters['mysql']['table']['header'])
+
+        query_line = "SELECT * FROM %s;" % (
+            self.parameters['mysql']['table']['line'])
 
         year_list = sorted(self.parameters['mysql']['database'])
         if last:
@@ -239,11 +250,11 @@ class PortalAgent:
                     partner_data.append({
                         'pivot_partner': True,
                         'company': True,
-                        'customer': account_ref_1 == '2',
-                        'supplier': account_ref_1 == '4',
+                        'customer': account_ref_1 == supplier_code,
+                        'supplier': account_ref_1 == customer_code,
                         'account_ref': account_ref,
                         'name': partner['CDS_CNT'].strip(),
-                        'country_code': partner['CKY_PAESE'].strip(),
+                        'country_code': partner['CKY_PAESE'].strip().upper(),
                         'account_mode': partner['IST_NAZ'].strip(),
                         })
 
