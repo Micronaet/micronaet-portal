@@ -275,7 +275,6 @@ class PortalAgent:
         # File to be imported:
         # ---------------------------------------------------------------------
         path = self.parameters['transfer']['remote_folder']
-        import pdb; pdb.set_trace()
 
         for root, folders, files in os.walk(path):
             file_list = sorted(files)  # File list
@@ -284,6 +283,7 @@ class PortalAgent:
         if last:
             file_list = file_list[-1:]
 
+        import pdb; pdb.set_trace()
         for filename in file_list:
             print('Importing %s file...' % filename)
 
