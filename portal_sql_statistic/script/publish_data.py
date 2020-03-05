@@ -374,13 +374,15 @@ class PortalAgent:
 
         path = self.parameters['transfer']['remote_folder']
 
+        # ---------------------------------------------------------------------
         # Pre operations (extra model data):
-        fullname = os.path.join(path, 'product.pickle')
-        product_db = self._update_product_template(
-            pickle.load(open(fullname, 'rb')))
-
+        # ---------------------------------------------------------------------
         fullname = os.path.join(path, 'partner.pickle')
         partner_db = self._update_partner_template(
+            pickle.load(open(fullname, 'rb')))
+
+        fullname = os.path.join(path, 'product.pickle')
+        product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')))
 
         # ---------------------------------------------------------------------
