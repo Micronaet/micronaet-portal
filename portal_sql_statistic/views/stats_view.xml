@@ -80,7 +80,7 @@
         <field name="model">pivot.sale.line</field>
         <field name="arch" type="xml">
             <pivot string="Sale line">
-                <field name="date:year" type="row"/>
+                <field name="date" type="row"/>
                 <field name="subtotal" type="measure"/>
                 <!--<field name="date" interval="month" type="col"/>
                 <field name="unit_amount" type="measure" widget="float_time"/>-->
