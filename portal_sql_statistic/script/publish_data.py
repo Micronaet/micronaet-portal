@@ -236,6 +236,33 @@ class PortalAgent:
             res[key] = reason_id
         return res
 
+    def _update_currency_template(self, records, update_on=False, verbose=100):
+        """ Import sale currency from records
+        """
+        res = {}
+        currency_pool = self._get_odoo_model('pivot.currency')
+        total = len(records)
+
+        i = 0
+        for record in records:
+            i += 1
+            if not i % verbose:
+                print('%s / %s Currency updated' % (i, total))
+            key = record['account_ref']
+            currency_ids = currency_pool.search([
+                ('account_ref', '=', key),
+                ])
+
+            if currency_ids:
+                if update_on:
+                    currency_pool.write(currency_ids, record)
+                currency_id = currency_ids[0]
+            else:
+                currency_id = currency_pool.create(record).id
+
+            res[key] = currency_id
+        return res
+
     def extract_data(self, last=False):
         """ Extract all data in output folder
         """
