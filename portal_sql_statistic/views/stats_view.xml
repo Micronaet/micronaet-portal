@@ -5,7 +5,6 @@
         <field name="model">pivot.sale.line</field>
         <field name="arch" type="xml">
             <search string="Statistic">
-                <field name="year" />
                 <field name="date" />
                 <field name="document_type" />
                 <field name="mode" />
@@ -42,7 +41,7 @@
                     <filter name="group_type" string="Document type" context="{'group_by': 'document_type'}"/>
                     <filter name="group_mode" string="Node" context="{'group_by': 'mode'}"/>
 
-                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                    <filter name="group_year" string="Year" context="{'group_by': 'date:year'}"/>
                     <filter name="group_date" string="Date" context="{'group_by': 'date'}"/>
 
                 </group>
@@ -54,7 +53,6 @@
         <field name="model">pivot.sale.line</field>
         <field name="arch" type="xml">
             <tree string="Sale line" editable="bottom">
-                <field name="year" readonly="1"/>
                 <field name="date" readonly="1" />
                 <field name="document_type" readonly="1" />
                 <field name="mode" readonly="1" />
@@ -82,7 +80,7 @@
         <field name="model">pivot.sale.line</field>
         <field name="arch" type="xml">
             <pivot string="Sale line">
-                <field name="year" type="row"/>
+                <field name="date:year" type="row"/>
                 <field name="subtotal" type="measure"/>
                 <!--<field name="date" interval="month" type="col"/>
                 <field name="unit_amount" type="measure" widget="float_time"/>-->

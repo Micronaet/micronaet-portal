@@ -38,8 +38,8 @@ class PortalAgent:
         for year in range(from_year, current_year + 1):
             if year == current_year:
                 text_year = ''
-            elif year_format == 'yy': # 2 char
-                    text_year = '%02d' % (year - 2000)
+            elif year_format == 'yy':  # 2 char
+                text_year = '%02d' % (year - 2000)
             else:
                 text_year = year
 
@@ -49,9 +49,9 @@ class PortalAgent:
         # Read parameters:
         self.parameters = {
             'mysql': {
-                'hostname': '%s' % (#:%s' % (
+                'hostname': '%s' % (  # :%s' % (
                     config.get('mysql', 'server'),
-                    #config.get('mysql', 'port'),
+                    # config.get('mysql', 'port'),
                     ),
 
                 'username': config.get('mysql', 'username'),
