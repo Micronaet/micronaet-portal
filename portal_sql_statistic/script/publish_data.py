@@ -411,8 +411,12 @@ class PortalAgent:
 
         for filename in file_list:
             fullname = os.path.join(path, filename)
-            print('Importing %s file...' % fullname)
 
+            if not filename[:4].isdigit():
+                print('No stats file: %s...' % fullname)
+                continue
+
+            print('Importing %s file...' % fullname)
             # Delete all line record for this year
             year = int(filename.split('.')[0])
             stats_ids = stats_pool.search([
