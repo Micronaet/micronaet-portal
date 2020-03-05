@@ -455,11 +455,11 @@ if __name__ != '__main__':
 
 # Check parameter (for send or receive mode startup):
 argv = sys.argv
-if len(argv) == 2:
-    parameter = argv[1]
-else:
+if len(argv) < 2:
     print('Pass the parameter: publish, publish_last, import, import_last')
     sys.exit()
+else:
+    parameter = argv[1]
 
 if len(argv) == 3:
     print('Update mode: ON')
