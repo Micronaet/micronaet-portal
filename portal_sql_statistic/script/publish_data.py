@@ -209,7 +209,7 @@ class PortalAgent:
             res[key] = product_id
         return res
 
-    def _update_reason_template(self, records, update_on=False, verbose=100):
+    def _update_reason(self, records, update_on=False, verbose=100):
         """ Import sale reason from records
         """
         res = {}
@@ -236,7 +236,7 @@ class PortalAgent:
             res[key] = reason_id
         return res
 
-    def _update_currency_template(self, records, update_on=False, verbose=100):
+    def _update_currency(self, records, update_on=False, verbose=100):
         """ Import sale currency from records
         """
         res = {}
@@ -480,13 +480,13 @@ class PortalAgent:
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
         fullname = os.path.join(path, extra_file['reason'])
-        reason_db = self._update_reason_template(
+        reason_db = self._update_reason(
             pickle.load(open(fullname, 'rb')),
             update_on=update_on,
             )
 
         fullname = os.path.join(path, extra_file['currency'])
-        currency_db = self._update_currency_template(
+        currency_db = self._update_currency(
             pickle.load(open(fullname, 'rb')),
             update_on=update_on,
             )
