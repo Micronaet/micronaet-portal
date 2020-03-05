@@ -280,7 +280,7 @@ class PortalAgent:
             break
 
         if last:
-            file_list[-1:]
+            file_list = file_list[-1:]
 
         for filename in file_list:
             print('Importing %s file...' % filename)
