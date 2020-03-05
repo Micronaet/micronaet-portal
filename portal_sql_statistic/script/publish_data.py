@@ -331,11 +331,11 @@ class PortalAgent:
                 print('Export reason [# %s]' % len(reason_data))
 
                 # Export currency
-                cr.execute('SELECT * FROM MU_VALUTE;')
+                cr.execute('''SELECT * FROM MU_VALUTE WHERE CDS_VLT!='';''')
                 currency_data = []
                 for currency in cr.fetchall():
                     currency_data.append({
-                        'account_ref': currency['NKY_VLT'].strip(),
+                        'account_ref': str(currency['NKY_VLT']),
                         'name': currency['CDS_VLT'].strip(),
                         'symbol': currency['CSG_VLT'].strip(),
                         })
