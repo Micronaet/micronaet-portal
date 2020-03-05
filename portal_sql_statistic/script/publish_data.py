@@ -323,7 +323,6 @@ class PortalAgent:
         if last:
             file_list = file_list[-1:]
 
-        import pdb; pdb.set_trace()
         for filename in file_list:
             fullname = os.path.join(path, filename)
             print('Importing %s file...' % fullname)
