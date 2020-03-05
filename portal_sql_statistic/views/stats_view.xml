@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
+    <!--pivot.sale.reason-->
     <record model="ir.ui.view" id="view_pivot_sale_reason_tree">
         <field name="name">pivot.sale.reason.tree</field>
         <field name="model">pivot.sale.reason</field>
@@ -20,13 +21,15 @@
         <field name="domain">[]</field>
     </record>
     
-    <record model="ir.actions.act_window" id="view_res_currency_tree">
+    <!--res.currency-->
+    <record model="ir.actions.act_window" id="view_res_currency_minimal_tree">
         <field name="name">Currency</field>
         <field name="res_model">res.currency</field>
         <field name="priority" eval="40"/>
         <field name="arch" type="xml">
             <tree string="Sale reason" editable="bottom">
                 <field name="name" readonly="1"/>
+                <field name="symbol" />
                 <field name="account_ref" />
             </tree>
         </field>
@@ -36,11 +39,12 @@
         <field name="res_model">res.currency</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
-        <!--field name="view_id" ref="view_res_currency_tree"/>-->
+        <field name="view_id" ref="view_res_currency_minimal_tree"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
 
+    <!--pivot.sale.line-->
     <record model="ir.ui.view" id="view_pivot_sale_line_search">
         <field name="name">pivot.sale.line.search</field>
         <field name="model">pivot.sale.line</field>
