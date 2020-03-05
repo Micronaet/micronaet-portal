@@ -21,9 +21,9 @@ class ResPartner(models.Model):
     country_code = fields.Char(string='Country code', size=4)
     pivot_partner = fields.Boolean(string='Pivot partner')
 
-    agent_id = fields.Many2one('res.partner', 'Agent')
-    salesman_id = fields.Many2one('res.partner', 'Salesman')
-    responsible_id = fields.Many2one('res.partner', 'Responsible')
+    #agent_id = fields.Many2one('res.partner', 'Agent')
+    #salesman_id = fields.Many2one('res.partner', 'Salesman')
+    #responsible_id = fields.Many2one('res.partner', 'Responsible')
 
     # TODO put also in statistic
     account_mode = fields.Selection([
@@ -79,16 +79,20 @@ class PivotSaleLine(models.Model):
 
     # Partner related fields:
     country_id = fields.Many2one(
-        'res.country', 'Country', related='partner_id.country_id',
+        'res.country', 'Country',
+        #related='partner_id.country_id',
         store=True)
     agent_id = fields.Many2one(
-        'res.partner', 'Agent', related='partner_id.agent_id',
+        'res.partner', 'Agent',
+        #related='partner_id.agent_id',
         store=True)
     salesman_id = fields.Many2one(
-        'res.partner', 'Salesman', related='partner_id.salesman_id',
+        'res.partner', 'Salesman',
+        #related='partner_id.salesman_id',
         store=True)
     responsible_id = fields.Many2one(
-        'res.partner', 'Responsible', related='partner_id.responsible_id',
+        'res.partner', 'Responsible',
+        #related='partner_id.responsible_id',
         store=True)
 
     # TODO Zone
