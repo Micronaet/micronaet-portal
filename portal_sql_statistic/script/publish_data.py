@@ -145,7 +145,11 @@ class PortalAgent:
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
+        i = 0
         for record in records:
+            i += 1
+            if not i % 20:
+                print('%s Partner updated' % i)
             key = record['account_ref']
             partner_ids = partner_pool.search([
                 ('account_ref', '=', key),
@@ -153,6 +157,7 @@ class PortalAgent:
 
             # TODO Integrate with extra fields
             if partner_ids:
+
                 partner_pool.write(partner_ids, record)
                 partner_id = partner_ids[0]
             else:
@@ -166,7 +171,11 @@ class PortalAgent:
         """
         res = {}
         product_pool = self._get_odoo_model('product.template')
+        i = 0
         for record in records:
+            i += 1
+            if not i % 20:
+                print('%s Product updated' % i)
             key = record['default_code']
             product_ids = product_pool.search([
                 ('default_code', '=', key),
@@ -187,6 +196,7 @@ class PortalAgent:
         """
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
+        start_code_used = '24' # TODO parameter
 
         query_header = "SELECT * FROM %s;" % \
             self.parameters['mysql']['table']['header']
@@ -218,9 +228,12 @@ class PortalAgent:
                 cr.execute('SELECT * FROM PA_RUBR_PDC_CLFR;')
                 partner_data = []
                 for partner in cr.fetchall():
+                    account_ref = partner['CKY_CNT'].strip()
+                    if account_ref[:1] not in start_code_used:
+                        continue
                     partner_data.append({
                         'pivot_partner': True,
-                        'account_ref': partner['CKY_CNT'].strip(),
+                        'account_ref': ,
                         'name': partner['CDS_CNT'].strip(),
                         'country_code': partner['CKY_PAESE'].strip(),
                         'account_mode': partner['IST_NAZ'].strip(),
