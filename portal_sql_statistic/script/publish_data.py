@@ -138,7 +138,7 @@ class PortalAgent:
             record['NGL_DOC'],
         )
 
-    def _update_partner_template(self, records):
+    def _update_partner_template(self, records, update=False):
         """ Import partner from records
         """
         res = {}
@@ -165,7 +165,8 @@ class PortalAgent:
             # TODO Integrate with extra fields:
             record['country_id'] = country_db.get(record['country_code'])
             if partner_ids:
-                partner_pool.write(partner_ids, record)
+                if update:
+                    partner_pool.write(partner_ids, record)
                 partner_id = partner_ids[0]
             else:
                 partner_id = partner_pool.create(record).id
@@ -173,7 +174,7 @@ class PortalAgent:
             res[key] = partner_id
         return res
 
-    def _update_product_template(self, records):
+    def _update_product_template(self, records, update=False):
         """ Import product from records
         """
         res = {}
@@ -192,7 +193,8 @@ class PortalAgent:
 
             # TODO Integrate with extra fields
             if product_ids:
-                product_pool.write(product_ids, record)
+                if update:
+                    product_pool.write(product_ids, record)
                 product_id = product_ids[0]
             else:
                 product_id = product_pool.create(record).id
@@ -200,7 +202,7 @@ class PortalAgent:
             res[key] = product_id
         return res
 
-    def extract_data(self, last=False):
+    def extract_data(self, last=False, update=False):
         """ Extract all data in output folder
         """
         import pickle
@@ -376,7 +378,7 @@ class PortalAgent:
         print('Transfer via rsync: %s' % command)
         os.system(command)
 
-    def import_data(self, last=False):
+    def import_data(self, last=False, update=False):
         """ Import data on Remote ODOO
         """
         import pickle
@@ -388,11 +390,15 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         fullname = os.path.join(path, 'partner.pickle')
         partner_db = self._update_partner_template(
-            pickle.load(open(fullname, 'rb')))
+            pickle.load(open(fullname, 'rb')),
+            update=update,
+            )
 
         fullname = os.path.join(path, 'product.pickle')
         product_db = self._update_product_template(
-            pickle.load(open(fullname, 'rb')))
+            pickle.load(open(fullname, 'rb')),
+            update=update,
+            )
 
         # ---------------------------------------------------------------------
         # File to be imported:
@@ -450,19 +456,26 @@ else:
     print('Pass the parameter: publish, publish_last, import, import_last')
     sys.exit()
 
+if len(argv) == 3:
+    print('Update mode: ON')
+    update = argv[2] == 'update'
+else:
+    print('Update mode: OFF')
+    update = False
+
 portal_agent = PortalAgent('./openerp.cfg')
 
 if parameter in 'publish':
     portal_agent.extract_data()
     portal_agent.publish_data()
 elif parameter in 'publish_last':
-    portal_agent.extract_data(last=True)
+    portal_agent.extract_data(last=True, update=update)
     portal_agent.publish_data()
 
 elif parameter == 'import':
     portal_agent.import_data()
 elif parameter == 'import_last':
-    portal_agent.import_data(last=True)
+    portal_agent.import_data(last=True, update=update)
 else:
     print('Missed parameter: publish or import')
     sys.exit()
