@@ -103,10 +103,8 @@ class PortalAgent:
         """ Return ODOO Erpeek connection
         """
         odoo = self._get_odoo()
-
         return odoo.model(model_name)
 
-        return odoo
     def _sql_connect(self, database):
         """ Connect to MySQL server
         """
