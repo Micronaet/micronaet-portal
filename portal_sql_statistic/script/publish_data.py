@@ -452,18 +452,6 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        fullname = os.path.join(path, extra_file['partner'])
-        partner_db = self._update_partner_template(
-            pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
-            )
-
-        fullname = os.path.join(path, extra_file['product'])
-        product_db = self._update_product_template(
-            pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
-            )
-
         fullname = os.path.join(path, extra_file['reason'])
         reason_db = self._update_reason_template(
             pickle.load(open(fullname, 'rb')),
@@ -472,6 +460,18 @@ class PortalAgent:
 
         fullname = os.path.join(path, extra_file['currency'])
         currency_db = self._update_currency_template(
+            pickle.load(open(fullname, 'rb')),
+            update_on=update_on,
+            )
+
+        fullname = os.path.join(path, extra_file['partner'])
+        partner_db = self._update_partner_template(
+            pickle.load(open(fullname, 'rb')),
+            update_on=update_on,
+            )
+
+        fullname = os.path.join(path, extra_file['product'])
+        product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
             update_on=update_on,
             )
