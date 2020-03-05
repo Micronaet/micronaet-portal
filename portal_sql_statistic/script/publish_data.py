@@ -174,7 +174,7 @@ class PortalAgent:
 
                 # Export partner:
                 cr.execute('SELECT * FROM PA_RUBR_PDC_CLFR;')
-                partner_data = {}
+                partner_data = []
                 for partner in cr.fetchall():
                     partner_data.append({
                         'pivot_partner': True,
@@ -192,7 +192,7 @@ class PortalAgent:
 
                 # Export product
                 cr.execute('SELECT * FROM AR_ANAGRAFICHE;')
-                product_data = {}
+                product_data = []
                 for product in cr.fetchall():
                     product_data.append({
                         'pivot_product': True,
