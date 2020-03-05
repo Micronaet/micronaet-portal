@@ -316,10 +316,11 @@ class PortalAgent:
                 if key[0] == 'BD':
                     continue  # Not used for now
 
+                # Sign is for sales not for stock
                 if key[0] in ('BC', 'SL', 'BS'):  # not used BD
-                    sign = -1
-                else:  # BF, RC, CL
                     sign = +1
+                else:  # BF, RC, CL
+                    sign = -1
 
                 qty = record['NQT_RIGA_ART_PLOR']
                 qty_rate = record['NCF_CONV'] or 1
