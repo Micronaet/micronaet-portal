@@ -425,7 +425,9 @@ class PortalAgent:
                     'mode': 'sale',  # sale transport discount fee
 
                     'partner_code': header['CKY_CNT_CLFR'],
-                    'product_id': record['CKY_ART'],
+                    'product_code': record['CKY_ART'],
+                    'reason_code': header['NKY_CAUM']
+                    'currency_code': header['NKY_VLT']
 
                     'product_uom_qty': qty,
                     'list_price': price,
