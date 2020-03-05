@@ -85,6 +85,13 @@ class PortalAgent:
                 'remote_folder': os.path.expanduser(
                     config.get('transfer', 'remote_folder')),
                 },
+
+            'pickle_file': {
+                'partner': 'partner.pickle',
+                'product': 'product.pickle',
+                'reason': 'reason.pickle',
+                'currency': 'currency.pickle',
+                },
             }
 
     def _get_odoo(self):
@@ -202,11 +209,39 @@ class PortalAgent:
             res[key] = product_id
         return res
 
+    def _update_reason_template(self, records, update_on=False, verbose=100):
+        """ Import sale reason from records
+        """
+        res = {}
+        reason_pool = self._get_odoo_model('pivot.sale.reason')
+        total = len(records)
+
+        i = 0
+        for record in records:
+            i += 1
+            if not i % verbose:
+                print('%s / %s Reason updated' % (i, total))
+            key = record['account_ref']
+            reason_ids = reason_pool.search([
+                ('account_ref', '=', key),
+                ])
+
+            if reason_ids:
+                if update_on:
+                    reason_pool.write(reason_ids, record)
+                reason_id = reason_ids[0]
+            else:
+                reason_id = reason_pool.create(record).id
+
+            res[key] = reason_id
+        return res
+
     def extract_data(self, last=False):
         """ Extract all data in output folder
         """
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
+        extra_file = self.paramaters['pickle_file']
 
         # TODO parameter:
         supplier_code = '2'
@@ -257,10 +292,9 @@ class PortalAgent:
                         'country_code': partner['CKY_PAESE'].strip().upper(),
                         'account_mode': partner['IST_NAZ'].strip(),
                         })
-
                 pickle.dump(
                     partner_data, open(
-                        os.path.join(export_path, 'partner.pickle'),
+                        os.path.join(export_path, extra_file['partner']),
                         'wb'))
                 print('Export partner [# %s]' % len(partner_data))
 
@@ -276,12 +310,40 @@ class PortalAgent:
                             product['CSG_ART_ALT'].strip(),
                             ),
                         })
-
                 pickle.dump(
                     product_data, open(
-                        os.path.join(export_path, 'product.pickle'),
+                        os.path.join(export_path, extra_file['product']),
                         'wb'))
                 print('Export product [# %s]' % len(product_data))
+
+                # Export reason movement
+                cr.execute('SELECT * FROM MC_CAUS_MOVIMENTI;')
+                reason_data = []
+                for reason in cr.fetchall():
+                    reason_data.append({
+                        'account_ref': reason['NKY_CAUM'].strip(),
+                        'name': reason['CDS_CAUM'].strip(),
+                        })
+                pickle.dump(
+                    reason_data, open(
+                        os.path.join(export_path, extra_file['reason']),
+                        'wb'))
+                print('Export reason [# %s]' % len(reason_data))
+
+                # Export currency
+                cr.execute('SELECT * FROM MU_VALUTE;')
+                currency_data = []
+                for currency in cr.fetchall():
+                    currency_data.append({
+                        'account_ref': currency['NKY_VLT'].strip(),
+                        'name': currency['CDS_VLT'].strip(),
+                        'symbol': currency['CSG_VLT'].strip(),
+                        })
+                pickle.dump(
+                    currency_data, open(
+                        os.path.join(export_path, extra_file['currency']),
+                        'wb'))
+                print('Export currency [# %s]' % len(currency_data))
 
             # -----------------------------------------------------------------
             # Load header:
@@ -385,10 +447,7 @@ class PortalAgent:
         import pickle
 
         path = self.parameters['transfer']['remote_folder']
-        extra_file = {
-            'partner': 'partner.pickle',
-            'product': 'product.pickle',
-            }
+        extra_file = self.paramaters['pickle_file']
 
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
@@ -401,6 +460,18 @@ class PortalAgent:
 
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
+            pickle.load(open(fullname, 'rb')),
+            update_on=update_on,
+            )
+
+        fullname = os.path.join(path, extra_file['reason'])
+        reason_db = self._update_reason_template(
+            pickle.load(open(fullname, 'rb')),
+            update_on=update_on,
+            )
+
+        fullname = os.path.join(path, extra_file['currency'])
+        currency_db = self._update_currency_template(
             pickle.load(open(fullname, 'rb')),
             update_on=update_on,
             )

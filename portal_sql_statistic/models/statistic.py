@@ -43,13 +43,15 @@ class ProductTemplate(models.Model):
     pivot_product = fields.Boolean(string='Pivot product')
 
 
-class ResCurrency(models.Model):
-    """ Model update with extra fields
+class PivotCurrency(models.Model):
+    """ Model name: Currency
     """
-    _inherit = 'res.currency'
+    _name = 'pivot.currency'
+    _description = 'Currency'
 
-    # Columns:
-    account_ref = fields.Integer(string='Account ref.')
+    name = fields.Char('Sale reason', size=40)
+    symbol = fields.Char('Symbol reason', size=10)
+    account_ref = fields.Integer('Account ref')
 
 
 class PivotSaleReason(models.Model):

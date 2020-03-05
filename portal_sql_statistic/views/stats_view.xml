@@ -23,10 +23,9 @@
     </record>
     
     <!--res.currency-->
-    <record model="ir.actions.act_window" id="view_res_currency_minimal_tree">
+    <record model="ir.actions.act_window" id="view_pivot_currency_minimal_tree">
         <field name="name">Currency</field>
-        <field name="res_model">res.currency</field>
-        <field name="priority" eval="40"/>
+        <field name="res_model">pivot.currency</field>
         <field name="arch" type="xml">
             <tree string="Currency" editable="bottom">
                 <field name="name" readonly="1"/>
@@ -35,12 +34,12 @@
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="action_res_currency">
+    <record model="ir.actions.act_window" id="action_pivot_currency">
         <field name="name">Currency</field>
-        <field name="res_model">res.currency</field>
+        <field name="res_model">pivot.currency</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree</field>
-        <!--<field name="view_id" ref="view_res_currency_minimal_tree"/>-->
+        <field name="view_id" ref="view_res_currency_minimal_tree"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
@@ -216,6 +215,6 @@
                 parent="menu_pivot_statistic_config"
                 id="menu_pivot_statistic_config_currency"
                 sequence="40"
-                action="action_res_currency"
+                action="action_pivot_currency"
                 />
 </odoo>
