@@ -285,7 +285,8 @@ class PortalAgent:
 
         import pdb; pdb.set_trace()
         for filename in file_list:
-            print('Importing %s file...' % filename)
+            fullname = os.path.join(path, filename)
+            print('Importing %s file...' % fullname)
 
             # Delete all line record for this year
             year = int(filename.split('.')[0])
@@ -299,7 +300,7 @@ class PortalAgent:
 
             # Reload all pickle file for this year
             i = 0
-            for record in pickle.load(open(filename, 'rb')):
+            for record in pickle.load(open(fullname, 'rb')):
                 i += 1
                 if not i % 20:
                     print('Import year %s [%s]' % (year, i))
