@@ -140,6 +140,48 @@ class PortalAgent:
             record['NGL_DOC'],
         )
 
+    def _update_partner_template(self, records):
+        """ Import partner from records
+        """
+        res = {}
+        partner_pool = self._get_odoo_model('res.partner')
+        for record in records:
+            key = record['account_ref']
+            partner_ids = partner_pool.search([
+                ('account_ref', '=', key),
+                ])
+
+            # TODO Integrate with extra fields
+            if partner_ids:
+                partner_pool.write(partner_ids, record)
+                partner_id = partner_ids[0]
+            else:
+                partner_id = partner_pool.create(record).id
+
+            res[key] = partner_id
+        return res
+
+    def _update_product_template(self, records):
+        """ Import product from records
+        """
+        res = {}
+        product_pool = self._get_odoo_model('product.template')
+        for record in records:
+            key = record['default_code']
+            product_ids = product_pool.search([
+                ('default_code', '=', key),
+                ])
+
+            # TODO Integrate with extra fields
+            if product_ids:
+                product_pool.write(product_ids, record)
+                product_id = product_ids[0]
+            else:
+                product_id = product_pool.create(record).id
+
+            res[key] = product_id
+        return res
+
     def extract_data(self, last=True):
         """ Extract all data in output folder
         """
@@ -309,13 +351,23 @@ class PortalAgent:
         """
         import pickle
 
-        stats_pool = self._get_odoo_model('pivot.sale.line')
+        path = self.parameters['transfer']['remote_folder']
+
+        # Pre operations (extra model data):
+        fullname = os.path.join(path, 'partner.pickle')
+        partner_db = self._update_partner_template(
+            pickle.load(open(fullname, 'rb')))
+
+        fullname = os.path.join(path, 'product.pickle')
+        product_db = self._update_product_template(
+            pickle.load(open(fullname, 'rb')))
 
         # ---------------------------------------------------------------------
         # File to be imported:
         # ---------------------------------------------------------------------
-        path = self.parameters['transfer']['remote_folder']
+        stats_pool = self._get_odoo_model('pivot.sale.line')
 
+        file_list = []
         for root, folders, files in os.walk(path):
             file_list = sorted(files)  # File list
             break
@@ -359,12 +411,14 @@ else:
     sys.exit()
 
 portal_agent = PortalAgent('./openerp.cfg')
+
 if parameter in 'publish':
     portal_agent.extract_data()
     portal_agent.publish_data()
 elif parameter in 'publish_last':
     portal_agent.extract_data(last=True)
     portal_agent.publish_data()
+
 elif parameter == 'import':
     portal_agent.import_data()
 elif parameter == 'import_last':
@@ -380,4 +434,4 @@ else:
             product_type = 'Macchinari'
         else:   
             product_type = 'Prodotti finiti'
-   """
+"""
