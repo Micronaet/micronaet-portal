@@ -200,7 +200,7 @@ class PortalAgent:
         """
         import pickle
         export_path = self.parameters['transfer']['origin_folder']
-        start_code_used = '24' # TODO parameter
+        start_code_used = '24'  # TODO parameter
 
         query_header = "SELECT * FROM %s;" % \
             self.parameters['mysql']['table']['header']
@@ -233,10 +233,14 @@ class PortalAgent:
                 partner_data = []
                 for partner in cr.fetchall():
                     account_ref = partner['CKY_CNT'].strip()
-                    if account_ref[:1] not in start_code_used:
+                    account_ref_1 = account_ref[:1]
+                    if account_ref_1 not in start_code_used:
                         continue
                     partner_data.append({
                         'pivot_partner': True,
+                        'company': True,
+                        'customer': account_ref_1 == '2',
+                        'supplier': account_ref_1 == '4',
                         'account_ref': account_ref,
                         'name': partner['CDS_CNT'].strip(),
                         'country_code': partner['CKY_PAESE'].strip(),
@@ -371,12 +375,12 @@ class PortalAgent:
         path = self.parameters['transfer']['remote_folder']
 
         # Pre operations (extra model data):
-        fullname = os.path.join(path, 'partner.pickle')
-        partner_db = self._update_partner_template(
-            pickle.load(open(fullname, 'rb')))
-
         fullname = os.path.join(path, 'product.pickle')
         product_db = self._update_product_template(
+            pickle.load(open(fullname, 'rb')))
+
+        fullname = os.path.join(path, 'partner.pickle')
+        partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')))
 
         # ---------------------------------------------------------------------
