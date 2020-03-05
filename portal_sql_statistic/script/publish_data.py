@@ -426,8 +426,8 @@ class PortalAgent:
 
                     'partner_code': header['CKY_CNT_CLFR'],
                     'product_code': record['CKY_ART'],
-                    'reason_code': header['NKY_CAUM']
-                    'currency_code': header['NKY_VLT']
+                    'reason_code': header['NKY_CAUM'],
+                    'currency_code': header['NKY_VLT'],
 
                     'product_uom_qty': qty,
                     'list_price': price,
