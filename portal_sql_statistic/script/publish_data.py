@@ -479,7 +479,7 @@ elif parameter in 'publish_last':
 elif parameter == 'import':
     portal_agent.import_data()
 elif parameter == 'import_last':
-    portal_agent.import_data(last=True, update=update)
+    portal_agent.import_data(last=True, update_on=update)
 else:
     print('Missed parameter: publish or import')
     sys.exit()
