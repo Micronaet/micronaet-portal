@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
             <tree string="Sale reason" editable="bottom">
                 <field name="stats_used" />
-                <field name="name" />
-                <field name="account_ref" />                
+                <field name="name" readonly="1"/>
+                <field name="account_ref" readonly="1"/>                
             </tree>
         </field>
     </record>
