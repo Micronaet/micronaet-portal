@@ -194,6 +194,7 @@ class PortalAgent:
         """ Import product from records
         """
         res = {}
+        import pdb; pdb.set_trace()
         product_pool = self._get_odoo_model('product.template')
         total = len(records)
         print('Load mode: %s' % self.parameters['mode'])
