@@ -105,7 +105,7 @@ class PortalAgent:
                 'statistic': 'statistic.pickle',
                 },
             }
-
+        import pdb; pdb.set_trace()
     def _get_odoo(self):
         """ Return ODOO Erpeek connection
         """
