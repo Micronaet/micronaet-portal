@@ -537,7 +537,7 @@ class PortalAgent:
                 if filename in extra_file.values():
                     print('No stats file: %s...' % filename)
                     continue
-                 file_list.append(filename)
+                file_list.append(filename)
             break
         file_list = sorted(files)  # File list
 
