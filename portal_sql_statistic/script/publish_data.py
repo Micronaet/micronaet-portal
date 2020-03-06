@@ -101,6 +101,8 @@ class PortalAgent:
                 'product': 'product.pickle',
                 'reason': 'reason.pickle',
                 'currency': 'currency.pickle',
+                'sector': 'sector.pickle',
+                'statistic': 'statistic.pickle',
                 },
             }
 
@@ -329,6 +331,42 @@ class PortalAgent:
                         'wb'))
                 print('Export currency [# %s]' % len(currency_data))
 
+                # Export sector and statistic category:
+                cr.execute('SELECT * FROM MY_CAT_STAT_ART;')
+                sector_done = []
+                sector_data = []
+                statistic_data = []
+                import pdb; pdb.set_trace()
+                for statistic in cr.fetchall():
+                    # Sector part:
+                    key = statistic['CKY_CAT_STAT_ART'].strip()
+                    if key not in sector_done:
+                        sector_data.append({
+                            'account_ref': key,
+                            'name': key,
+                            })
+                        sector_done.append(key)
+
+                    # Statistic part:
+                    stat_key = '%s%02d' % (key, record['NKY_CAT_STAT_ART'])
+                    statistic_data.append({
+                        'sector_code': key,
+                        'account_ref': stat_key,
+                        'name': statistic['CDS_CAT_STAT_ART'].strip(),
+                        })
+
+                pickle.dump(
+                    sector_data, open(
+                        os.path.join(export_path, extra_file['sector']),
+                        'wb'))
+                print('Export sector [# %s]' % len(sector_data))
+
+                pickle.dump(
+                    statistic_data, open(
+                        os.path.join(export_path, extra_file['statistic']),
+                        'wb'))
+                print('Export statistic [# %s]' % len(statistic_data))
+
             # -----------------------------------------------------------------
             # Load header:
             # -----------------------------------------------------------------
@@ -452,6 +490,10 @@ class PortalAgent:
         currency_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
             'pivot.currency', 'account_ref', 'currency')
+
+        # TODO sector
+
+        # TODO statistic
 
         # ---------------------------------------------------------------------
         # File to be imported:
