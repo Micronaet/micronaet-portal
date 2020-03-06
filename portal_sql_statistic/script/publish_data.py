@@ -114,6 +114,7 @@ class PortalAgent:
         """
         import erppeek
 
+        import pdb: pdb.set_trace()
         return erppeek.Client(
             self.parameters['odoo']['url'],
             db=self.parameters['odoo']['database'],
