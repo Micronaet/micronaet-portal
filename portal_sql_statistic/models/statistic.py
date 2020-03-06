@@ -54,6 +54,17 @@ class PivotCurrency(models.Model):
     account_ref = fields.Integer('Account ref')
 
 
+class PivotYear(models.Model):
+    """ Model name: Years
+    """
+    _name = 'pivot.year'
+    _description = 'Year'
+
+    name = fields.Char('Year', size=4)
+    filename = fields.Char('Symbol', size=20)
+    load = fields.Boolean('Load', help='Load always this year')
+
+
 class PivotSaleReason(models.Model):
     """ Model name: ExcelReportFormatPage
     """
