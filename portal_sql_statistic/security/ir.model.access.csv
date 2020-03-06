@@ -7,8 +7,8 @@ access_pivot_currency_user,pivot.currency,model_pivot_currency,base.group_user,1
 access_pivot_currency_manager,pivot.currency,model_pivot_currency,portal_sql_statistic.group_stats_manager,1,1,1,1
 access_pivot_year_user,pivot.year,model_pivot_year,base.group_user,1,0,0,0
 access_pivot_year_manager,pivot.year,model_pivot_year,portal_sql_statistic.group_stats_manager,1,1,1,1
-access_pivot_product_sector_user,pivot.product.statistic,model_pivot_product_statistic,base.group_user,1,0,0,0
-access_pivot_product_sector_manager,pivot.product.statistic,model_pivot_product_statistic,portal_sql_statistic.group_stats_manager,1,1,1,1
+access_pivot_product_sector_user,pivot.product.sector,model_pivot_product_sector,base.group_user,1,0,0,0
+access_pivot_product_sector_manager,pivot.product.sector,model_pivot_product_sector,portal_sql_statistic.group_stats_manager,1,1,1,1
 access_pivot_product_statistic_user,pivot.product.statistic,model_pivot_product_statistic,base.group_user,1,0,0,0
 access_pivot_product_statistic_manager,pivot.product.statistic,model_pivot_product_statistic,portal_sql_statistic.group_stats_manager,1,1,1,1
 
