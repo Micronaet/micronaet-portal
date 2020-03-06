@@ -118,8 +118,7 @@ class PortalAgent:
             self.parameters['odoo']['url'],
             db=self.parameters['odoo']['database'],
             user=self.parameters['odoo']['username'],
-            password=self.parameters['odoo']['password'],
-            )
+            password=self.parameters['odoo']['password'])
 
     def _get_odoo_model(self, model_name):
         """ Return ODOO Erpeek connection
