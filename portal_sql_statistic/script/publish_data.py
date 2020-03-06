@@ -353,7 +353,7 @@ class PortalAgent:
                         sector_done.append(key)
 
                     # Statistic part:
-                    stat_key = '%s%02d' % (key, record['NKY_CAT_STAT_ART'])
+                    stat_key = '%s%02d' % (key, statistic['NKY_CAT_STAT_ART'])
                     statistic_data.append({
                         'sector_code': key,
                         'account_ref': stat_key,
