@@ -100,6 +100,8 @@ class PortalAgent:
             }
 
         # Create Years list in model:
+        """
+        TODO Run only when remote!
         year_pool = self._get_odoo_model('pivot.year')
         for year in available_years:
             if not year_pool.search([('name', '=', year)]):
@@ -108,13 +110,13 @@ class PortalAgent:
                     'filename': '%s.pickle',
                     'load': True,
                 })
+                """
 
     def _get_odoo(self):
         """ Return ODOO Erpeek connection
         """
         import erppeek
 
-        import pdb; pdb.set_trace()
         return erppeek.Client(
             self.parameters['odoo']['url'],
             db=self.parameters['odoo']['database'],
