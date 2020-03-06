@@ -88,7 +88,8 @@ class PivotSaleLine(models.Model):
          ('CL', 'Load document (prod.)'),
          ('BF', 'Supplier document'),
          ('BS', 'Unload document'),
-         ('RC', 'Refund'),
+         ('RC', 'Customer Refund'),
+         ('RF', 'Supplier Refund'),
          ), 'Document type')
     mode = fields.Selection((
          ('sale', 'Sale'),
