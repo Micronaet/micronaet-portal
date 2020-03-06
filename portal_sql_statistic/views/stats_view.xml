@@ -5,7 +5,7 @@
         <field name="name">pivot.sale.reason.tree</field>
         <field name="model">pivot.sale.reason</field>
         <field name="arch" type="xml">
-            <tree string="Sale reason" editable="bottom">
+            <tree string="Sale reason" editable="bottom" decoration-success="stats_used==True">
                 <field name="stats_used" />
                 <field name="name" readonly="1"/>
                 <field name="account_ref" readonly="1"/>                
