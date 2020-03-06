@@ -154,7 +154,8 @@ class PortalAgent:
         print('Load mode: %s' % self.parameters['mode'])
 
         if self.parameters['mode'] == 'load':
-            for record in partner_pool.search([]):
+            record_ids = partner_pool.search([])
+            for record in partner_pool.browse(record_ids):
                 res[record.account_ref] = record.id
             return res
 
@@ -198,7 +199,8 @@ class PortalAgent:
         print('Load mode: %s' % self.parameters['mode'])
 
         if self.parameters['mode'] == 'load':
-            for record in product_pool.search([]):
+            record_ids = product_pool.search([])
+            for record in product_pool.browse(record_ids):
                 res[record.account_ref] = record.id
             return res
 
@@ -233,7 +235,8 @@ class PortalAgent:
         print('Load mode: %s' % self.parameters['mode'])
 
         if self.parameters['mode'] == 'load':
-            for record in reason_pool.search([]):
+            record_ids = reason_pool.search([])
+            for record in reason_pool.browse(record_ids):
                 res[record.account_ref] = record.id
             return res
 
@@ -267,7 +270,8 @@ class PortalAgent:
 
         print('Load mode: %s' % self.parameters['mode'])
         if self.parameters['mode'] == 'load':
-            for record in currency_pool.search([]):
+            record_ids = currency_pool.search([])
+            for record in currency_pool.browse(record_ids):
                 res[record.account_ref] = record.id
             return res
 
