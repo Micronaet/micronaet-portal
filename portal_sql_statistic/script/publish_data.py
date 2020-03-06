@@ -14,7 +14,7 @@ DEFAULT_SERVER_DATE_FORMAT = "%Y-%m-%d"
 class PortalAgent:
     """ Agent for access to SQL Server
     """
-    def __init__(self, config_file):
+    def __init__(self, config_file, mode='update'):
         """ Access to MySQL server with parameter in Config file
         """
         import ConfigParser
@@ -48,6 +48,7 @@ class PortalAgent:
 
         # Read parameters:
         self.parameters = {
+            'mode': mode,
             'mysql': {
                 'hostname': '%s' % (  # :%s' % (
                     config.get('mysql', 'server'),
@@ -145,13 +146,18 @@ class PortalAgent:
             record['NGL_DOC'],
         )
 
-    def _update_partner_template(self, records, update_on=False, verbose=100):
+    def _update_partner_template(self, records, verbose=100):
         """ Import partner from records
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
         country_pool = self._get_odoo_model('res.country')
+        if self.parameters['mode'] == 'nothing':
+            for record in partner_pool.search([]):
+                res[record.account_ref] = record.id
+            return res
 
+        # Update / Write mode:
         # Load country:
         country_db = {}
         country_ids = country_pool.search([])
@@ -172,7 +178,7 @@ class PortalAgent:
             # TODO Integrate with extra fields:
             record['country_id'] = country_db.get(record['country_code'])
             if partner_ids:
-                if update_on:
+                if self.parameters['mode'] == 'update':
                     partner_pool.write(partner_ids, record)
                 partner_id = partner_ids[0]
             else:
@@ -181,12 +187,18 @@ class PortalAgent:
             res[key] = partner_id
         return res
 
-    def _update_product_template(self, records, update_on=False, verbose=100):
+    def _update_product_template(self, records, verbose=100):
         """ Import product from records
         """
         res = {}
         product_pool = self._get_odoo_model('product.template')
         total = len(records)
+        if self.parameters['mode'] == 'nothing':
+            for record in product_pool.search([]):
+                res[record.account_ref] = record.id
+            return res
+
+        # Update / Write mode:
 
         i = 0
         for record in records:
@@ -200,7 +212,7 @@ class PortalAgent:
 
             # TODO Integrate with extra fields
             if product_ids:
-                if update_on:
+                if self.parameters['mode'] == 'update':
                     product_pool.write(product_ids, record)
                 product_id = product_ids[0]
             else:
@@ -209,12 +221,18 @@ class PortalAgent:
             res[key] = product_id
         return res
 
-    def _update_reason(self, records, update_on=False, verbose=100):
+    def _update_reason(self, records, verbose=100):
         """ Import sale reason from records
         """
         res = {}
         reason_pool = self._get_odoo_model('pivot.sale.reason')
         total = len(records)
+        if self.parameters['mode'] == 'nothing':
+            for record in reason_pool.search([]):
+                res[record.account_ref] = record.id
+            return res
+
+        # Update / Write mode:
 
         i = 0
         for record in records:
@@ -227,7 +245,7 @@ class PortalAgent:
                 ])
 
             if reason_ids:
-                if update_on:
+                if self.parameters['mode'] == 'update':
                     reason_pool.write(reason_ids, record)
                 reason_id = reason_ids[0]
             else:
@@ -236,13 +254,19 @@ class PortalAgent:
             res[key] = reason_id
         return res
 
-    def _update_currency(self, records, update_on=False, verbose=100):
+    def _update_currency(self, records, verbose=100):
         """ Import sale currency from records
         """
         res = {}
         currency_pool = self._get_odoo_model('pivot.currency')
         total = len(records)
 
+        if self.parameters['mode'] == 'nothing':
+            for record in currency_pool.search([]):
+                res[record.account_ref] = record.id
+            return res
+
+        # Update / Write mode:
         i = 0
         for record in records:
             i += 1
@@ -254,12 +278,11 @@ class PortalAgent:
                 ])
 
             if currency_ids:
-                if update_on:
+                if self.parameters['mode'] == 'update':
                     currency_pool.write(currency_ids, record)
                 currency_id = currency_ids[0]
             else:
                 currency_id = currency_pool.create(record).id
-
             res[key] = currency_id
         return res
 
@@ -463,7 +486,7 @@ class PortalAgent:
         print('Transfer via rsync: %s' % command)
         os.system(command)
 
-    def import_data(self, last=False, update_on=False):
+    def import_data(self, last=False):
         """ Import data on Remote ODOO
         """
         import pickle
@@ -477,25 +500,21 @@ class PortalAgent:
         fullname = os.path.join(path, extra_file['reason'])
         reason_db = self._update_reason(
             pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
             )
 
         fullname = os.path.join(path, extra_file['currency'])
         currency_db = self._update_currency(
             pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
             )
 
         fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
             )
 
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
-            update_on=update_on,
             )
 
         # ---------------------------------------------------------------------
@@ -562,6 +581,13 @@ if __name__ != '__main__':
     print('Procedure is not callable externally!')
 
 # Check parameter (for send or receive mode startup):
+mode_list = [
+    'create',  # Only create new
+    'update',  # Create and update
+    'load',  # Load only (no file will be read)
+    ]
+mode = 'nothing'
+
 argv = sys.argv
 if len(argv) < 2:
     print('Pass the parameter: publish, publish_last, import, import_last')
@@ -570,13 +596,14 @@ else:
     parameter = argv[1]
 
 if len(argv) == 3:
-    print('Update mode: ON')
-    update = argv[2] == 'update'
-else:
-    print('Update mode: OFF')
-    update = False
+    if argv[2] in mode_list:
+        mode = argv[2]
+    else:
+        print('Mode parameter not in %s list' % (mode_list))
+        sys.exit()
+print('Launch as %s, update mode: %s' % (parameter, mode)
 
-portal_agent = PortalAgent('./openerp.cfg')
+portal_agent = PortalAgent('./openerp.cfg', mode=mode)
 
 if parameter in 'publish':
     portal_agent.extract_data()
@@ -588,16 +615,7 @@ elif parameter in 'publish_last':
 elif parameter == 'import':
     portal_agent.import_data()
 elif parameter == 'import_last':
-    portal_agent.import_data(last=True, update_on=update)
+    portal_agent.import_data(last=True)
 else:
     print('Missed parameter: publish or import')
     sys.exit()
-
-"""
-        if default_code[:1] in 'AB':
-            product_type = 'Materie prime'
-        elif default_code[:1] in 'M':
-            product_type = 'Macchinari'
-        else:   
-            product_type = 'Prodotti finiti'
-"""
