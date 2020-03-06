@@ -151,6 +151,8 @@ class PortalAgent:
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
+        print('Load mode: %s' % self.parameters['mode'])
+
         if self.parameters['mode'] == 'load':
             for record in partner_pool.search([]):
                 res[record.account_ref] = record.id
@@ -193,13 +195,14 @@ class PortalAgent:
         res = {}
         product_pool = self._get_odoo_model('product.template')
         total = len(records)
+        print('Load mode: %s' % self.parameters['mode'])
+
         if self.parameters['mode'] == 'load':
             for record in product_pool.search([]):
                 res[record.account_ref] = record.id
             return res
 
         # Update / Write mode:
-
         i = 0
         for record in records:
             i += 1
@@ -227,13 +230,14 @@ class PortalAgent:
         res = {}
         reason_pool = self._get_odoo_model('pivot.sale.reason')
         total = len(records)
+        print('Load mode: %s' % self.parameters['mode'])
+
         if self.parameters['mode'] == 'load':
             for record in reason_pool.search([]):
                 res[record.account_ref] = record.id
             return res
 
         # Update / Write mode:
-
         i = 0
         for record in records:
             i += 1
@@ -261,6 +265,7 @@ class PortalAgent:
         currency_pool = self._get_odoo_model('pivot.currency')
         total = len(records)
 
+        print('Load mode: %s' % self.parameters['mode'])
         if self.parameters['mode'] == 'load':
             for record in currency_pool.search([]):
                 res[record.account_ref] = record.id
