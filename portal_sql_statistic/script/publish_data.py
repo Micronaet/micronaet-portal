@@ -193,7 +193,7 @@ class PortalAgent:
         res = {}
         product_pool = self._get_odoo_model('product.template')
         total = len(records)
-        if self.parameters['mode'] == 'nothing':
+        if self.parameters['mode'] == 'load':
             for record in product_pool.search([]):
                 res[record.account_ref] = record.id
             return res
@@ -227,7 +227,7 @@ class PortalAgent:
         res = {}
         reason_pool = self._get_odoo_model('pivot.sale.reason')
         total = len(records)
-        if self.parameters['mode'] == 'nothing':
+        if self.parameters['mode'] == 'load':
             for record in reason_pool.search([]):
                 res[record.account_ref] = record.id
             return res
@@ -261,7 +261,7 @@ class PortalAgent:
         currency_pool = self._get_odoo_model('pivot.currency')
         total = len(records)
 
-        if self.parameters['mode'] == 'nothing':
+        if self.parameters['mode'] == 'load':
             for record in currency_pool.search([]):
                 res[record.account_ref] = record.id
             return res
