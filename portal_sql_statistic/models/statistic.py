@@ -63,7 +63,8 @@ class PivotSaleReason(models.Model):
     name = fields.Char('Sale reason', size=40)
     account_ref = fields.Integer('Account ref')
     stats_used = fields.Boolean(
-        'Used', help='Used in stat (filter only active stats)')
+        'Used', help='Filter enabled when need exclusion in sale stats',
+        default=True)
 
 
 class PivotSaleLine(models.Model):

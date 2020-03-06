@@ -67,6 +67,8 @@
                 <field name="uom_id" />
                 <field name="category_id" />
 
+                <filter name="exclude_reason" string="Exclude reason" domain="[('reason_id.stats_used','=',True)]"/>
+                
                 <filter name="partner_no" string="Without partner" domain="[('partner_id','=',False)]"/>
                 <filter name="partner_yes" string="With partner" domain="[('partner_id','!=',False)]"/>
 
@@ -154,7 +156,7 @@
         <field name="view_mode">pivot,tree</field>
         <field name="view_id" ref="view_sale_line_pivot"/>
         <field name="search_view_id" ref="view_pivot_sale_line_search"/>
-        <field name="context">{}</field>
+        <field name="context">{'search_default_exclude_reason': True}</field>
         <field name="domain">[('document_type','in',('BC', 'RC'))]</field>
     </record>
     <record model="ir.actions.act_window" id="action_view_pivot_all_line">
