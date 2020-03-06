@@ -14,7 +14,7 @@ DEFAULT_SERVER_DATE_FORMAT = "%Y-%m-%d"
 class PortalAgent:
     """ Agent for access to SQL Server
     """
-    def __init__(self, config_file, mode='update'):
+    def __init__(self, config_file, mode):
         """ Access to MySQL server with parameter in Config file
         """
         import ConfigParser
@@ -596,7 +596,7 @@ mode_list = [
     'update',  # Create and update
     'load',  # Load only (no file will be read)
     ]
-mode = 'nothing'
+update_mode = 'nothing'
 
 argv = sys.argv
 if len(argv) < 2:
@@ -607,13 +607,13 @@ else:
 
 if len(argv) == 3:
     if argv[2] in mode_list:
-        mode = argv[2]
+        update_mode = argv[2]
     else:
-        print('Mode parameter not in %s list' % (mode_list))
+        print('Mode parameter not in %s list' % (mode_list, ))
         sys.exit()
-print('Launch as %s, update mode: %s' % (parameter, mode)
+print('Launch as %s, update mode: %s' % (parameter, update_mode))
 
-portal_agent = PortalAgent('./openerp.cfg', mode=mode)
+portal_agent = PortalAgent('./openerp.cfg', update_mode)
 
 if parameter in 'publish':
     portal_agent.extract_data()
