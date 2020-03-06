@@ -533,17 +533,17 @@ class PortalAgent:
 
         file_list = []
         for root, folders, files in os.walk(path):
-            file_list = sorted(files)  # File list
+            for filename in files:
+                if filename in extra_file.values():
+                    print('No stats file: %s...' % filename)
+                    continue
+                 file_list.append(filename)
             break
+        file_list = sorted(files)  # File list
 
         if last:
             file_list = file_list[-1:]
-        import pdb; pdb.set_trace()
         for filename in file_list:
-            if filename in extra_file.values():
-                print('No stats file: %s...' % filename)
-                continue
-
             fullname = os.path.join(path, filename)
             print('Importing %s file...' % fullname)
 
