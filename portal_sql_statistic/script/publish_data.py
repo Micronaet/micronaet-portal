@@ -341,7 +341,6 @@ class PortalAgent:
                 sector_done = []
                 sector_data = []
                 statistic_data = []
-                import pdb; pdb.set_trace()
                 for statistic in cr.fetchall():
                     # Sector part:
                     key = statistic['CKY_CAT_STAT_ART'].strip()
