@@ -105,6 +105,37 @@ class PivotSaleReason(models.Model):
         default=True)
 
 
+class PivotProductSector(models.Model):
+    """ Model name: Product statistic sector
+    """
+    _name = 'pivot.product.sector'
+    _description = 'Statistic category'
+
+    name = fields.Char('Sale reason', size=40,required=True)
+    account_ref = fields.Integer('Account ref')
+
+
+class PivotProductStatistic(models.Model):
+    """ Model name: Product statistic category
+    """
+    _name = 'pivot.product.statistic'
+    _description = 'Statistic category'
+
+    name = fields.Char('Sale reason', size=40)
+    account_ref = fields.Integer('Account ref')
+    sector_id = fields.Many2one(
+        comodel_name='pivot.product.sector', string='Sector')
+
+
+class PivotProductSectorRelations(models.Model):
+    """ Model name: Product statistic sector
+    """
+    _inherit = 'pivot.product.sector'
+
+    statistic_ids = fields.One2many(
+        comodel_name='pivot.product.statistic', inverse_name='sector_id',
+        string='Statistic category')
+
 class PivotSaleLine(models.Model):
     """ Model name: ExcelReportFormatPage
     """
