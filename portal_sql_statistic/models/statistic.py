@@ -1,8 +1,9 @@
 # Copyright 2019  Micronaet SRL (<http://www.micronaet.it>).
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
+import os
 import logging
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 # import io
 # import xlsxwriter
 # import base64
@@ -59,6 +60,32 @@ class PivotYear(models.Model):
     """
     _name = 'pivot.year'
     _description = 'Year'
+
+    @api.multi
+    def reload_year(self):
+        """ Reload this year
+        """
+        path = '~/data'
+
+        # Load from pickle file
+        fullname = os.path.join(
+            os.path.expanduser(path),
+            self.filename
+            )
+        if not os.path.isfile(fullname):
+            raise exceptions.Error('No file: %s' % fullname)
+            return False
+        # self.remove_year()
+        # TODO complete here!
+        return True
+
+    @api.multi
+    def remove_year(self):
+        """ Remove this year
+        """
+        year = self.name
+        records = self.search([('year', '=', year)])
+        return records.unlink()
 
     name = fields.Integer('Year', required=True)
     filename = fields.Char('Filename', size=20)
