@@ -506,30 +506,20 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        import pdb; pdb.set_trace()
         fullname = os.path.join(path, extra_file['reason'])
         reason_db = self._update_reason(
             pickle.load(open(fullname, 'rb')),
             )
-
-        import pdb;
-        pdb.set_trace()
 
         fullname = os.path.join(path, extra_file['currency'])
         currency_db = self._update_currency(
             pickle.load(open(fullname, 'rb')),
             )
 
-        import pdb;
-        pdb.set_trace()
-
         fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
             )
-
-        import pdb;
-        pdb.set_trace()
 
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
