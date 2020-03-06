@@ -538,7 +538,7 @@ class PortalAgent:
 
         if last:
             file_list = file_list[-1:]
-
+        import pdb; pdb.set_trace()
         for filename in file_list:
             if filename in extra_file.values():
                 print('No stats file: %s...' % filename)
