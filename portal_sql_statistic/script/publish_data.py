@@ -516,7 +516,7 @@ class PortalAgent:
             pickle.load(open(fullname, 'rb')),
             )
 
-        """fullname = os.path.join(path, extra_file['partner'])
+        fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
             )
@@ -524,7 +524,7 @@ class PortalAgent:
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
-            )"""
+            )
 
         # ---------------------------------------------------------------------
         # File to be imported:
@@ -540,7 +540,7 @@ class PortalAgent:
                     continue
                 file_list.append(filename)
             break
-        file_list = sorted(files)  # File list
+        file_list = sorted(file_list)  # File list
 
         if last:
             file_list = file_list[-1:]
