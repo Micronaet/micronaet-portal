@@ -382,8 +382,9 @@ class PortalAgent:
 
                     'product_uom_qty': qty,
                     'list_price': price,
-                    'subtotal': subtotal,
-                    'currency_subtotal': subtotal / exchange,
+                    'exchange': exchange,
+                    'subtotal': subtotal / exchange,
+                    'currency_subtotal': subtotal,
                 })
 
             # -----------------------------------------------------------------
