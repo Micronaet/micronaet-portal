@@ -516,7 +516,7 @@ class PortalAgent:
             pickle.load(open(fullname, 'rb')),
             )
 
-        fullname = os.path.join(path, extra_file['partner'])
+        """fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._update_partner_template(
             pickle.load(open(fullname, 'rb')),
             )
@@ -524,7 +524,7 @@ class PortalAgent:
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._update_product_template(
             pickle.load(open(fullname, 'rb')),
-            )
+            )"""
 
         # ---------------------------------------------------------------------
         # File to be imported:
