@@ -36,7 +36,15 @@ class PortalAgent:
         current_year = int(datetime.now().year)
 
         database_list = {}
+        year_pool = self._get_odoo_model('pivot.year')
         for year in range(from_year, current_year + 1):
+            if not year_pool.search([('name', '=', year)]):
+                year_pool.create({
+                    'name': year,
+                    'filename': '%s.pickle',
+                    'load': True,
+                    })
+
             if year == current_year:
                 text_year = ''
             elif year_format == 'yy':  # 2 char
