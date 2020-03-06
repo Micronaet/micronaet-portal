@@ -98,7 +98,7 @@ class PivotSaleLine(models.Model):
     name = fields.Char('Ref.', size=20)
 
     partner_id = fields.Many2one('res.partner', 'Partner')
-    currency_id = fields.Many2one('res.currency', 'Currency')
+    currency_id = fields.Many2one('pivot.currency', 'Currency')
     reason_id = fields.Many2one('pivot.sale.reason', 'Reason')
 
     # Partner related fields:
