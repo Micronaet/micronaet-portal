@@ -7,6 +7,7 @@
 
 import os
 import sys
+import pickle
 
 DEFAULT_SERVER_DATE_FORMAT = "%Y-%m-%d"
 
@@ -137,163 +138,78 @@ class PortalAgent:
             return False
         return cursor
 
-    def _get_key(self, record):
+    def _extract_key(self, record):
         """ Get key for header and line table
         """
         return (
             record['CSG_DOC'],
             record['NGB_SR_DOC'],
             record['NGL_DOC'],
-        )
+            )
 
-    def _update_partner_template(self, records, verbose=100):
-        """ Import partner from records
+    def _import_generic_model(
+            self, records, model, key_field, name, verbose=100):
+        """ Procedure for import similar model records
         """
+        def load_extra_pool(model):
+            """ Load extra pool for particular model
+            """
+            extra_pool = {}
+            if model == 'res.partner':
+                # Load country:
+                country_pool = self._get_odoo_model('res.country')
+                extra_pool['country'] = {}
+                country_ids = country_pool.search([])
+                for country in country_pool.browse(country_ids):
+                    extra_pool['country'][country.code] = country.id
+
+            return extra_pool
+
+        def integrate_foreign_keys(model, record, extra_pool):
+            """ Integrate extra foreign keys updating record
+            """
+            if model == 'res.partner':
+                record['country_id'] = extra_pool['country'].get(
+                    record['country_code'])
+                del(record['country_code'])
+
         res = {}
-        partner_pool = self._get_odoo_model('res.partner')
-        print('Load mode: %s' % self.parameters['mode'])
+        model_pool = self._get_odoo_model(model)
+        total = len(records)
+        print('Load %s mode: %s' % (name, self.parameters['mode']))
 
         if self.parameters['mode'] == 'load':
-            record_ids = partner_pool.search([])
-            for record in partner_pool.browse(record_ids):
-                res[record.account_ref] = record.id
+            record_ids = model_pool.search([])
+            for record in model_pool.browse(record_ids):
+                res[eval('record.%s' % key_field)] = record.id
             return res
 
+        # ---------------------------------------------------------------------
         # Update / Write mode:
-        # Load country:
-        country_pool = self._get_odoo_model('res.country')
-        country_db = {}
-        country_ids = country_pool.search([])
-        for country in country_pool.browse(country_ids):
-            country_db[country.code] = country.id
+        # ---------------------------------------------------------------------
+        # Load extra pool for foreign keys resolution:
+        extra_pool = load_extra_pool(model)
 
-        total = len(records)
         i = 0
         for record in records:
             i += 1
             if not i % verbose:
-                print('%s / %s Partner updated' % (i, total))
-            key = record['account_ref']
-            partner_ids = partner_pool.search([
-                ('account_ref', '=', key),
+                print('%s / %s %s updated' % (i, total, name))
+            key = record[key_field]
+            model_ids = model_pool.search([
+                (key_field, '=', key),
                 ])
 
-            # TODO Integrate with extra fields:
-            record['country_id'] = country_db.get(record['country_code'])
-            if partner_ids:
+            # Integrate record with foreign keys:
+            integrate_foreign_keys(model, record, extra_pool)
+            if model_ids:
                 if self.parameters['mode'] == 'update':
-                    partner_pool.write(partner_ids, record)
-                partner_id = partner_ids[0]
+                    model_pool.write(model_ids, record)
+                model_id = model_ids[0]
             else:
-                partner_id = partner_pool.create(record).id
+                model_id = model_pool.create(record).id
 
-            res[key] = partner_id
-        return res
-
-    def _update_product_template(self, records, verbose=100):
-        """ Import product from records
-        """
-        res = {}
-        import pdb; pdb.set_trace()
-        product_pool = self._get_odoo_model('product.template')
-        total = len(records)
-        print('Load mode: %s' % self.parameters['mode'])
-
-        if self.parameters['mode'] == 'load':
-            record_ids = product_pool.search([])
-            for record in product_pool.browse(record_ids):
-                res[record.account_ref] = record.id
-            return res
-
-        # Update / Write mode:
-        i = 0
-        for record in records:
-            i += 1
-            if not i % verbose:
-                print('%s / %s Product updated' % (i, total))
-            key = record['default_code']
-            product_ids = product_pool.search([
-                ('default_code', '=', key),
-                ])
-
-            # TODO Integrate with extra fields
-            if product_ids:
-                if self.parameters['mode'] == 'update':
-                    product_pool.write(product_ids, record)
-                product_id = product_ids[0]
-            else:
-                product_id = product_pool.create(record).id
-
-            res[key] = product_id
-        return res
-
-    def _update_reason(self, records, verbose=100):
-        """ Import sale reason from records
-        """
-        res = {}
-        reason_pool = self._get_odoo_model('pivot.sale.reason')
-        total = len(records)
-        print('Load mode: %s' % self.parameters['mode'])
-
-        if self.parameters['mode'] == 'load':
-            record_ids = reason_pool.search([])
-            for record in reason_pool.browse(record_ids):
-                res[record.account_ref] = record.id
-            return res
-
-        # Update / Write mode:
-        i = 0
-        for record in records:
-            i += 1
-            if not i % verbose:
-                print('%s / %s Reason updated' % (i, total))
-            key = record['account_ref']
-            reason_ids = reason_pool.search([
-                ('account_ref', '=', key),
-                ])
-
-            if reason_ids:
-                if self.parameters['mode'] == 'update':
-                    reason_pool.write(reason_ids, record)
-                reason_id = reason_ids[0]
-            else:
-                reason_id = reason_pool.create(record).id
-
-            res[key] = reason_id
-        return res
-
-    def _update_currency(self, records, verbose=100):
-        """ Import sale currency from records
-        """
-        res = {}
-        currency_pool = self._get_odoo_model('pivot.currency')
-        total = len(records)
-
-        print('Load mode: %s' % self.parameters['mode'])
-        if self.parameters['mode'] == 'load':
-            record_ids = currency_pool.search([])
-            for record in currency_pool.browse(record_ids):
-                res[record.account_ref] = record.id
-            return res
-
-        # Update / Write mode:
-        i = 0
-        for record in records:
-            i += 1
-            if not i % verbose:
-                print('%s / %s Currency updated' % (i, total))
-            key = record['account_ref']
-            currency_ids = currency_pool.search([
-                ('account_ref', '=', key),
-                ])
-
-            if currency_ids:
-                if self.parameters['mode'] == 'update':
-                    currency_pool.write(currency_ids, record)
-                currency_id = currency_ids[0]
-            else:
-                currency_id = currency_pool.create(record).id
-            res[key] = currency_id
+            res[key] = model_id
         return res
 
     def extract_data(self, last=False):
@@ -412,7 +328,7 @@ class PortalAgent:
             for record in cr.fetchall():
                 tot['header'] += 1
 
-                key = self._get_key(record)
+                key = self._extract_key(record)
                 if key not in header_db:
                     header_db[key] = record
 
@@ -423,7 +339,7 @@ class PortalAgent:
             for record in cr.fetchall():
                 tot['line'] += 1
 
-                key = self._get_key(record)
+                key = self._extract_key(record)
                 if key not in header_db:
                     print('Header line not present: %s' % (key, ))
                 header = header_db[key]
@@ -499,33 +415,31 @@ class PortalAgent:
     def import_data(self, last=False):
         """ Import data on Remote ODOO
         """
-        import pickle
-
         path = self.parameters['transfer']['remote_folder']
         extra_file = self.parameters['pickle_file']
 
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        fullname = os.path.join(path, extra_file['reason'])
-        reason_db = self._update_reason(
-            pickle.load(open(fullname, 'rb')),
-            )
-
-        fullname = os.path.join(path, extra_file['currency'])
-        currency_db = self._update_currency(
-            pickle.load(open(fullname, 'rb')),
-            )
-
         fullname = os.path.join(path, extra_file['partner'])
-        partner_db = self._update_partner_template(
+        partner_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
-            )
+            'res.partner', 'account_ref', 'partner')
 
         fullname = os.path.join(path, extra_file['product'])
-        product_db = self._update_product_template(
+        product_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
-            )
+            'product.template', 'default_code', 'product')
+
+        fullname = os.path.join(path, extra_file['reason'])
+        reason_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.sale.reason', 'account_ref', 'sale reason')
+
+        fullname = os.path.join(path, extra_file['currency'])
+        currency_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.currency', 'account_ref', 'currency')
 
         # ---------------------------------------------------------------------
         # File to be imported:
