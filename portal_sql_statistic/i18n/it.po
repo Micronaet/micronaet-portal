@@ -1,0 +1,472 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* portal_sql_statistic
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-06 15:42+0000\n"
+"PO-Revision-Date: 2020-03-06 16:48+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_account_ref
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_account_ref
+msgid "Account ref"
+msgstr "Rig. contabile"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_account_ref
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_account_ref
+msgid "Account ref."
+msgstr "Rig. contabile"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_account_mode
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_account_mode
+msgid "Account_mode"
+msgstr "Modalità "
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_agent_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_agent_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_agent_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Agent"
+msgstr "Agente"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_view_pivot_all_line
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_stock_movement_lines
+msgid "All stock movement"
+msgstr "Tutti i movimenti"
+
+#. module: portal_sql_statistic
+#: selection:res.partner,account_mode:0
+msgid "CEE"
+msgstr "CEE"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_category_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Category"
+msgstr "Categoria"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_config
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: portal_sql_statistic
+#: model:ir.model,name:portal_sql_statistic.model_res_partner
+msgid "Contact"
+msgstr "Contatto"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_country_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Country"
+msgstr "Nazione"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_country_code
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_country_code
+msgid "Country code"
+msgstr "Codice nazione"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_create_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_create_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_create_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_create_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_pivot_currency
+#: model:ir.model,name:portal_sql_statistic.model_pivot_currency
+#: model:ir.model,name:portal_sql_statistic.model_res_currency
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_currency_id
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_currency
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_currency_tree
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_currency_subtotal
+msgid "Currency Subtotal"
+msgstr "Subtotale in valuta"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Customer Refund"
+msgstr "Reso cliente"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "DDT / Invoice"
+msgstr "BC / Fattura"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_date
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Date"
+msgstr "Data"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_line_uom_id
+msgid "Default Unit of Measure used for all stock operation."
+msgstr ""
+"Unità di misura predefinita utilizzata per tutte le operazioni azionarie."
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Deposit document"
+msgstr "Doc. di deposito"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,mode:0
+msgid "Discount"
+msgstr "Sconto"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_display_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_display_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_display_name
+msgid "Display Name"
+msgstr "Nome Completo"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_document_type
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Document type"
+msgstr "Tipo doc."
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_exchange
+msgid "Exchange"
+msgstr "Cambio"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Exclude reason"
+msgstr "Escludi causali"
+
+#. module: portal_sql_statistic
+#: selection:res.partner,account_mode:0
+msgid "Extra CEE"
+msgstr "Extra CEE"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,mode:0
+msgid "Fee"
+msgstr "Provvigione"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_reason_stats_used
+msgid "Filter enabled when need exclusion in sale stats"
+msgstr "Indicazione per il filtro di esclusione causali nelle vendite"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_id
+msgid "ID"
+msgstr "ID"
+
+#. module: portal_sql_statistic
+#: selection:res.partner,account_mode:0
+msgid "Italy"
+msgstr "Italia"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency___last_update
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line___last_update
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason___last_update
+msgid "Last Modified on"
+msgstr "Data di ultima modifica"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_write_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_write_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_write_uid
+msgid "Last Updated by"
+msgstr "Ultima modifica di"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_write_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_write_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_write_date
+msgid "Last Updated on"
+msgstr "Ultima modifica il"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_mode
+msgid "Line mode"
+msgstr "Modo linea"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Load"
+msgstr "Carico"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Load document (prod.)"
+msgstr "Carico (prod.)"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Node"
+msgstr "Nodo"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_res_partner
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_partner_id
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_config_partner
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Partner"
+msgstr "Cliente / Fornitore"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_pivot_partner
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_pivot_partner
+msgid "Pivot partner"
+msgstr "Cliente / Fornitore"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_product_pivot_product
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_template_pivot_product
+msgid "Pivot product"
+msgstr "Prodotti"
+
+#. module: portal_sql_statistic
+#: model:ir.model,name:portal_sql_statistic.model_pivot_sale_line
+msgid "Pivot sale line"
+msgstr "Righe movimenti"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_list_price
+msgid "Price"
+msgstr "Prezzo un."
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_product_template
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_product_id
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_config_product
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: portal_sql_statistic
+#: model:ir.model,name:portal_sql_statistic.model_product_template
+msgid "Product Template"
+msgstr "Prodotto"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_line_currency_subtotal
+msgid "Real document total in currency value (not to be used)"
+msgstr ""
+"Totale reale dei documenti in valuta documento (non usare nei riepiloghi)"
+
+#. module: portal_sql_statistic
+#: model:ir.model,name:portal_sql_statistic.model_pivot_sale_reason
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_reason_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Reason"
+msgstr "Causale trasporto"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_name
+msgid "Ref."
+msgstr "Rif."
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_responsible_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_responsible_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_responsible_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Responsible"
+msgstr "Responsabile"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,mode:0
+msgid "Sale"
+msgstr "Vendite"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sale discount"
+msgstr "Sconto vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sale fee"
+msgstr "Provvigione vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_tree
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_sale_line_pivot
+msgid "Sale line"
+msgstr "Riga vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_view_pivot_sale_line
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_sales_lines
+msgid "Sale line stats"
+msgstr "Statistiche di vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sale mode"
+msgstr "Modalità vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_pivot_sale_reason_form
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_name
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_config_reason
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_reason_tree
+msgid "Sale reason"
+msgstr "Causale di vendita"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sale transport"
+msgstr "Trasporto"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_sales
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sales"
+msgstr "Vendite"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_salesman_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_partner_salesman_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_res_users_salesman_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Salesman"
+msgstr "Commerciale"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_line_category_id
+msgid "Select category for the current product"
+msgstr "Selezionare la categoria per il prodotto corrente"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_root
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Statistic"
+msgstr "Statistiche"
+
+#. module: portal_sql_statistic
+#: model:res.groups,name:portal_sql_statistic.group_stats_manager
+msgid "Stats Manager"
+msgstr "Gestore statistiche"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_subtotal
+msgid "Subtotal"
+msgstr "Subtotale"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Supplier Refund"
+msgstr "Reso fornitore"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Supplier document"
+msgstr "Documento fornitore"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_symbol
+msgid "Symbol"
+msgstr "Simbolo"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,mode:0
+msgid "Transport"
+msgstr "Trasporto"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "UOM"
+msgstr "U.M."
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Unload"
+msgstr "Scarico"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Unload document"
+msgstr "Doc. di scarico"
+
+#. module: portal_sql_statistic
+#: selection:pivot.sale.line,document_type:0
+msgid "Unload document (prod.)"
+msgstr "Doc. di scarico (prod.)"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_uom_id
+msgid "Uom"
+msgstr "U.M."
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_stats_used
+msgid "Used"
+msgstr "Utilizzato"
+
+#. module: portal_sql_statistic
+#: selection:res.partner,account_mode:0
+msgid "Vatican"
+msgstr "Vaticano"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "With partner"
+msgstr "Con cliente / fornitore"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "With product"
+msgstr "Con prodotto"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Without partner"
+msgstr "Senza cliente / fornitore"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Without product"
+msgstr "Senza prodotto"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_year
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Year"
+msgstr "Anno"
