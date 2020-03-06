@@ -60,7 +60,7 @@ class PivotYear(models.Model):
     _name = 'pivot.year'
     _description = 'Year'
 
-    name = fields.Integer('Year')
+    name = fields.Integer('Year', required=True)
     filename = fields.Char('Symbol', size=20)
     load = fields.Boolean('Load', help='Load always this year')
 
