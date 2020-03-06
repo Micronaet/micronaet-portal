@@ -36,15 +36,8 @@ class PortalAgent:
         current_year = int(datetime.now().year)
 
         database_list = {}
-        year_pool = self._get_odoo_model('pivot.year')
-        for year in range(from_year, current_year + 1):
-            if not year_pool.search([('name', '=', year)]):
-                year_pool.create({
-                    'name': year,
-                    'filename': '%s.pickle',
-                    'load': True,
-                    })
-
+        available_years = range(from_year, current_year + 1)
+        for year in available_years:
             if year == current_year:
                 text_year = ''
             elif year_format == 'yy':  # 2 char
@@ -105,7 +98,17 @@ class PortalAgent:
                 'statistic': 'statistic.pickle',
                 },
             }
-        import pdb; pdb.set_trace()
+
+        # Create Years list in model:
+        year_pool = self._get_odoo_model('pivot.year')
+        for year in available_years:
+            if not year_pool.search([('name', '=', year)]):
+                year_pool.create({
+                    'name': year,
+                    'filename': '%s.pickle',
+                    'load': True,
+                })
+
     def _get_odoo(self):
         """ Return ODOO Erpeek connection
         """
