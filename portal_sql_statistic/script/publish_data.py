@@ -532,6 +532,7 @@ class PortalAgent:
         stats_pool = self._get_odoo_model('pivot.sale.line')
 
         file_list = []
+        import pdb; pdb.set_trace()
         for root, folders, files in os.walk(path):
             for filename in files:
                 if filename in extra_file.values():
