@@ -151,14 +151,14 @@ class PortalAgent:
         """
         res = {}
         partner_pool = self._get_odoo_model('res.partner')
-        country_pool = self._get_odoo_model('res.country')
-        if self.parameters['mode'] == 'nothing':
+        if self.parameters['mode'] == 'load':
             for record in partner_pool.search([]):
                 res[record.account_ref] = record.id
             return res
 
         # Update / Write mode:
         # Load country:
+        country_pool = self._get_odoo_model('res.country')
         country_db = {}
         country_ids = country_pool.search([])
         for country in country_pool.browse(country_ids):
@@ -596,7 +596,7 @@ mode_list = [
     'update',  # Create and update
     'load',  # Load only (no file will be read)
     ]
-update_mode = 'nothing'
+update_mode = 'load'
 
 argv = sys.argv
 if len(argv) < 2:
