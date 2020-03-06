@@ -61,7 +61,7 @@ class PivotYear(models.Model):
     _description = 'Year'
 
     name = fields.Integer('Year', required=True)
-    filename = fields.Char('Symbol', size=20)
+    filename = fields.Char('Filename', size=20)
     load = fields.Boolean('Load', help='Load always this year')
 
 
