@@ -365,7 +365,7 @@ class PortalAgent:
                 qty *= sign / qty_rate
                 # TODO Causale di vendita
 
-                exchange = record['NCB_VLT_ESTER_EURO'] or 1.0
+                exchange = header['NCB_VLT_ESTER_EURO'] or 1.0
                 subtotal = price * qty
                 odoo_data.append({
                     'year': year,
