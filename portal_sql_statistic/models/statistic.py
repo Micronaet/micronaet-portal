@@ -132,3 +132,6 @@ class PivotSaleLine(models.Model):
     product_uom_qty = fields.Float('Q.', digits=(16, 3))
     list_price = fields.Float('Price', digits=(16, 3))
     subtotal = fields.Float('Subtotal', digits=(16, 3))
+    currency_subtotal = fields.Float(
+        'Currency Subtotal', digits=(16, 3),
+        help='Real document total in currency value (not to be used)')

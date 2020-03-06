@@ -129,6 +129,7 @@
 
                 <field name="product_uom_qty" readonly="1" />
                 <field name="list_price" readonly="1" />
+                <field name="currency_subtotal" readonly="1" />
                 <field name="subtotal" readonly="1" />
             </tree>
         </field>
