@@ -210,7 +210,7 @@ class PortalAgent:
                     record['sector_code'])
                 del(record['sector_code'])
 
-            if model == 'pivot.product.statistic':
+            if model == 'product.template':
                 record['statistic_id'] = extra_pool['statistic'].get(
                     record['statistic_code'])
                 del(record['statistic_code'])
