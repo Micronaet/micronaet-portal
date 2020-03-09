@@ -75,9 +75,10 @@ class PivotYear(models.Model):
     def remove_year(self):
         """ Remove this year
         """
-        year = self.name
-        records = self.search([('year', '=', year)])
-        return records.unlink()
+        line_pool = self.env['pivot.sale.line']
+        return line_pool.search([
+            ('year', '=', self.name),
+            ]).unlink()
 
     name = fields.Integer('Year', required=True)
     filename = fields.Char('Filename', size=20)
