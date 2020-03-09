@@ -508,7 +508,17 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        # No neet to import sector_id and statistic_id
+        # No nees to import sector_id and statistic_id
+        fullname = os.path.join(path, extra_file['sector'])
+        self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.product.sector', 'account_ref', 'sector')
+
+        fullname = os.path.join(path, extra_file['statistic'])
+        self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.product.statistic', 'account_ref', 'statistic')
+
         fullname = os.path.join(path, extra_file['currency'])
         currency_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
@@ -538,7 +548,7 @@ class PortalAgent:
         for root, folders, files in os.walk(path):
             for filename in files:
                 if filename in extra_file.values():
-                    print('No stats file: %s...' % filename)
+                    print('Jump no stats file: %s...' % filename)
                     continue
                 file_list.append(filename)
             break
