@@ -502,6 +502,7 @@ class PortalAgent:
     def import_data(self, last=False):
         """ Import data on Remote ODOO
         """
+        import pdb; pdb.set_trace()
         path = self.parameters['transfer']['remote_folder']
         extra_file = self.parameters['pickle_file']
 
