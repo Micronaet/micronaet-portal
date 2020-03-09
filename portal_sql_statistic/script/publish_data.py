@@ -508,16 +508,7 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        #fullname = os.path.join(path, extra_file['sector'])
-        #sector_db = self._import_generic_model(
-        #    pickle.load(open(fullname, 'rb')),
-        #    'pivot.product.sector', 'account_ref', 'sector')
-
-        #fullname = os.path.join(path, extra_file['statistic'])
-        #statistic_db = self._import_generic_model(
-        #    pickle.load(open(fullname, 'rb')),
-        #    'pivot.product.statistic', 'account_ref', 'statistic')
-
+        # No neet to import sector_id and statistic_id
         fullname = os.path.join(path, extra_file['currency'])
         currency_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
