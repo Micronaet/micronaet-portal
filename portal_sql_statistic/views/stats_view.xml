@@ -142,6 +142,8 @@
                 <field name="salesman_id" />
                 <field name="responsible_id" />
                 <field name="product_id" />
+                <field name="sector_id" readonly="1" />
+                <field name="statistic_id" readonly="1" />
                 <field name="currency_id" />
                 <field name="uom_id" />
                 <field name="category_id" />
@@ -172,6 +174,8 @@
                     <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
                     <filter name="group_uom" string="UOM" context="{'group_by': 'uom_id'}"/>
                     <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    <filter name="group_sector" string="Sector" context="{'group_by': 'secor_id'}"/>
+                    <filter name="group_statistic" string="Statistic" context="{'group_by': 'statistic_id'}"/>
                     <filter name="group_reason" string="Reason" context="{'group_by': 'reason_id'}"/>
                     <filter name="group_currency" string="Currency" context="{'group_by': 'currency_id'}"/>
 
@@ -205,8 +209,10 @@
 
 
                 <field name="product_id" readonly="1" />
-                <field name="uom_id" readonly="1" />
+                <field name="uom_id" readonly="1" invisible="1"/>
                 <field name="category_id" readonly="1" />
+                <field name="sector_id" readonly="1" />
+                <field name="statistic_id" readonly="1" />
 
                 <field name="product_uom_qty" readonly="1" />
                 <field name="list_price" readonly="1" />

@@ -186,6 +186,12 @@ class PivotSaleLine(models.Model):
     product_id = fields.Many2one('product.template', 'Product')
 
     # Product related
+    sector_id = fields.Many2one(
+        'pivot.product.sector', 'Sector',
+        related='product_id.sector_id', store=True)
+    statistic_id = fields.Many2one(
+        'pivot.product.statistic', 'Statistic',
+        related='product_id.statistic_id', store=True)
     category_id = fields.Many2one(
         'product.category', 'Category',
         related='product_id.categ_id', store=True)
