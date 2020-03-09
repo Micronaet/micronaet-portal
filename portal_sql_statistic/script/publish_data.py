@@ -184,7 +184,7 @@ class PortalAgent:
                 extra_pool['sector'] = {}
                 sector_ids = sector_pool.search([])
                 for sector in sector_pool.browse(sector_ids):
-                    extra_pool['country'][sector.account_ref] = sector.id
+                    extra_pool['sector'][sector.account_ref] = sector.id
 
             if model == 'product.template':
                 # Load statistic:
