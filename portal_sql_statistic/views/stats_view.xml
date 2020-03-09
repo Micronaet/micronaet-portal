@@ -31,8 +31,8 @@
             <form string="Statistic sector">
                 <sheet>
                     <group colspan="4" col="4">
-                        <field name="name" />
                         <field name="account_ref" readonly="1"/>
+                        <field name="name" />
                         
                         <field name="statistic_ids" colspan="4" nolabel="1" readonly="1">
                             <tree string="Category" editable="bottom">
