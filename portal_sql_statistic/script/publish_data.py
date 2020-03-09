@@ -508,7 +508,7 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
-        # No nees to import sector_id and statistic_id
+        # No need to import sector_id and statistic_id
         fullname = os.path.join(path, extra_file['sector'])
         self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
@@ -529,7 +529,6 @@ class PortalAgent:
             pickle.load(open(fullname, 'rb')),
             'pivot.sale.reason', 'account_ref', 'sale reason')
 
-        import pdb; pdb.set_trace()
         fullname = os.path.join(path, extra_file['product'])
         product_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
