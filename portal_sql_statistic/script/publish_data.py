@@ -319,6 +319,10 @@ class PortalAgent:
                 # Export product
                 cr.execute('SELECT * FROM AR_ANAGRAFICHE;')
                 product_data = []
+                stat_key = '%s%02d' % (
+                    product['CKY_CAT_STAT_ART'],
+                    statistic['NKY_CAT_STAT_ART'],
+                )
                 for product in cr.fetchall():
                     product_data.append({
                         'pivot_product': True,
@@ -327,6 +331,8 @@ class PortalAgent:
                             product['CDS_ART'].strip(),
                             product['CSG_ART_ALT'].strip(),
                             ),
+                        sector_code: product['CKY_CAT_STAT_ART'],
+                        statistic_code: stat_key,
                         })
                 pickle.dump(
                     product_data, open(
