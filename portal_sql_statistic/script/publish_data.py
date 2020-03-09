@@ -178,6 +178,23 @@ class PortalAgent:
                 for country in country_pool.browse(country_ids):
                     extra_pool['country'][country.code] = country.id
 
+            if model in ('product.template', 'pivot.product.statistic'):
+                # Load sector:
+                sector_pool = self._get_odoo_model('pivot.product.sector')
+                extra_pool['sector'] = {}
+                sector_ids = sector_pool.search([])
+                for sector in sector_pool.browse(sector_ids):
+                    extra_pool['country'][sector.account_ref] = sector.id
+
+            if model == 'product.template':
+                # Load statistic:
+                statistic_pool = self._get_odoo_model(
+                    'pivot.product.statistic')
+                extra_pool['statistic'] = {}
+                statistic_ids = statistic_pool.search([])
+                for statistic in statistic_pool.browse(statistic_ids):
+                    extra_pool['statistic'][statistic.account_ref] = \
+                        statistic.id
             return extra_pool
 
         def integrate_foreign_keys(model, record, extra_pool):
@@ -187,6 +204,16 @@ class PortalAgent:
                 record['country_id'] = extra_pool['country'].get(
                     record['country_code'])
                 del(record['country_code'])
+
+            if model in ('pivot.product.statistic', 'product.template'):
+                record['sector_id'] = extra_pool['sector'].get(
+                    record['sector_code'])
+                del(record['sector_code'])
+
+            if model == 'pivot.product.statistic':
+                record['statistic_id'] = extra_pool['statistic'].get(
+                    record['statistic_code'])
+                del(record['statistic_code'])
 
         res = {}
         model_pool = self._get_odoo_model(model)
@@ -475,6 +502,26 @@ class PortalAgent:
         # ---------------------------------------------------------------------
         # Pre operations (extra model data):
         # ---------------------------------------------------------------------
+        fullname = os.path.join(path, extra_file['sector'])
+        sector_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.product.sector', 'account_ref', 'sector')
+
+        fullname = os.path.join(path, extra_file['statistic'])
+        statistic_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.product.statistic', 'account_ref', 'statistic')
+
+        fullname = os.path.join(path, extra_file['currency'])
+        currency_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.currency', 'account_ref', 'currency')
+
+        fullname = os.path.join(path, extra_file['reason'])
+        reason_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'pivot.sale.reason', 'account_ref', 'sale reason')
+
         fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
@@ -484,20 +531,6 @@ class PortalAgent:
         product_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
             'product.template', 'default_code', 'product')
-
-        fullname = os.path.join(path, extra_file['reason'])
-        reason_db = self._import_generic_model(
-            pickle.load(open(fullname, 'rb')),
-            'pivot.sale.reason', 'account_ref', 'sale reason')
-
-        fullname = os.path.join(path, extra_file['currency'])
-        currency_db = self._import_generic_model(
-            pickle.load(open(fullname, 'rb')),
-            'pivot.currency', 'account_ref', 'currency')
-
-        # TODO sector
-
-        # TODO statistic
 
         # ---------------------------------------------------------------------
         # File to be imported:

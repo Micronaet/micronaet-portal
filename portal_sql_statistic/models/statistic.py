@@ -35,21 +35,13 @@ class ResPartner(models.Model):
         ], 'Account_mode')
 
 
-class ProductTemplate(models.Model):
-    """ Model update with extra fields
-    """
-    _inherit = 'product.template'
-
-    # Columns:
-    pivot_product = fields.Boolean(string='Pivot product')
-
-
 class PivotCurrency(models.Model):
     """ Model name: Currency
     """
     _name = 'pivot.currency'
     _description = 'Currency'
 
+    # Columns:
     name = fields.Char('Currency', size=40)
     symbol = fields.Char('Symbol', size=10)
     account_ref = fields.Integer('Account ref')
@@ -136,6 +128,7 @@ class PivotProductSectorRelations(models.Model):
         comodel_name='pivot.product.statistic', inverse_name='sector_id',
         string='Statistic category')
 
+
 class PivotSaleLine(models.Model):
     """ Model name: ExcelReportFormatPage
     """
@@ -207,3 +200,14 @@ class PivotSaleLine(models.Model):
     currency_subtotal = fields.Float(
         'Currency Subtotal', digits=(16, 3),
         help='Real document total in currency value (not to be used)')
+
+
+class ProductTemplate(models.Model):
+    """ Model update with extra fields
+    """
+    _inherit = 'product.template'
+
+    # Columns:
+    pivot_product = fields.Boolean(string='Pivot product')
+    sector_id = fields.Many2one('pivot.product.sector', 'Sector')
+    statistic_id = fields.Many2one('pivot.product.statistic', 'Statistic')
