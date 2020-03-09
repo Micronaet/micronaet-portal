@@ -104,8 +104,8 @@ class PivotProductSector(models.Model):
     _name = 'pivot.product.sector'
     _description = 'Statistic category'
 
-    name = fields.Char('Sale reason', size=40,required=True)
-    account_ref = fields.Integer('Account ref')
+    name = fields.Char('Sector', size=40, required=True)
+    account_ref = fields.Char('Account ref', size=2)
 
 
 class PivotProductStatistic(models.Model):
@@ -115,7 +115,7 @@ class PivotProductStatistic(models.Model):
     _description = 'Statistic category'
 
     name = fields.Char('Sale reason', size=40)
-    account_ref = fields.Integer('Account ref')
+    account_ref = fields.Char('Account ref', size=4)
     sector_id = fields.Many2one(
         comodel_name='pivot.product.sector', string='Sector')
 
