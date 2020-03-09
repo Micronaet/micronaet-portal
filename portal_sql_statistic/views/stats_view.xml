@@ -8,6 +8,7 @@
             <field name="name" position="after">
                 <field name="sector_id" />
                 <field name="statistic_id" />
+            </field>
         </field>
     </record>
 
