@@ -1,5 +1,16 @@
 <?xml version="1.0"?>
 <odoo>
+    <record model="ir.ui.view" id="view_product_template_statistic_tree">
+        <field name="name">product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="sector_id" />
+                <field name="statistic_id" />
+        </field>
+    </record>
+
     <!--pivot.product.sector-->
     <record model="ir.ui.view" id="view_pivot_product_sector_tree">
         <field name="name">pivot.product.sector.tree</field>

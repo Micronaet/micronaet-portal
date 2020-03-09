@@ -208,6 +208,6 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     # Columns:
-    pivot_product = fields.Boolean(string='Pivot product')
+    pivot_product = fields.Boolean('Pivot product')
     sector_id = fields.Many2one('pivot.product.sector', 'Sector')
     statistic_id = fields.Many2one('pivot.product.statistic', 'Statistic')
