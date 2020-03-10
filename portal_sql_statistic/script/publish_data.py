@@ -562,7 +562,7 @@ class PortalAgent:
 
             # Delete all line record for this year
             year = int(filename.split('.')[0])
-            if year < 2017:
+            if year != 2017:
                 continue
             stats_ids = stats_pool.search([
                 ('year', '=', year)])
