@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-06 15:42+0000\n"
-"PO-Revision-Date: 2020-03-06 16:48+0100\n"
+"POT-Creation-Date: 2020-03-10 07:19+0000\n"
+"PO-Revision-Date: 2020-03-10 08:22+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,8 @@ msgstr ""
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_account_ref
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_account_ref
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_account_ref
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_account_ref
 msgid "Account ref"
 msgstr "Rig. contabile"
@@ -56,6 +58,7 @@ msgstr "CEE"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_category_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_product_sector_form
 #: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
 msgid "Category"
 msgstr "Categoria"
@@ -84,15 +87,21 @@ msgstr "Codice nazione"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_create_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_create_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_create_uid
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_create_uid
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_create_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_create_uid
 msgid "Created by"
 msgstr "Creato da"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_create_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_create_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_create_date
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_create_date
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_create_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_create_date
 msgid "Created on"
 msgstr "Creato il"
 
@@ -147,8 +156,11 @@ msgstr "Sconto"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_display_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_display_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_display_name
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_display_name
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_display_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_display_name
 msgid "Display Name"
 msgstr "Nome Completo"
 
@@ -179,6 +191,11 @@ msgid "Fee"
 msgstr "Provvigione"
 
 #. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_filename
+msgid "Filename"
+msgstr "Nome file"
+
+#. module: portal_sql_statistic
 #: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_reason_stats_used
 msgid "Filter enabled when need exclusion in sale stats"
 msgstr "Indicazione per il filtro di esclusione causali nelle vendite"
@@ -190,8 +207,11 @@ msgstr "Raggruppa per..."
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_id
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_id
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_id
 msgid "ID"
 msgstr "ID"
 
@@ -202,22 +222,31 @@ msgstr "Italia"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency___last_update
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector___last_update
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic___last_update
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line___last_update
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason___last_update
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year___last_update
 msgid "Last Modified on"
 msgstr "Data di ultima modifica"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_write_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_write_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_write_uid
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_write_uid
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_write_uid
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_write_uid
 msgid "Last Updated by"
 msgstr "Ultima modifica di"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_currency_write_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_write_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_write_date
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_write_date
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_write_date
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_write_date
 msgid "Last Updated on"
 msgstr "Ultima modifica il"
 
@@ -227,9 +256,15 @@ msgid "Line mode"
 msgstr "Modo linea"
 
 #. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_load
 #: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
 msgid "Load"
-msgstr "Carico"
+msgstr "Carica"
+
+#. module: portal_sql_statistic
+#: model:ir.model.fields,help:portal_sql_statistic.field_pivot_year_load
+msgid "Load always this year"
+msgstr "Load always this year"
 
 #. module: portal_sql_statistic
 #: selection:pivot.sale.line,document_type:0
@@ -269,7 +304,7 @@ msgstr "Righe movimenti"
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_list_price
 msgid "Price"
-msgstr "Prezzo un."
+msgstr "Prezzo"
 
 #. module: portal_sql_statistic
 #: model:ir.actions.act_window,name:portal_sql_statistic.action_product_template
@@ -282,7 +317,7 @@ msgstr "Prodotto"
 #. module: portal_sql_statistic
 #: model:ir.model,name:portal_sql_statistic.model_product_template
 msgid "Product Template"
-msgstr "Prodotto"
+msgstr "Modello Prodotto"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_line_currency_subtotal
@@ -301,6 +336,28 @@ msgstr "Causale trasporto"
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_name
 msgid "Ref."
 msgstr "Rif."
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_year_tree
+msgid "Reload"
+msgstr "Ricarica"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_year_tree
+msgid "Reload all this year from data file?"
+msgstr "Ricarica l'anno attuale dai file di scambio?"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_year_tree
+msgid "Remove"
+msgstr "Rimuovi"
+
+#. module: portal_sql_statistic
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_year_tree
+msgid "Remove all movemnt for this year (could reload if needed?"
+msgstr ""
+"Rimuovi tutti i movimenti per l'anno selezionato (si possono ricaricare se "
+"occorre)?"
 
 #. module: portal_sql_statistic
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_responsible_id
@@ -344,6 +401,7 @@ msgstr "Modalità vendita"
 
 #. module: portal_sql_statistic
 #: model:ir.actions.act_window,name:portal_sql_statistic.action_pivot_sale_reason_form
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_name
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_reason_name
 #: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_config_reason
 #: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_reason_tree
@@ -370,15 +428,43 @@ msgid "Salesman"
 msgstr "Commerciale"
 
 #. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_name
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_statistic_sector_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_sector_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_product_sector_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_template_sector_id
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+msgid "Sector"
+msgstr "Settore"
+
+#. module: portal_sql_statistic
 #: model:ir.model.fields,help:portal_sql_statistic.field_pivot_sale_line_category_id
 msgid "Select category for the current product"
 msgstr "Selezionare la categoria per il prodotto corrente"
 
 #. module: portal_sql_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_statistic_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_product_statistic_id
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_product_template_statistic_id
 #: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_root
 #: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
 msgid "Statistic"
 msgstr "Statistiche"
+
+#. module: portal_sql_statistic
+#: model:ir.model,name:portal_sql_statistic.model_pivot_product_sector
+#: model:ir.model,name:portal_sql_statistic.model_pivot_product_statistic
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_product_sector_statistic_ids
+msgid "Statistic category"
+msgstr "Categoria statistica"
+
+#. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_pivot_product_sector
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_statistic_sector
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_product_sector_form
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_product_sector_tree
+msgid "Statistic sector"
+msgstr "Settore statistico"
 
 #. module: portal_sql_statistic
 #: model:res.groups,name:portal_sql_statistic.group_stats_manager
@@ -466,7 +552,12 @@ msgid "Without product"
 msgstr "Senza prodotto"
 
 #. module: portal_sql_statistic
+#: model:ir.actions.act_window,name:portal_sql_statistic.action_pivot_year
+#: model:ir.model,name:portal_sql_statistic.model_pivot_year
 #: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_sale_line_year
+#: model:ir.model.fields,field_description:portal_sql_statistic.field_pivot_year_name
+#: model:ir.ui.menu,name:portal_sql_statistic.menu_pivot_year
 #: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_sale_line_search
+#: model:ir.ui.view,arch_db:portal_sql_statistic.view_pivot_year_tree
 msgid "Year"
 msgstr "Anno"
