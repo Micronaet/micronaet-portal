@@ -174,7 +174,7 @@
                     <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
                     <filter name="group_uom" string="UOM" context="{'group_by': 'uom_id'}"/>
                     <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
-                    <filter name="group_sector" string="Sector" context="{'group_by': 'secor_id'}"/>
+                    <filter name="group_sector" string="Sector" context="{'group_by': 'sector_id'}"/>
                     <filter name="group_statistic" string="Statistic" context="{'group_by': 'statistic_id'}"/>
                     <filter name="group_reason" string="Reason" context="{'group_by': 'reason_id'}"/>
                     <filter name="group_currency" string="Currency" context="{'group_by': 'currency_id'}"/>
