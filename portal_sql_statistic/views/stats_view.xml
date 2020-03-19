@@ -28,8 +28,9 @@
     <record model="ir.ui.view" id="view_res_partner_agent_search">
         <field name="name">res.partner.search</field>
         <field name="model">res.partner</field>
+        <field name="priority" eval="40" />
         <field name="arch" type="xml">
-            <search string="Partner" version="7.0">        
+            <search string="Partner">        
                 <field name="name" />
                 <field name="phone" />
                 <field name="website" />
@@ -43,6 +44,7 @@
                 <filter name="no_salesman" string="No salesman" domain="[('salesman_id','=',False)]"/>
                 <filter name="no_agent" string="No agent" domain="[('agent_id','=',False)]"/>
                 <filter name="no_responsible" string="No supervisor" domain="[('responsible_id','=',False)]"/>
+                
                 <group expand="0" string="Group By...">
                     <filter name="group_salesman" string="Salesman" context="{'group_by': 'salesman_id'}"/>
                     <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
