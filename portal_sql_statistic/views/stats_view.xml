@@ -11,6 +11,18 @@
             </field>
         </field>
     </record>
+    <record model="ir.ui.view" id="view_partner_agent_tree">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="phone" position="before">
+                <field name="salesman_id" />
+                <field name="agent_id" />
+                <field name="responsible_id" />
+            </field>
+        </field>
+    </record>
 
     <!--pivot.product.sector-->
     <record model="ir.ui.view" id="view_pivot_product_sector_tree">
@@ -33,7 +45,7 @@
                     <group colspan="4" col="4">
                         <field name="account_ref" readonly="1"/>
                         <field name="name" />
-                        
+
                         <field name="statistic_ids" colspan="4" nolabel="1" readonly="1">
                             <tree string="Category" editable="bottom">
                                 <field name="account_ref" />
@@ -44,7 +56,7 @@
                 </sheet>
             </form>
         </field>
-    </record>    
+    </record>
     <record model="ir.actions.act_window" id="action_pivot_product_sector">
         <field name="name">Statistic sector</field>
         <field name="res_model">pivot.product.sector</field>
@@ -63,7 +75,7 @@
             <tree string="Sale reason" editable="bottom" decoration-success="stats_used==True">
                 <field name="stats_used" />
                 <field name="name" readonly="1"/>
-                <field name="account_ref" readonly="1"/>                
+                <field name="account_ref" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -76,7 +88,7 @@
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
-    
+
     <!--pivoy.currency-->
     <record model="ir.ui.view" id="view_pivot_currency_tree">
         <field name="name">pivot.currency.tree</field>
@@ -149,7 +161,7 @@
                 <field name="category_id" />
 
                 <filter name="exclude_reason" string="Exclude reason" domain="[('reason_id.stats_used','=',True)]"/>
-                
+
                 <filter name="partner_no" string="Without partner" domain="[('partner_id','=',False)]"/>
                 <filter name="partner_yes" string="With partner" domain="[('partner_id','!=',False)]"/>
 
@@ -339,6 +351,6 @@
                 sequence="60"
                 action="action_pivot_product_sector"
                 />
-                
+
 
 </odoo>
