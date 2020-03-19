@@ -263,14 +263,14 @@ class PortalAgent:
         extra_file = self.parameters['pickle_file']
 
         # Preload:
-        agent_file = self.parameters['transfer']['extra_file']
+        agent_file = self.parameters['mysql']['agent_file']
         agent_db = {}
         print('Read extra file for agent: %s' % agent_file)
         import pdb; pdb.set_trace()
         for line in open(agent_file, 'r'):
             line = line.strip()
             row = line.split('|')
-            agente_db[row[0].strip()] = ( # Customer code
+            agent_db[row[0].strip()] = ( # Customer code
                 row[2].strip(),  # Salesman
                 row[4].strip(),  # Supervisor
                 row[6].strip(),  # Agent
