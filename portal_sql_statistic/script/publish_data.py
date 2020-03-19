@@ -266,6 +266,7 @@ class PortalAgent:
         agent_file = self.parameters['transfer']['extra_file']
         agent_db = {}
         print('Read extra file for agent: %s' % agent_file)
+        import pdb; pdb.set_trace()
         for line in open(agent_file, 'r'):
             line = line.strip()
             row = line.split('|')
