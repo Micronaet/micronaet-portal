@@ -11,6 +11,8 @@
             </field>
         </field>
     </record>
+    
+    <!--res.partner-->
     <record model="ir.ui.view" id="view_partner_agent_tree">
         <field name="name">res.partner.tree</field>
         <field name="model">res.partner</field>
@@ -21,6 +23,25 @@
                 <field name="agent_id" />
                 <field name="responsible_id" />
             </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_res_partner_agent_search">
+        <field name="name">res.partner.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Partner" version="7.0">        
+                <field name="name" />
+                <field name="country_id" filter_domain="[('country_id','=',self)]"/>
+                <filter name="no_salesman" string="No salesman" domain="[('salesman_id','=',False)]"/>
+                <filter name="no_agent" string="No agent" domain="[('agent_id','=',False)]"/>
+                <filter name="no_responsible" string="No supervisor" domain="[('responsible_id','=',False)]"/>
+                <group expand="0" string="Group By...">
+                    <filter name="group_salesman" string="Salesman" context="{'group_by': 'salesman_id'}"/>
+                    <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_responsible" string="Supervisor" context="{'group_by': 'responsible_id'}"/>
+                    <filter name="group_country_" string="Country" context="{'group_by': 'country_id'}"/>
+                </group>                
+            </search>
         </field>
     </record>
 
@@ -272,6 +293,7 @@
         <field name="res_model">res.partner</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_ref" eval="ref(portal_sql_statistic.view_res_partner_agent_search)"/>
         <field name="context">{}</field>
         <field name="domain">[('pivot_partner', '=', True)]</field>
     </record>
