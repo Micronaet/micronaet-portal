@@ -65,6 +65,7 @@ class PortalAgent:
                     'header': 'MM_TESTATE' if uppercase else 'mm_testate',
                     'line': 'MM_RIGHE' if uppercase else 'mm_righe',
                     },
+                'agent_file': config.get('mysql', 'agent_file'),
                 },
 
             'odoo': {
@@ -261,6 +262,20 @@ class PortalAgent:
         export_path = self.parameters['transfer']['origin_folder']
         extra_file = self.parameters['pickle_file']
 
+        # Preload:
+        agent_file = self.parameters['transfer']['extra_file']
+        agent_db = {}
+        print('Read extra file for agent: %s' % agent_file)
+        for line in open(agent_file, 'r'):
+            line = line.strip()
+            row = line.split('|')
+            agente_db[row[0].strip()] = ( # Customer code
+                row[2].strip()  # Salesman
+                row[4].strip()  # Supervisor
+                row[6].strip()  # Agent
+                )
+        import pdb; pdb.set_trace()
+
         # TODO parameter:
         supplier_code = '2'
         customer_code = '4'
@@ -300,6 +315,8 @@ class PortalAgent:
                     account_ref_1 = account_ref[:1]
                     if account_ref_1 not in start_code_used:
                         continue
+
+                    agent_data = agent_db.get(account_ref, ('', '', ''))
                     partner_data.append({
                         'pivot_partner': True,
                         'is_company': True,
@@ -309,6 +326,11 @@ class PortalAgent:
                         'name': partner['CDS_CNT'].strip(),
                         'country_code': partner['CKY_PAESE'].strip().upper(),
                         'account_mode': partner['IST_NAZ'].strip(),
+
+                        # Agent part:
+                        'salesman_code': agent_data[0],
+                        'responsible_code': agent_data[1],
+                        'agent_code': agent_data[2],
                         })
                 pickle.dump(
                     partner_data, open(
