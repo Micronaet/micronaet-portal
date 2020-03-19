@@ -184,7 +184,8 @@ class PortalAgent:
                 extra_pool['partner'] = {}
                 partner_ids = partner_pool.search([])
                 for partner in partner_pool.browse(partner_ids):
-                    extra_pool['partner'][partner.ref] = partner.id
+                    if partner.account_ref:
+                        extra_pool['partner'][partner.account_ref] = partner.id
 
             if model in ('product.template', 'pivot.product.statistic'):
                 # Load sector:
