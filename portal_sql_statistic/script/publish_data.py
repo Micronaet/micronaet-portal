@@ -179,6 +179,13 @@ class PortalAgent:
                 for country in country_pool.browse(country_ids):
                     extra_pool['country'][country.code] = country.id
 
+                # Load partner (agent, salesman, supervisor):
+                partner_pool = self._get_odoo_model('res.partner')
+                extra_pool['partner'] = {}
+                partner_ids = partner_pool.search([])
+                for partner in partner_pool.browse(partner_ids):
+                    extra_pool['partner'][partner.ref] = partner.id
+
             if model in ('product.template', 'pivot.product.statistic'):
                 # Load sector:
                 sector_pool = self._get_odoo_model('pivot.product.sector')
@@ -206,6 +213,19 @@ class PortalAgent:
                     record['country_code'])
                 del(record['country_code'])
 
+                record['salesman_id'] = extra_pool['partner'].get(
+                    record['salesman_code'])
+                del(record['salesman_code'])
+
+                record['responsible_id'] = extra_pool['partner'].get(
+                    record['responsible_code'])
+                del(record['responsible_code'])
+
+                record['agent_id'] = extra_pool['partner'].get(
+                    record['agent_code'])
+                del(record['agent_code'])
+
+                responsible_id
             if model in ('pivot.product.statistic', 'product.template'):
                 record['sector_id'] = extra_pool['sector'].get(
                     record['sector_code'])
@@ -266,16 +286,14 @@ class PortalAgent:
         agent_file = self.parameters['mysql']['agent_file']
         agent_db = {}
         print('Read extra file for agent: %s' % agent_file)
-        import pdb; pdb.set_trace()
         for line in open(agent_file, 'r'):
             line = line.strip()
             row = line.split('|')
-            agent_db[row[0].strip()] = ( # Customer code
+            agent_db[row[0].strip()] = (  # Customer code
                 row[2].strip(),  # Salesman
                 row[4].strip(),  # Supervisor
                 row[6].strip(),  # Agent
                 )
-        import pdb; pdb.set_trace()
 
         # TODO parameter:
         supplier_code = '2'
