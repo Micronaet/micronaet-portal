@@ -570,15 +570,15 @@ class PortalAgent:
             pickle.load(open(fullname, 'rb')),
             'pivot.sale.reason', 'account_ref', 'sale reason')
 
-        fullname = os.path.join(path, extra_file['product'])
-        product_db = self._import_generic_model(
-            pickle.load(open(fullname, 'rb')),
-            'product.template', 'default_code', 'product')
-
         fullname = os.path.join(path, extra_file['partner'])
         partner_db = self._import_generic_model(
             pickle.load(open(fullname, 'rb')),
             'res.partner', 'account_ref', 'partner')
+
+        fullname = os.path.join(path, extra_file['product'])
+        product_db = self._import_generic_model(
+            pickle.load(open(fullname, 'rb')),
+            'product.template', 'default_code', 'product')
 
         # ---------------------------------------------------------------------
         # File to be imported:
