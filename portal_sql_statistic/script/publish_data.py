@@ -271,9 +271,9 @@ class PortalAgent:
             line = line.strip()
             row = line.split('|')
             agente_db[row[0].strip()] = ( # Customer code
-                row[2].strip()  # Salesman
-                row[4].strip()  # Supervisor
-                row[6].strip()  # Agent
+                row[2].strip(),  # Salesman
+                row[4].strip(),  # Supervisor
+                row[6].strip(),  # Agent
                 )
         import pdb; pdb.set_trace()
 
