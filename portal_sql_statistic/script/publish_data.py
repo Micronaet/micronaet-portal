@@ -225,7 +225,6 @@ class PortalAgent:
                     record['agent_code'])
                 del(record['agent_code'])
 
-                responsible_id
             if model in ('pivot.product.statistic', 'product.template'):
                 record['sector_id'] = extra_pool['sector'].get(
                     record['sector_code'])
