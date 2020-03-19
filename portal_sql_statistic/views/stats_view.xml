@@ -31,7 +31,15 @@
         <field name="arch" type="xml">
             <search string="Partner" version="7.0">        
                 <field name="name" />
+                <field name="phone" />
+                <field name="website" />
+                <field name="email" />
+                
+                <field name="salesman_id" filter_domain="[('salesman_id','=',self)]"/>
+                <field name="agent_id" filter_domain="[('agent_id','=',self)]"/>
+                <field name="responsible_id" filter_domain="[('responsible_id','=',self)]"/>
                 <field name="country_id" filter_domain="[('country_id','=',self)]"/>
+                
                 <filter name="no_salesman" string="No salesman" domain="[('salesman_id','=',False)]"/>
                 <filter name="no_agent" string="No agent" domain="[('agent_id','=',False)]"/>
                 <filter name="no_responsible" string="No supervisor" domain="[('responsible_id','=',False)]"/>
@@ -39,7 +47,7 @@
                     <filter name="group_salesman" string="Salesman" context="{'group_by': 'salesman_id'}"/>
                     <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
                     <filter name="group_responsible" string="Supervisor" context="{'group_by': 'responsible_id'}"/>
-                    <filter name="group_country_" string="Country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
                 </group>                
             </search>
         </field>
