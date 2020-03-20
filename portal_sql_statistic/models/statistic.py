@@ -146,7 +146,7 @@ class PivotSaleLine(models.Model):
         # model_pool = self.env['ir.model.data']
         pivot_view_id = tree_view_id = False
 
-        uid = self.uid
+        uid = self.env.uid
         domain = [
             '&',
             ('document_type', 'in', ('BC', 'RC')),
