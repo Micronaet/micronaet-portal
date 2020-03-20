@@ -156,7 +156,7 @@ class PivotSaleLine(models.Model):
         _logger.warning('My Domain: %s' % (domain))
         return {
             'type': 'ir.actions.act_window',
-            'name': _('My stats:'),
+            'name': 'Statistic',
             'view_type': 'form',
             'view_mode': 'pivot,tree',
             # 'res_id': 1,
