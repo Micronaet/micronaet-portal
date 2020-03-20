@@ -324,6 +324,17 @@
         <field name="domain">[('pivot_product', '=', True)]</field>
     </record>
 
+    <record model="ir.ui.view" id="view_res_user_agent_form">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="agent_partner_id" />
+            </field>
+        </field>
+    </record>
+    
     <menuitem
         name="Statistic"
         id="menu_pivot_statistic_root"
