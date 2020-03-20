@@ -150,14 +150,15 @@ class PivotSaleLine(models.Model):
         """
         # model_pool = self.env['ir.model.data']
         pivot_view_id = tree_view_id = False
-        uid = self.env.uid
+        user = self.env['res.users'].browse(self.env.uid)
+        partner_id = user.stat_partner_id.id
         domain = [
             '&',
             ('document_type', 'in', ('BC', 'RC')),
             '|', '|',
-            ('agent_id', '=', uid),
-            ('salesman_id', '=', uid),
-            ('responsible_id', '=', uid),
+            ('agent_id', '=', partner_id),
+            ('salesman_id', '=', partner_id),
+            ('responsible_id', '=', partner_id),
         ]
         _logger.warning('My Domain: %s' % (domain))
         return {
