@@ -302,9 +302,8 @@
          <field name="name">My statistic</field>
          <field name="type">ir.actions.server</field>
          <field name="model_id" ref="model_pivot_sale_line" />
-         <field name="binding_model_id" ref="model_pivot_sale_line" />
          <field name="state">code</field>
-         <field name="code">action = env['pivot.sale.line'].salesman_domain_filter()</field>
+         <field name="code">action = self.salesman_domain_filter()</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_res_partner">
