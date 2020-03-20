@@ -138,6 +138,33 @@ class PivotSaleLine(models.Model):
     _order = 'year, date'
     _rec_name = 'product_id'
 
+    @api.model
+    def salesman_domain_filter(self):
+        """ Server Action for pre filter
+        """
+        import pdb; pdb.set_trace()
+        # model_pool = self.env['ir.model.data']
+        pivot_view_id = tree_view_id = False
+
+        uid = self.uid
+        domain = [
+            ('document_type', 'in', ('BC', 'RC'))
+        ]
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('My stats:'),
+            'view_type': 'form',
+            'view_mode': 'pivot,tree',
+            # 'res_id': 1,
+            'res_model': 'pivot.sale.line',
+            'view_id': pivot_view_id,
+            'views': [(pivot_view_id, 'pivot'), (tree_view_id, 'tree')],
+            'domain': domain,
+            'context': self.env.context,
+            'target': 'current',
+            'nodestroy': False,
+        }
+
     # -------------------------------------------------------------------------
     #                                   COLUMNS:
     # -------------------------------------------------------------------------

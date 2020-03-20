@@ -11,7 +11,7 @@
             </field>
         </field>
     </record>
-    
+
     <!--res.partner-->
     <record model="ir.ui.view" id="view_partner_agent_tree">
         <field name="name">res.partner.tree</field>
@@ -30,27 +30,27 @@
         <field name="model">res.partner</field>
         <field name="priority" eval="40" />
         <field name="arch" type="xml">
-            <search string="Partner">        
+            <search string="Partner">
                 <field name="name" />
                 <field name="phone" />
                 <field name="website" />
                 <field name="email" />
-                
+
                 <field name="salesman_id" filter_domain="[('salesman_id','=',self)]"/>
                 <field name="agent_id" filter_domain="[('agent_id','=',self)]"/>
                 <field name="responsible_id" filter_domain="[('responsible_id','=',self)]"/>
                 <field name="country_id" filter_domain="[('country_id','=',self)]"/>
-                
+
                 <filter name="no_salesman" string="No salesman" domain="[('salesman_id','=',False)]"/>
                 <filter name="no_agent" string="No agent" domain="[('agent_id','=',False)]"/>
                 <filter name="no_responsible" string="No supervisor" domain="[('responsible_id','=',False)]"/>
-                
+
                 <group expand="0" string="Group By...">
                     <filter name="group_salesman" string="Salesman" context="{'group_by': 'salesman_id'}"/>
                     <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
                     <filter name="group_responsible" string="Supervisor" context="{'group_by': 'responsible_id'}"/>
                     <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
-                </group>                
+                </group>
             </search>
         </field>
     </record>
@@ -298,6 +298,15 @@
         <field name="domain">[]</field>
     </record>
 
+    <record id="ir_action_view_pivot_sale_line_salesman" model="ir.actions.server">
+         <field name="name">My statistic</field>
+         <field name="type">ir.actions.server</field>
+         <field name="model_id" ref="model_pivot_sale_line" />
+         <field name="binding_model_id" ref="model_pivot_sale_line" />
+         <field name="state">code</field>
+         <field name="code">action = env['pivot.sale.line'].salesman_domain_filter()</field>
+    </record>
+
     <record model="ir.actions.act_window" id="action_res_partner">
         <field name="name">Partner</field>
         <field name="res_model">res.partner</field>
@@ -320,7 +329,7 @@
         name="Statistic"
         id="menu_pivot_statistic_root"
         sequence="20"
-        groups="group_stats_manager"
+        groups="group_stats_manager,group_stats_agent"
         />
         <menuitem
             parent="menu_pivot_statistic_root"
@@ -328,17 +337,29 @@
             sequence="10"
             name="Sales"
             />
+            <!--My statistic-->
             <menuitem
                 parent="menu_pivot_statistic_sales"
                 id="menu_pivot_statistic_sales_lines"
                 sequence="10"
+                action="salesman_domain_filter"
+                groups="group_stats_agent"
+                />
+
+            <!--Manager statistic-->
+            <menuitem
+                parent="menu_pivot_statistic_sales"
+                id="menu_pivot_statistic_sales_lines"
+                sequence="20"
                 action="action_view_pivot_sale_line"
+                groups="group_stats_manager"
                 />
             <menuitem
                 parent="menu_pivot_statistic_sales"
                 id="menu_pivot_statistic_stock_movement_lines"
-                sequence="20"
+                sequence="30"
                 action="action_view_pivot_all_line"
+                groups="group_stats_manager"
                 />
 
         <menuitem
