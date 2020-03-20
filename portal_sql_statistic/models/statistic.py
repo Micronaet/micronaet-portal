@@ -9,12 +9,13 @@ _logger = logging.getLogger(__name__)
 
 
 class ResUsers(models.Model):
-    """ Model update with extra fields
+    """ Add reference for user
     """
     _inherit = 'res.users'
 
-    salesman_partner_id = fields.Many2one(
-        'res.partner', 'Agent', domain="[('pivot_partner', '=', True)]")
+    stat_partner_id = fields.Many2one(
+        comodel_name='res.partner',
+        string='Start Partner')
 
 
 class ResPartner(models.Model):
