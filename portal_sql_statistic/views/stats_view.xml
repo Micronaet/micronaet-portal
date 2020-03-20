@@ -359,7 +359,7 @@
             <!--Manager statistic-->
             <menuitem
                 parent="menu_pivot_statistic_sales"
-                id="menu_pivot_statistic_sales_lines"
+                id="menu_pivot_statistic_sales_lines_manager"
                 sequence="20"
                 action="action_view_pivot_sale_line"
                 groups="group_stats_manager"

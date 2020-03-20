@@ -15,7 +15,7 @@ class ResUsers(models.Model):
 
     stat_partner_id = fields.Many2one(
         comodel_name='res.partner',
-        string='Start Partner')
+        string='Stat Partner')
 
 
 class ResPartner(models.Model):
