@@ -4,10 +4,6 @@
 import os
 import logging
 from odoo import models, fields, api, exceptions
-# import io
-# import xlsxwriter
-# import base64
-# import shutil
 
 _logger = logging.getLogger(__name__)
 
