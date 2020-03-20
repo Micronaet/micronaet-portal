@@ -142,10 +142,8 @@ class PivotSaleLine(models.Model):
     def salesman_domain_filter(self):
         """ Server Action for pre filter
         """
-        import pdb; pdb.set_trace()
         # model_pool = self.env['ir.model.data']
         pivot_view_id = tree_view_id = False
-
         uid = self.env.uid
         domain = [
             '&',
@@ -166,7 +164,8 @@ class PivotSaleLine(models.Model):
             'view_id': pivot_view_id,
             'views': [(pivot_view_id, 'pivot'), (tree_view_id, 'tree')],
             'domain': domain,
-            'context': self.env.context,
+            'context': {'search_default_exclude_reason': True},
+            # self.env.context,
             'target': 'current',
             'nodestroy': False,
         }
