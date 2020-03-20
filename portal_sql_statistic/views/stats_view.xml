@@ -342,7 +342,7 @@
                 parent="menu_pivot_statistic_sales"
                 id="menu_pivot_statistic_sales_lines"
                 sequence="10"
-                action="salesman_domain_filter"
+                action="ir_action_view_pivot_sale_line_salesman"
                 groups="group_stats_agent"
                 />
 
