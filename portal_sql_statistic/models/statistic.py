@@ -148,7 +148,12 @@ class PivotSaleLine(models.Model):
 
         uid = self.uid
         domain = [
-            ('document_type', 'in', ('BC', 'RC'))
+            '&',
+            ('document_type', 'in', ('BC', 'RC')),
+            '|', '|',
+            ('agent_id', '=', uid),
+            ('salesman_id', '=', uid),
+            ('responsible_id', '=', uid),
         ]
         return {
             'type': 'ir.actions.act_window',
