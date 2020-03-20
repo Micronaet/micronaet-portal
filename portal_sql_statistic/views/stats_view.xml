@@ -367,6 +367,7 @@
             id="menu_pivot_statistic_config"
             sequence="99"
             name="Configuration"
+            groups="group_stats_manager"
             />
             <menuitem
                 parent="menu_pivot_statistic_config"
