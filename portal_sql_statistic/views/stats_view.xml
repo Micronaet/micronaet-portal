@@ -338,8 +338,8 @@
             />
             <!--My statistic-->
             <menuitem
-                parent="menu_pivot_statistic_sales_salesman"
-                id="menu_pivot_statistic_sales_lines"
+                parent="menu_pivot_statistic_sales"
+                id="menu_pivot_statistic_sales_lines_agent"
                 sequence="10"
                 action="ir_action_view_pivot_sale_line_salesman"
                 groups="group_stats_agent"
