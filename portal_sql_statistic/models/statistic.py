@@ -13,7 +13,7 @@ class ResUsers(models.Model):
     """
     _inherit = 'res.users'
 
-    agent_partner_id = fields.Many2one(
+    salesman_partner_id = fields.Many2one(
         'res.partner', 'Agent', domain="[('pivot_partner', '=', True)]")
 
 

@@ -330,11 +330,11 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
-                <field name="agent_partner_id" />
+                <field name="salesman_partner_id" />
             </field>
         </field>
     </record>
-    
+
     <menuitem
         name="Statistic"
         id="menu_pivot_statistic_root"
